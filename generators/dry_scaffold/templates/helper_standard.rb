@@ -1,2 +1,2 @@
-module <%= controller_class_name %>Helper
+module <%= class_name %>Helper
 end

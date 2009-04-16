@@ -1,10 +1,14 @@
 class DryScaffoldGenerator < Rails::Generator::Base
   
+  default_options :no_resourceful => false, :no_formtastic => false,
+    :skip_tests => false, :skip_helpers => false, :skip_views => false
+    
   CONTROLLERS_PATH = File.join('app', 'controllers').freeze
-  FUNCTIONAL_TESTS_PATH = File.join('test', 'functional').freeze
   HELPERS_PATH = File.join('app', 'helpers').freeze
   VIEWS_PATH = File.join('app', 'views').freeze
   MODELS_PATH = File.join('app', 'models').freeze
+  FUNCTIONAL_TESTS_PATH = File.join('test', 'functional').freeze
+  UNIT_TESTS_PATH = File.join('test', 'unit', 'helpers').freeze
   
   RESOURCEFUL_COLLECTION_NAME = 'collection'.freeze
   RESOURCEFUL_SINGULAR_NAME = 'resource'.freeze
@@ -16,7 +20,6 @@ class DryScaffoldGenerator < Rails::Generator::Base
   
   def initialize(runtime_args, runtime_options = {})
     super
-    
     @controller_name = @name.pluralize
     
     self.base_name, @controller_class_path, @controller_file_path, @controller_class_nesting, @controller_class_nesting_depth = extract_modules(@controller_name)
@@ -33,51 +36,63 @@ class DryScaffoldGenerator < Rails::Generator::Base
   def manifest
     record do |m|
       # Check for class naming collisions.
-      m.class_collisions(self.controller_class_path, "#{self.controller_class_name}Controller", "#{self.controller_class_name}Helper")
-      m.class_collisions(self.class_path, "#{self.class_name}")
+      m.class_collisions "#{self.controller_class_name}Controller", "#{self.controller_class_name}ControllerTest"
+      m.class_collisions "#{self.controller_class_name}Helper", "#{self.controller_class_name}HelperTest"
+      m.class_collisions self.class_path, "#{self.class_name}"
       
-      # Controllers
+      # Directories.
       m.directory File.join(CONTROLLERS_PATH, self.controller_class_path)
-      controller_template = options[:skip_resourceful] ? 'standard' : 'inherited_resources'
+      m.directory File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path)
+      m.directory File.join(HELPERS_PATH, self.controller_class_path)
+      m.directory File.join(VIEWS_PATH, self.class_path)
+      
+      # Controllers.
+      controller_template = options[:no_resourceful] ? 'standard' : 'inherited_resources'
       m.template "controller_#{controller_template}.rb",
         File.join(CONTROLLERS_PATH, self.controller_class_path, "#{self.controller_file_name}_controller.rb")
-      
-      # Functional Tests
-      m.directory(File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path))
-      m.template 'functional_test_standard.rb',
-        File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path, "#{self.controller_file_name}_controller_test.rb")
-      
-      # Helpers
-      m.directory(File.join(HELPERS_PATH, self.controller_class_path))
-      m.template 'helper_standard.rb',
-        File.join(HELPERS_PATH, self.controller_class_path, "#{self.controller_file_name}_helper.rb")
         
-      # Views
-      m.directory File.join(VIEWS_PATH, self.class_path)
-      PARTIALS.each do |partial|
-        m.template "view__#{partial}.html.haml",
-          File.join(VIEWS_PATH, self.file_name, "#{partial}.html.haml"),
-          :assigns => {:options => options}
-      end
-      ACTIONS.each do |action|
-        m.template "view_#{action}.html.haml",
-          File.join(VIEWS_PATH, self.file_name, "#{action}.html.haml"),
-          :assigns => {:options => options}
+      # Controller Tests.
+      unless options[:skip_tests]
+        m.template 'controller_test_standard.rb',
+          File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path, "#{self.controller_file_name}_controller_test.rb")
       end
       
-      # Routes
+      # Helpers.
+      unless options[:skip_helpers]
+        m.template 'helper_standard.rb',
+          File.join(HELPERS_PATH, self.controller_class_path, "#{self.controller_file_name}_helper.rb")
+        # Helper Tests
+        unless options[:skip_tests]
+          m.template 'helper_test_standard.rb',
+            File.join(UNIT_TESTS_PATH, self.controller_class_path, "#{self.controller_file_name}_helper_test.rb")
+        end
+      end
+        
+      # Views.
+      unless options[:skip_views]
+        # View template for each action.
+        ACTIONS.each do |action|
+          m.template "view_#{action}.html.haml",
+            File.join(VIEWS_PATH, self.file_name, "#{action}.html.haml"),
+            :assigns => {:options => options}
+        end
+        # View template for each partial.
+        PARTIALS.each do |partial|
+          m.template "view__#{partial}.html.haml",
+            File.join(VIEWS_PATH, self.file_name, "#{partial}.html.haml"),
+            :assigns => {:options => options}
+        end
+      end
+      
+      # Routes.
       m.route_resources self.controller_file_name
       
-      # Models - use Rails default generator
+      # Models - use Rails default generator.
       m.dependency 'model', [self.name] + @args, :collision => :skip
     end
   end
   
   protected
-    
-    def model_name
-      class_name.demodulize
-    end
     
     def assign_names!(name)
       super
@@ -89,19 +104,37 @@ class DryScaffoldGenerator < Rails::Generator::Base
     def add_options!(opt)
       opt.separator ''
       opt.separator 'Options:'
-      opt.on('-r', '--skip-resourceful',
-        "Generate generic 'inherited_resources' style URL names, i.e. collection_url, resource_url, etc. " +
-        "Requires gem 'josevalim-inherited_resources'") do |v|
-        options[:skip_resourceful] = v
+      
+      opt.on('-r', '--no-resourceful',
+        "Skip 'inherited_resources' style controllers and views. Requires gem 'josevalim-inherited_resources'.") do |v|
+        options[:no_resourceful] = v
       end
-      opt.on('-f', '--skip-formtastic',
-        "Generate semantic 'formtastic' style forms. Requires gem 'justinfrench-formtastic'") do |v|
-        options[:skip_formtastic] = v
+      
+      opt.on('-f', '--no-formtastic',
+        "Skip 'formtastic' style forms. Requires gem 'justinfrench-formtastic'") do |v|
+        options[:no_formtastic] = v
+      end
+      
+      opt.on('-v', '--skip-views', "Skip generation of views.") do |v|
+        options[:skip_views] = v
+      end
+      
+      opt.on('-h', '--skip-helper', "Skip generation of helpers.") do |v|
+        options[:skip_helpers] = v
+      end
+      
+      opt.on('-t', '--skip-tests', "Skip generation of tests.") do |v|
+        options[:skip_tests] = v
       end
     end
     
+    def model_name
+      class_name.demodulize
+    end
+    
     def banner
-      "Usage: #{$0} dry_scaffold ModelName [-r/--skip-resourceful] [-f/--skip-formtastic]"
+      "Usage: #{$0} dry_scaffold ModelName [-r/--no-resourceful] [-f/--no-formtastic]" +
+        " [-v/--skip-views] [-h/--skip-helpers] [-t/--skip-tests]"
     end
     
 end

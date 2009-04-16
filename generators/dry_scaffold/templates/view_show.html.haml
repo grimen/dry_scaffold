@@ -2,12 +2,12 @@
   = "Resource %s" % @<%= singular_name %>.id
   
 - content_tag_for(:dl, @<%= singular_name %>) do
-  <% attributes.each do |attribute| -%>
+<% attributes.each do |attribute| -%>
   %dt.label= <%= attribute.name.humanize %>
   %dd.<%= attribute.name -%>= h @<%= singular_name %>.try(:<%= attribute.name %>)
-  <% end -%>
+<% end -%>
   
 %p.actions
   = link_to 'Edit', edit_<%= singular_name %>_path(@<%= singular_name %>)
   |
-  = link_to 'Index', <%= singular_name %>_path
+  = link_to 'Index', <%= plural_name %>_path

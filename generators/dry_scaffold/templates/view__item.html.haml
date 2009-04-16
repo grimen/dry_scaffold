@@ -1,7 +1,7 @@
-- content_tag_for(:tr, @<%= singular_name %>) do
-  <% attributes.each do |attribute| -%>
-  %td.<%= attribute.name -%>= h <%= singular_name %>.try(:<%= attribute.name %>)
-  <% end -%>
+- content_tag_for(:tr, @<%= singular_name -%>) do
+<% attributes.each do |attribute| -%>
+  %td.<%= attribute.name %>= h <%= singular_name %>.try(:<%= attribute.name %>)
+<% end -%>
   %td.actions
     = link_to 'Show', <%= singular_name %>
     |

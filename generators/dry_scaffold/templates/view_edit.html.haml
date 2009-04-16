@@ -1,12 +1,18 @@
 %h1.heading
   = "Editing <%= singular_name %> %s" % @<%= singular_name %>.id
   
+<% unless options[:no_formtastic] -%>
 - semantic_form_for(@<%= singular_name %>) do |f|
-  
   = render 'form', :f => f
-  
   - f.buttons do
     = f.commit_button 'Update'
-    
+<% else -%>
+- form_for(@<%= singular_name %>) do |f|
+  = f.error_messages
+  = render 'form', :f => f
+  %p.buttons
+    = f.submit 'Update'
+<% end -%>
+
 %p.actions
   = link_to 'Cancel', <%= plural_name %>_path

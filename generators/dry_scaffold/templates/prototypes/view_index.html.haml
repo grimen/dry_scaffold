@@ -10,7 +10,7 @@
       %th.title= 'Title'
       %th.description= 'Description'
       %th.actions= 'Actions'
-  %tbody.items
+  %tbody.items.resources
     - @collection.each do |resource|
       = render 'item', :object => resource
       

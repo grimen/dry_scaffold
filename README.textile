@@ -4,10 +4,6 @@ h2. SYNOPSIS
 
 ...
 
-h2. DESCRIPTION
-
-...
-
 h2. INSTALLATION
 
 ...
