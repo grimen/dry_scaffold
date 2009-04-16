@@ -1,0 +1,12 @@
+%h1.heading
+  = "Editing <%= singular_name %> %s" % @<%= singular_name %>.id
+  
+- semantic_form_for(@<%= singular_name %>) do |f|
+  
+  = render 'form', :f => f
+  
+  - f.buttons do
+    = f.commit_button 'Update'
+    
+%p.actions
+  = link_to 'Cancel', <%= plural_name %>_path

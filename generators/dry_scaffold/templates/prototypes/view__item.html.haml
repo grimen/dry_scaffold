@@ -1,0 +1,9 @@
+- content_tag_for(:tr, resource) do
+  %td.title= h resource.try(:title)
+  %td.description= h resource.try(:description)
+  %td.actions
+    = link_to 'Show', resource_path(resource)
+    |
+    = link_to 'Edit', edit_resource_path(resource)
+    |
+    = link_to 'Destroy', resource_path(resource), :confirm => 'Are you sure?', :method => :delete

@@ -1,0 +1,11 @@
+NAME
+  dry_views_generator - short description of the generator
+  
+SYNOPSIS
+  ...
+  
+DESCRIPTION
+  ...
+  
+EXAMPLE
+  ./script/generate dry_scaffold ModelName [-r/--skip-resourceful] [-f/--skip-formtastic]

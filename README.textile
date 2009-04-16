@@ -1,0 +1,29 @@
+h1. DRY SCAFFOLD
+
+h2. SYNOPSIS
+
+...
+
+h2. DESCRIPTION
+
+...
+
+h2. INSTALLATION
+
+...
+
+h2. BASIC USAGE
+
+...
+
+h2. ADVANCED USAGE
+
+...
+
+h2. BUGS & FEEDBACK
+
+...
+
+h2. LICENSE
+
+...
