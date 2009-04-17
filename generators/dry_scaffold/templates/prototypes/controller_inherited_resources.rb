@@ -1,4 +1,4 @@
-class ResorcesController < InheritedResources::Base
+class ResourcesController < InheritedResources::Base
   
   actions :index, :show, :new, :create, :edit, :update
   respond_to :html, :xml, :json

@@ -1,4 +1,4 @@
-class DryScaffoldGenerator < Rails::Generator::Base
+class DryScaffoldGenerator < Rails::Generator::NamedBase
   
   default_options :no_resourceful => false, :no_formtastic => false,
     :skip_tests => false, :skip_helpers => false, :skip_views => false
@@ -16,7 +16,19 @@ class DryScaffoldGenerator < Rails::Generator::Base
   PARTIALS = %w{form item}.freeze
   ACTIONS = %w{new edit show index}.freeze
   
-  attr_reader :collection_name
+  attr_reader   :collection_name
+  attr_reader   :controller_name,
+                :controller_class_path,
+                :controller_file_path,
+                :controller_class_nesting,
+                :controller_class_nesting_depth,
+                :controller_class_name,
+                :controller_underscore_name,
+                :controller_singular_name,
+                :controller_plural_name
+                
+  alias_method  :controller_file_name,  :controller_underscore_name
+  alias_method  :controller_table_name, :controller_plural_name
   
   def initialize(runtime_args, runtime_options = {})
     super
@@ -42,9 +54,10 @@ class DryScaffoldGenerator < Rails::Generator::Base
       
       # Directories.
       m.directory File.join(CONTROLLERS_PATH, self.controller_class_path)
-      m.directory File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path)
-      m.directory File.join(HELPERS_PATH, self.controller_class_path)
-      m.directory File.join(VIEWS_PATH, self.class_path)
+      m.directory File.join(HELPERS_PATH, self.controller_class_path) unless options[:skip_helpers]
+      m.directory File.join(VIEWS_PATH, self.class_path) unless options[:skip_views]
+      m.directory File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path) unless options[:skip_tests]
+      m.directory File.join(UNIT_TESTS_PATH, self.controller_class_path) unless options[:skip_tests]
       
       # Controllers.
       controller_template = options[:no_resourceful] ? 'standard' : 'inherited_resources'
@@ -125,6 +138,10 @@ class DryScaffoldGenerator < Rails::Generator::Base
       
       opt.on('-t', '--skip-tests', "Skip generation of tests.") do |v|
         options[:skip_tests] = v
+      end
+      
+      opt.on('-rt', '--respond-to', "Skip generation of tests.") do |v|
+        options[:respond_to] = v
       end
     end
     
