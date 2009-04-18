@@ -55,7 +55,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       # Directories.
       m.directory File.join(CONTROLLERS_PATH, self.controller_class_path)
       m.directory File.join(HELPERS_PATH, self.controller_class_path) unless options[:skip_helpers]
-      m.directory File.join(VIEWS_PATH, self.class_path) unless options[:skip_views]
+      m.directory File.join(VIEWS_PATH, self.controller_class_path) unless options[:skip_views]
       m.directory File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path) unless options[:skip_tests]
       m.directory File.join(UNIT_TESTS_PATH, self.controller_class_path) unless options[:skip_tests]
       
