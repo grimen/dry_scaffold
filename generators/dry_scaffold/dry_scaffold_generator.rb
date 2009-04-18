@@ -86,13 +86,13 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         # View template for each action.
         ACTIONS.each do |action|
           m.template "view_#{action}.html.haml",
-            File.join(VIEWS_PATH, self.file_name, "#{action}.html.haml"),
+            File.join(VIEWS_PATH, self.controller_file_name, "#{action}.html.haml"),
             :assigns => {:options => options}
         end
         # View template for each partial.
         PARTIALS.each do |partial|
           m.template "view__#{partial}.html.haml",
-            File.join(VIEWS_PATH, self.file_name, "#{partial}.html.haml"),
+            File.join(VIEWS_PATH, self.controller_file_name, "#{partial}.html.haml"),
             :assigns => {:options => options}
         end
       end
