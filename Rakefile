@@ -3,7 +3,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 NAME = "dry_scaffold"
-SUMMARY = %Q{Generating DRY views for your RESTful application.}
+SUMMARY = %Q{A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.}
 HOMEPAGE = "http://github.com/grimen/#{NAME}/tree/master"
 AUTHOR = "Jonas Grimfelt"
 EMAIL = "grimen@gmail.com"

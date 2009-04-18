@@ -107,9 +107,9 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     
     def assign_names!(name)
       super
-      @collection_name = options[:no_resourceful] ? @plural_name : RESOURCEFUL_COLLECTION_NAME
-      @singular_name = options[:no_resourceful] ? @singular_name : RESOURCEFUL_SINGULAR_NAME
-      @plural_name = options[:no_resourceful] ? @plural_name : RESOURCEFUL_SINGULAR_NAME.pluralize
+      @collection_name = self.options[:resourceful] ? RESOURCEFUL_COLLECTION_NAME : @plural_name
+      @singular_name = self.options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME : @singular_name
+      @plural_name = self.options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME.pluralize : @plural_name
     end
     
     def add_options!(opt)
