@@ -6,7 +6,7 @@ class ResourcesController < ApplicationController
   # GET /resources
   # GET /resources.xml
   # GET /resources.json
-  def indexw
+  def index
     @resources = Resource.all
     
     respond_to do |format|
@@ -118,12 +118,12 @@ class ResourcesController < ApplicationController
       paginate_options ||= {}
       paginate_options[:page] ||= (params[:page] || 1)
       paginate_options[:per_page] ||= (params[:per_page] || 20)
-      @resources ||= end_of_association_chain.paginate(paginate_options)
+      @resources ||= Resource.paginate(paginate_options)
     end
     alias :load_and_paginate_resources :collection
     
     def resource
-      @resource ||= end_of_association_chain.find(params[:id])
+      @resource ||= Resource.find(params[:id])
     end
     alias :load_resource :resource
     

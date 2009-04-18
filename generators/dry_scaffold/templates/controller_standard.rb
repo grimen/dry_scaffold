@@ -6,8 +6,8 @@ class <%= controller_class_name %>Controller < ApplicationController
   # GET /<%= controller_file_name.pluralize %>
   # GET /<%= controller_file_name.pluralize %>.xml
   # GET /<%= controller_file_name.pluralize %>.json
-  def indexw
-    @<%= controller_file_name.pluralize %> = <%= controller_class_name %>.all
+  def index
+    @<%= controller_file_name.pluralize %> = <%= class_name %>.all
     
     respond_to do |format|
       format.html # index.html.haml
@@ -33,7 +33,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # GET /<%= controller_file_name.pluralize %>/new.xml
   # GET /<%= controller_file_name.pluralize %>/new.json
   def new
-    @<%= controller_file_name.singularize %> = <%= controller_class_name %>.new
+    @<%= controller_file_name.singularize %> = <%= class_name %>.new
     
     respond_to do |format|
       format.html # new.html.haml
@@ -51,7 +51,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # POST /<%= controller_file_name.pluralize %>.xml
   # POST /<%= controller_file_name.pluralize %>.json
   def create
-    @<%= controller_file_name.singularize %> = <%= controller_class_name %>.new(params[:<%= controller_file_name.singularize %>])
+    @<%= controller_file_name.singularize %> = <%= class_name %>.new(params[:<%= controller_file_name.singularize %>])
     
     respond_to do |format|
       if @<%= controller_file_name.singularize %>.save
@@ -118,12 +118,12 @@ class <%= controller_class_name %>Controller < ApplicationController
       paginate_options ||= {}
       paginate_options[:page] ||= (params[:page] || 1)
       paginate_options[:per_page] ||= (params[:per_page] || 20)
-      @<%= controller_file_name.pluralize %> ||= end_of_association_chain.paginate(paginate_options)
+      @<%= controller_file_name.pluralize %> ||= <%= class_name %>.paginate(paginate_options)
     end
     alias :load_and_paginate_resources :collection
     
     def resource
-      @<%= controller_file_name.singularize %> ||= end_of_association_chain.find(params[:id])
+      @<%= controller_file_name.singularize %> ||= <%= class_name %>.find(params[:id])
     end
     alias :load_resource :resource
     
