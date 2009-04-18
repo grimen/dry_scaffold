@@ -34,9 +34,9 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     super
     @controller_name = @name.pluralize
     
-    self.base_name, @controller_class_path, @controller_file_path, @controller_class_nesting, @controller_class_nesting_depth = extract_modules(@controller_name)
+    base_name, @controller_class_path, @controller_file_path, @controller_class_nesting, @controller_class_nesting_depth = extract_modules(@controller_name)
     @controller_class_name_without_nesting, @controller_underscore_name, @controller_plural_name = inflect_names(base_name)
-    @controller_singular_name = self.base_name.singularize
+    @controller_singular_name = base_name.singularize
     
     if @controller_class_nesting.empty?
       @controller_class_name = @controller_class_name_without_nesting
@@ -50,7 +50,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       # Check for class naming collisions.
       m.class_collisions "#{self.controller_class_name}Controller", "#{self.controller_class_name}ControllerTest"
       m.class_collisions "#{self.controller_class_name}Helper", "#{self.controller_class_name}HelperTest"
-      m.class_collisions self.class_path, "#{self.class_name}"
+      m.class_collisions "#{self.class_path}", "#{self.class_name}"
       
       # Directories.
       m.directory File.join(CONTROLLERS_PATH, self.controller_class_path)
