@@ -1,7 +1,7 @@
 %h1.heading
   = 'New <%= singular_name.humanize %>'
   
-<% unless options[:no_formtastic] -%>
+<% if options[:formtastic] -%>
 - semantic_form_for(@<%= singular_name %>) do |f|
   = render 'form', :f => f
   - f.buttons do

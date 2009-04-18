@@ -1,6 +1,6 @@
 class DryScaffoldGenerator < Rails::Generator::NamedBase
   
-  default_options :no_resourceful => false, :no_formtastic => false,
+  default_options :skip_resourceful => false, :skip_formtastic => false,
     :skip_tests => false, :skip_helpers => false, :skip_views => false
     
   CONTROLLERS_PATH = File.join('app', 'controllers').freeze
@@ -16,7 +16,6 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   PARTIALS = %w{form item}.freeze
   ACTIONS = %w{new edit show index}.freeze
   
-  attr_reader   :collection_name
   attr_reader   :controller_name,
                 :controller_class_path,
                 :controller_file_path,
@@ -25,15 +24,16 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
                 :controller_class_name,
                 :controller_underscore_name,
                 :controller_singular_name,
-                :controller_plural_name
+                :controller_plural_name,
+                :collection_name
                 
-  alias_method  :controller_file_name,  :controller_underscore_name
+  alias_method  :controller_file_name, :controller_underscore_name
   alias_method  :controller_table_name, :controller_plural_name
   
   def initialize(runtime_args, runtime_options = {})
     super
-    @controller_name = @name.pluralize
     
+    @controller_name = @name.pluralize
     base_name, @controller_class_path, @controller_file_path, @controller_class_nesting, @controller_class_nesting_depth = extract_modules(@controller_name)
     @controller_class_name_without_nesting, @controller_underscore_name, @controller_plural_name = inflect_names(base_name)
     @controller_singular_name = base_name.singularize
@@ -55,28 +55,28 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       # Directories.
       m.directory File.join(CONTROLLERS_PATH, self.controller_class_path)
       m.directory File.join(HELPERS_PATH, self.controller_class_path) unless options[:skip_helpers]
-      m.directory File.join(VIEWS_PATH, self.controller_class_path) unless options[:skip_views]
+      m.directory File.join(VIEWS_PATH, self.controller_class_path, self.controller_file_name.pluralize) unless options[:skip_views]
       m.directory File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path) unless options[:skip_tests]
       m.directory File.join(UNIT_TESTS_PATH, self.controller_class_path) unless options[:skip_tests]
       
       # Controllers.
-      controller_template = options[:no_resourceful] ? 'standard' : 'inherited_resources'
+      controller_template = options[:resourceful] ? 'inherited_resources' : 'standard'
       m.template "controller_#{controller_template}.rb",
         File.join(CONTROLLERS_PATH, self.controller_class_path, "#{self.controller_file_name}_controller.rb")
         
       # Controller Tests.
       unless options[:skip_tests]
-        m.template 'controller_test_standard.rb',
+        m.template "controller_test_standard.rb",
           File.join(FUNCTIONAL_TESTS_PATH, self.controller_class_path, "#{self.controller_file_name}_controller_test.rb")
       end
       
       # Helpers.
       unless options[:skip_helpers]
-        m.template 'helper_standard.rb',
+        m.template "helper_standard.rb",
           File.join(HELPERS_PATH, self.controller_class_path, "#{self.controller_file_name}_helper.rb")
         # Helper Tests
         unless options[:skip_tests]
-          m.template 'helper_test_standard.rb',
+          m.template "helper_test_standard.rb",
             File.join(UNIT_TESTS_PATH, self.controller_class_path, "#{self.controller_file_name}_helper_test.rb")
         end
       end
@@ -86,14 +86,12 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         # View template for each action.
         ACTIONS.each do |action|
           m.template "view_#{action}.html.haml",
-            File.join(VIEWS_PATH, self.controller_file_name, "#{action}.html.haml"),
-            :assigns => {:options => options}
+            File.join(VIEWS_PATH, self.controller_file_name, "#{action}.html.haml")
         end
         # View template for each partial.
         PARTIALS.each do |partial|
           m.template "view__#{partial}.html.haml",
-            File.join(VIEWS_PATH, self.controller_file_name, "#{partial}.html.haml"),
-            :assigns => {:options => options}
+            File.join(VIEWS_PATH, self.controller_file_name, "#{partial}.html.haml")
         end
       end
       
@@ -109,39 +107,40 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     
     def assign_names!(name)
       super
-      @collection_name = options[:skip_resourceful] ? @plural_name : RESOURCEFUL_COLLECTION_NAME
-      @singular_name = options[:skip_resourceful] ? @singular_name : RESOURCEFUL_SINGULAR_NAME
-      @plural_name = options[:skip_resourceful] ? @plural_name : RESOURCEFUL_SINGULAR_NAME.pluralize
+      @collection_name = options[:no_resourceful] ? @plural_name : RESOURCEFUL_COLLECTION_NAME
+      @singular_name = options[:no_resourceful] ? @singular_name : RESOURCEFUL_SINGULAR_NAME
+      @plural_name = options[:no_resourceful] ? @plural_name : RESOURCEFUL_SINGULAR_NAME.pluralize
     end
     
     def add_options!(opt)
       opt.separator ''
       opt.separator 'Options:'
       
-      opt.on('-r', '--no-resourceful',
+      opt.on('--skip-resourceful',
         "Skip 'inherited_resources' style controllers and views. Requires gem 'josevalim-inherited_resources'.") do |v|
-        options[:no_resourceful] = v
+        self.options[:resourceful] = !v
       end
       
-      opt.on('-f', '--no-formtastic',
-        "Skip 'formtastic' style forms. Requires gem 'justinfrench-formtastic'") do |v|
-        options[:no_formtastic] = v
+      opt.on('--skip-formtastic',
+        "Skip 'formtastic' style forms. Requires gem 'justinfrench-formtastic'.") do |v|
+        self.options[:formtastic] = !v
       end
       
-      opt.on('-v', '--skip-views', "Skip generation of views.") do |v|
-        options[:skip_views] = v
+      opt.on('--skip-views', "Skip generation of views.") do |v|
+        self.options[:skip_views] = v
       end
       
-      opt.on('-h', '--skip-helper', "Skip generation of helpers.") do |v|
-        options[:skip_helpers] = v
+      opt.on('--skip-helper', "Skip generation of helpers.") do |v|
+        self.options[:skip_helpers] = v
       end
       
-      opt.on('-t', '--skip-tests', "Skip generation of tests.") do |v|
-        options[:skip_tests] = v
+      opt.on('--skip-tests', "Skip generation of tests.") do |v|
+        self.options[:skip_tests] = v
       end
       
-      opt.on('-rt', '--respond-to', "Skip generation of tests.") do |v|
-        options[:respond_to] = v
+      opt.on('-r', '--respond-to', "Skip generation of tests.") do |v|
+        puts v
+        self.options[:respond_to] = v
       end
     end
     
@@ -150,8 +149,9 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     end
     
     def banner
-      "Usage: #{$0} dry_scaffold ModelName [-r/--no-resourceful] [-f/--no-formtastic]" +
-        " [-v/--skip-views] [-h/--skip-helpers] [-t/--skip-tests]"
+      "Usage: #{$0} dry_scaffold ModelName [field:type field:type ...]" +
+        " [--skip-resourceful] [--skip-formtastic]" +
+        " [--skip-views] [--skip-helpers] [--skip-tests]"
     end
     
 end
