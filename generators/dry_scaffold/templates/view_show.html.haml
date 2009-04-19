@@ -3,7 +3,7 @@
   
 - content_tag_for(:dl, @<%= singular_name %>) do
 <% attributes.each do |attribute| -%>
-  %dt.label= <%= attribute.name.humanize %>
+  %dt.label= '<%= attribute.name.humanize %>'
   %dd.<%= attribute.name -%>= h @<%= singular_name %>.try(:<%= attribute.name %>)
 <% end -%>
   

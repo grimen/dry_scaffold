@@ -8,7 +8,7 @@
   %thead.header
     %tr
 <% attributes.each do |attribute| -%>
-      %th.<%= attribute.name %>= <%= attribute.name.humanize %>
+      %th.<%= attribute.name %>= '<%= attribute.name.humanize %>'
 <% end -%>
       %th.actions= 'Actions'
   %tbody.items.<%= plural_name %>
