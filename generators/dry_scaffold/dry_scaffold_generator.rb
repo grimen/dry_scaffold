@@ -91,7 +91,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         # View template for each partial.
         PARTIALS.each do |partial|
           m.template "view__#{partial}.html.haml",
-            File.join(VIEWS_PATH, self.controller_file_name, "#{partial}.html.haml")
+            File.join(VIEWS_PATH, self.controller_file_name, "_#{partial}.html.haml")
         end
       end
       

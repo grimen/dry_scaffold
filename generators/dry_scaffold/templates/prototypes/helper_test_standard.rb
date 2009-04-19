@@ -1,4 +1,4 @@
 require 'test_helper'
  
-class ResourceHelperTest < ActionView::TestCase
+class ResourcesHelperTest < ActionView::TestCase
 end

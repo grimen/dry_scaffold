@@ -1,8 +1,8 @@
 NAME
-  dry_views_generator - short description of the generator
+  dry_scaffold - A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.
   
 DESCRIPTION
-  ...
+  See README.
   
 EXAMPLE
-  ./script/generate dry_scaffold ModelName [attribute_1:type attribute_2:type] [-r/--skip-resourceful] [-f/--skip-formtastic]
+  ./script/generate dry_scaffold ModelName [attribute:type attribute:type] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests]
