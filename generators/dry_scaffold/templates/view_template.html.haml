@@ -1,0 +1,20 @@
+!!! 1.1
+
+%html{html_attrs(I18n.locale)}
+  %head
+    %title= "#{controller_class_name}: #{controller.action_name}"
+    
+    = stylesheet_link_tag 'screen', :media => 'screen, projection' if File.exist?(stylesheet_path('screen'))
+    = stylesheet_link_tag 'print', :media => 'print' if File.exist?(stylesheet_path('print'))
+    - if File.exist?(stylesheet_path('ie'))
+      /[if IE]
+        = stylesheet_link_tag 'ie', :media => 'screen, projection'
+    = stylesheet_link_tag 'scaffold' if File.exist?(stylesheet_path('scaffold'))
+    
+    = javascript_link_tag :defaults
+    
+  %body{:id => "#{controller.controller_name}_#{controller.action_name}", :class => "#{controller.controller_name}_controller #{controller.action_name}_action"}
+    
+    %p.flash{:style => 'color: green'}= flash[:notice]
+      
+    = yield

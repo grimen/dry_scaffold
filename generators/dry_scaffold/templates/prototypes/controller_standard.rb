@@ -7,8 +7,6 @@ class ResourcesController < ApplicationController
   # GET /resources.xml
   # GET /resources.json
   def index
-    @resources = Resource.all
-    
     respond_to do |format|
       format.html # index.html.haml
       #format.js  # index.js.rjs

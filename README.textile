@@ -19,7 +19,3 @@ h2. ADVANCED USAGE
 h2. BUGS & FEEDBACK
 
 ...
-
-h2. LICENSE
-
-...
