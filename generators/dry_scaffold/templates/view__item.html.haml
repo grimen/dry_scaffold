@@ -5,6 +5,6 @@
   %td.actions
     = link_to 'Show', <%= singular_name %>
     |
-    = link_to 'Edit', edit_<%= singular_name %>_path(<%= singular_name %>)
+    = link_to 'Edit', edit_<%= singular_name %>_url(<%= singular_name %>)
     |
     = link_to 'Destroy', <%= singular_name %>, :confirm => 'Are you sure?', :method => :delete

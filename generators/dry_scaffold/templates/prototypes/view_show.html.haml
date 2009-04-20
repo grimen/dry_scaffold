@@ -8,6 +8,6 @@
   %dd.description= h @resource.try(:description)
   
 %p.actions
-  = link_to 'Edit', edit_resource_path(@resource)
+  = link_to 'Edit', edit_resource_url(@resource)
   |
-  = link_to 'Index', resources_path
+  = link_to 'Index', resources_url
