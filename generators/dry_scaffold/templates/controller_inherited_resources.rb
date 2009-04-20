@@ -9,11 +9,11 @@ class <%= controller_class_name %>Controller < InheritedResources::Base
       paginate_options ||= {}
       paginate_options[:page] ||= (params[:page] || 1)
       paginate_options[:per_page] ||= (params[:per_page] || 20)
-      @<%= self.controller_file_name.pluralize %> ||= end_of_association_chain.paginate(paginate_options)
+      @<%= plural_name %> ||= end_of_association_chain.paginate(paginate_options)
     end
     
     def resource
-      @<%= self.controller_file_name %> ||= end_of_association_chain.find(params[:id])
+      @<%= singular_name %> ||= end_of_association_chain.find(params[:id])
     end
     
 end

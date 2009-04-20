@@ -65,7 +65,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       m.directory File.join(UNIT_TESTS_PATH, controller_class_path) unless options[:skip_tests]
       
       # Controllers.
-      controller_template = options[:resourceful] ? 'inherited_resources' : 'standard'
+      logger.debug "controller-template: %s" % controller_template = options[:resourceful] ? 'inherited_resources' : 'standard'
       m.template "controller_#{controller_template}.rb",
         File.join(CONTROLLERS_PATH, controller_class_path, "#{controller_file_name}_controller.rb")
         

@@ -1,7 +1,13 @@
 namespace :dry_scaffold do
+  
+  desc "Setup for this plugin/gem."
+  task :setup do
+    Rake.invoke['dry_scaffold:dependencies:install']
+  end
+  
   namespace :dependencies do
     
-    GEMS = [:'josevalim-inherited_resources', :'justinfrench-formtastic', :will_paginate].freeze
+    GEMS = [:haml, :'josevalim-inherited_resources', :'justinfrench-formtastic', :will_paginate].freeze
     PLUGINS = [].freeze
     
     desc "Install dependencies for fully advantage of this generator."
@@ -14,6 +20,7 @@ namespace :dry_scaffold do
       PLUGINS.each do |plugin|
         `./script/plugin install #{plugin}`
       end
+      `haml --rails .`
     end
     
   end
