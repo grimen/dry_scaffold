@@ -1,6 +1,6 @@
 class ResourcesController < InheritedResources::Base
   
-  actions :index, :show, :new, :create, :edit, :update
+  actions :index, :show, :new, :create, :edit, :update, :destroy
   respond_to :html, :xml, :json
   
   protected
