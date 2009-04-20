@@ -1,7 +1,7 @@
 class DryScaffoldGenerator < Rails::Generator::NamedBase
   
-  default_options :resourceful => false, 
-                  :formtastic => false,
+  default_options :resourceful => true,
+                  :formtastic => true,
                   :skip_tests => false,
                   :skip_helpers => false,
                   :skip_views => false,
