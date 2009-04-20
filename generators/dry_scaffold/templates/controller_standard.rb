@@ -7,8 +7,6 @@ class <%= controller_class_name %>Controller < ApplicationController
   # GET /<%= plural_name %>.xml
   # GET /<%= plural_name %>.json
   def index
-    @<%= plural_name %> = <%= class_name %>.all
-    
     respond_to do |format|
       format.html # index.html.haml
       #format.js  # index.js.rjs
