@@ -12,6 +12,6 @@
       %th.actions= 'Actions'
   %tbody.items.resources
     - @collection.each do |resource|
-      = render 'item', :object => resource
+      = render 'item', :resource => resource
       
 = will_paginate(@collection)

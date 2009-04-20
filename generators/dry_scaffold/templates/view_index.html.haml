@@ -13,6 +13,6 @@
       %th.actions= 'Actions'
   %tbody.items.<%= plural_name %>
     - @<%= collection_name -%>.each do |<%= singular_name %>|
-      = render 'item', :object => <%= singular_name %>
+      = render 'item', :<%= singular_name %> => <%= singular_name %>
       
 = will_paginate(@<%= collection_name %>)
