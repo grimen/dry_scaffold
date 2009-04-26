@@ -5,4 +5,4 @@ DESCRIPTION
   See README.
   
 EXAMPLE
-  ./script/generate dry_scaffold ModelName [attribute:type attribute:type] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests]
+  ./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests]

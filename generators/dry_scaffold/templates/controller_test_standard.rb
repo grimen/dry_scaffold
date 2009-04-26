@@ -2,6 +2,7 @@ require 'test_helper'
 
 class <%= controller_class_name %>ControllerTest < ActionController::TestCase
   
+<% if actions.include?(:create) -%>
   test "create" do
     <%= class_name %>.any_instance.expects(:save).returns(true)
     post :create, :<%= file_name %> => { }
@@ -14,6 +15,8 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
     assert_template 'new'
   end
   
+<% end -%>
+<% if actions.include?(:destroy) -%>
   test "destroy" do
     <%= class_name %>.any_instance.expects(:destroy).returns(true)
     delete :destroy, :id => <%= table_name %>(:one).to_param
@@ -28,27 +31,37 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
     assert_response :redirect
   end
   
+<% end -%>
+<% if actions.include?(:edit) -%>
   test "edit" do
     get :edit, :id => <%= table_name %>(:one).to_param
     assert_response :success
   end
   
+<% end -%>
+<% if actions.include?(:index) -%>
   test "index" do
     get :index
     assert_response :success
     assert_not_nil assigns(:<%= table_name %>)
   end
   
+<% end -%>
+<% if actions.include?(:new) -%>
   test "new" do
     get :new
     assert_response :success
   end
   
+<% end -%>
+<% if actions.include?(:show) -%>
   test "show" do
     get :show, :id => <%= table_name %>(:one).to_param
     assert_response :success
   end
   
+<% end -%>
+<% if actions.include?(:update) -%>
   test "update" do
     <%= class_name %>.any_instance.expects(:save).returns(true)
     put :update, :id => <%= table_name %>(:one).to_param, :<%= file_name %> => { }
@@ -61,4 +74,5 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
     assert_template 'edit'
   end
   
+<% end -%>
 end

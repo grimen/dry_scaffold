@@ -4,11 +4,36 @@ h2. SYNOPSIS
 
 ...
 
-h2. INSTALLATION
+h2. FEATURES
 
 ...
 
+h2. INSTALLATION
+
+gem sources -a http://gems.github.com
+sudo gem install grimen-dry_scaffold
+
 h2. BASIC USAGE
+
+./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests]
+
+h3. Model Name
+
+...
+
+h3. Model Attributes
+
+...
+
+h3. Controller Actions
+
+...
+
+h3. Controller Formats
+
+...
+
+h3. Options
 
 ...
 

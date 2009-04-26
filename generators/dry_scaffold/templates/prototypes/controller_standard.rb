@@ -1,6 +1,6 @@
 class ResourcesController < ApplicationController
   
-  before_filter :load_resource, :except => [:index, :new, :create]
+  before_filter :load_resource, :only => [:show, :edit, :update, :destroy]
   before_filter :load_and_paginate_resources, :only => [:index]
   
   # GET /resources
@@ -15,9 +15,9 @@ class ResourcesController < ApplicationController
     end
   end
   
-  # GET /resources/1
-  # GET /resources/1.xml
-  # GET /resources/1.json
+  # GET /resources/:id
+  # GET /resources/:id.xml
+  # GET /resources/:id.json
   def show
     respond_to do |format|
       format.html # show.html.haml
@@ -41,7 +41,7 @@ class ResourcesController < ApplicationController
     end
   end
   
-  # GET /resources/1/edit
+  # GET /resources/:id/edit
   def edit
   end
   
@@ -68,9 +68,9 @@ class ResourcesController < ApplicationController
     end
   end
   
-  # PUT /resources/1
-  # PUT /resources/1.xml
-  # PUT /resources/1.json
+  # PUT /resources/:id
+  # PUT /resources/:id.xml
+  # PUT /resources/:id.json
   def update
     respond_to do |format|
       if @resource.update_attributes(params[:resource])
@@ -89,9 +89,9 @@ class ResourcesController < ApplicationController
     end
   end
   
-  # DELETE /resources/1
-  # DELETE /resources/1.xml
-  # DELETE /resources/1.json
+  # DELETE /resources/:id
+  # DELETE /resources/:id.xml
+  # DELETE /resources/:id.json
   def destroy
     respond_to do |format|
       if @resource.destroy
@@ -110,18 +110,22 @@ class ResourcesController < ApplicationController
     end
   end
   
+  # GET /resources/custom_action
+  def custom_action
+  end
+  
   protected
     
     def collection
       paginate_options ||= {}
       paginate_options[:page] ||= (params[:page] || 1)
       paginate_options[:per_page] ||= (params[:per_page] || 20)
-      @resources ||= Resource.paginate(paginate_options)
+      @collection = @resources ||= Resource.paginate(paginate_options)
     end
     alias :load_and_paginate_resources :collection
     
     def resource
-      @resource ||= Resource.find(params[:id])
+      @resource = @resource = ||= Resource.find(params[:id])
     end
     alias :load_resource :resource
     

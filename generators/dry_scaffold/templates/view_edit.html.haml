@@ -2,17 +2,17 @@
   = "Editing <%= singular_name %> %s" % @<%= singular_name %>.id
   
 <% if options[:formtastic] -%>
-- semantic_form_for(@<%= singular_name %>) do |f|
-  = render 'form', :f => f
-  - f.buttons do
-    = f.commit_button 'Update'
+- semantic_form_for(@<%= singular_name %>) do |form|
+  = render form
+  - form.buttons do
+    = form.commit_button 'Update'
 <% else -%>
-- form_for(@<%= singular_name %>) do |f|
-  = f.error_messages
-  = render 'form', :f => f
+- form_for(@<%= singular_name %>) do |form|
+  = form.error_messages
+  = render form
   %p.buttons
-    = f.submit 'Update'
+    = form.submit 'Update'
 <% end -%>
-
+    
 %p.actions
-  = link_to 'Cancel', <%= plural_name %>_url
+  = link_to 'Cancel', <%= collection_name %>_url

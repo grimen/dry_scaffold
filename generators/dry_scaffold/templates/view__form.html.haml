@@ -1,13 +1,13 @@
 <% if options[:formtastic] -%>
-- f.inputs do
+- form.inputs do
 <% attributes.each do |attribute| -%>
-  = f.input :<%= attribute.name %>, :label => '<%= attribute.name.humanize %>'
+  = form.input :<%= attribute.name %>, :label => '<%= attribute.name.humanize %>'
 <% end -%>
 <% else -%>
 %fieldset
   %dl
 <% attributes.each do |attribute| -%>
-    %dt.label= f.label :<%= attribute.name %>, '<%= attribute.name.humanize %>'
-    %dd.<%= attribute.name %>= f.<%= attribute.field_type %> :<%= attribute.name %>
+    %dt.label= form.label :<%= attribute.name %>, '<%= attribute.name.humanize %>'
+    %dd.<%= attribute.name %>= form.<%= attribute.field_type %> :<%= attribute.name %>
 <% end -%>
 <% end -%>

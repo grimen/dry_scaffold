@@ -19,7 +19,7 @@ begin
     gem.email = EMAIL
     
     gem.require_paths = %w{lib}
-    gem.files = %w(MIT-LICENSE README.textile Rakefile) + Dir.glob(File.join('{generators,tasks}', '**', '*'))
+    gem.files = %w(MIT-LICENSE README.textile Rakefile init.rb) + Dir.glob(File.join('{generators,rails,tasks}', '**', '*'))
     gem.executables = %w()
     gem.extra_rdoc_files = %w{README.textile}
   end

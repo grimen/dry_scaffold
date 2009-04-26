@@ -1,0 +1,10 @@
+h1. TODO
+
+h2. Most probably
+
+* Something like "model_generator_with_factories" (using machinist, factory_girl, ...). Source: http://github.com/vigetlabs/model_generator_with_factories/tree/master
+* Break up in different generators: dry_controller, dry_views, etc., and use as dependencies in dry_scaffold
+
+h2. Maybe
+
+* Check for overridden templates in: RAILS_ROOT/lib/dry_scaffold/templates/
