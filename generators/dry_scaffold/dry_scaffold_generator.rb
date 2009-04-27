@@ -12,6 +12,12 @@ begin
 rescue
   INHERITED_RESOURCES = false
 end
+begin
+  require 'will_paginate'
+  WILL_PAGINATE = true
+rescue
+  WILL_PAGINATE = false
+end
 
 class DryScaffoldGenerator < Rails::Generator::NamedBase
   
@@ -49,6 +55,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   
   default_options :resourceful => INHERITED_RESOURCES,
                   :formtastic => FORMTASTIC,
+                  :pagination => WILL_PAGINATE,
                   :skip_tests => false,
                   :skip_helpers => false,
                   :skip_views => false,
@@ -91,11 +98,11 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     
     # Non-attribute args, i.e. "_actions:new,create". Add to options instead
     @args.each do |arg|
-      arg_entities = arg.split(':')
-      if arg =~ /^_actions/
-        @actions = arg_entities[1].split(',').compact.collect { |action| action.dowcase.to_sym }
-      elsif arg =~ /^_formats/ || arg =~ /^_respond_to/
-        @formats = arg_entities[1].split(',').compact.collect { |format| format.dowcases.to_sym }
+      arg_entities = arg.split(ARG_KEY_VALUE_DIVIDER)
+      if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}actions/
+        @actions = arg_entities[1].split(NON_ATTR_ARG_VALUE_DIVIDER).compact.collect { |action| action.dowcase.to_sym }
+      elsif arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}(formats|respond_to)/
+        @formats = arg_entities[1].split(NON_ATTR_ARG_VALUE_DIVIDER).compact.collect { |format| format.dowcases.to_sym }
       else
         @attributes << Rails::Generator::GeneratedAttribute.new(*arg_entities)
       end
@@ -185,13 +192,18 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       opt.separator ''
       opt.separator 'Options:'
       
+      opt.on('--skip-pagination',
+        "Skip 'will_paginate' for collections in controllers and views, wich requires gem 'mislav-will_paginate'.") do |v|
+        options[:pagination] = !v
+      end
+      
       opt.on('--skip-resourceful',
-        "Skip 'inherited_resources' style controllers and views. Requires gem 'josevalim-inherited_resources'.") do |v|
+        "Skip 'inherited_resources' style controllers and views, wich requires gem 'josevalim-inherited_resources'.") do |v|
         options[:resourceful] = !v
       end
       
       opt.on('--skip-formtastic',
-        "Skip 'formtastic' style forms. Requires gem 'justinfrench-formtastic'.") do |v|
+        "Skip 'formtastic' style forms, wich requires gem 'justinfrench-formtastic'.") do |v|
         options[:formtastic] = !v
       end
       
@@ -220,6 +232,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       "Usage: #{$0} dry_scaffold ModelName [field:type field:type ...]" +
         " [_actions:new,create,...]" +
         " [_formats:html,json,...]" +
+        " [--skip-pagination]" +
         " [--skip-resourceful]" +
         " [--skip-formtastic]" +
         " [--skip-views]" + 

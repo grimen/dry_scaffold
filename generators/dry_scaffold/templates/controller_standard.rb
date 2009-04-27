@@ -223,10 +223,14 @@ class <%= controller_class_name %>Controller < ApplicationController
   protected
     
     def collection
+<% if options[:pagination] -%>
       paginate_options ||= {}
       paginate_options[:page] ||= (params[:page] || 1)
       paginate_options[:per_page] ||= (params[:per_page] || 20)
       @collection = @<%= plural_name %> ||= <%= class_name %>.paginate(paginate_options)
+<% else -%>
+      @collection = @<%= plural_name %> ||= <%= class_name %>.all
+<% end -%>
     end
     alias :load_and_paginate_resources :collection
     

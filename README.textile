@@ -4,19 +4,26 @@ A Rails scaffold generator that generates DRYer, cleaner, and more useful code.
 
 h2. Description
 
-...
+DryScaffold is a replacement for the Rails scaffold generator that generates code that most people end up deleting or rewriting anyway becuase of the unusable code. The scaffold concept is powerful, but it has more potential than generating messy and almost useless code. The goal with DryScaffold is to generate DRY, beautiful, and standards compliant code based on common patterns without adding a lot of magic.
+
+Key concepts:
+
+* Controllers that are DRY, RESTful, no code-smells, following conventions, and implementing VERY common patterns
+* Views that are DRY, semantic, standards compliant, valid, and more useful in development
+* Generator that gets smart with additional arguments - but not stupid without them
+* Any Rails developer should be able to switch generator with no effort - follow current conventions, but extend them
 
 h2. Dependencies
 
 h3. Required:
 
-* haml: http://github.com/nex3/haml
-* will_paginate: http://github.com/mislav/will_paginate
+* *haml*: http://github.com/nex3/haml - ERB sucks like PHP, end of story
 
 h3. Optional:
 
-* formtastic: http://github.com/justinfrench/formtastic
-* inherited_resources: http://github.com/josevalim/inherited_resources
+* *will_paginate*: http://github.com/mislav/will_paginate - Pagination
+* *formtastic*: http://github.com/justinfrench/formtastic - DRY and semantic forms
+* *inherited_resources*: http://github.com/josevalim/inherited_resources - DRY/Resourceful controllers
 
 h2. Features
 
@@ -62,7 +69,7 @@ Find out more about Formtastic: http://github.com/justinfrench/formtastic
 
 h3. Resourceful Controllers
 
-h4. Default (ActionController, without InheritedResources)
+h4. Default (without InheritedResources)
 
 <pre>def new
   @duck = Duck.new
@@ -83,9 +90,7 @@ Find out more about InheritedResources: http://github.com/josevalim/inherited_re
 
 h3. Pagination
 
-...
-
-Find out more about WillPaginate: http://github.com/mislav/will_paginate
+Pagination is such a common feature that always seems to be implemented anyway, so dry_scaffold will generate a DRY solution for this in each controller that you can tweak - even thought that will not be needed in most cases. See DRY Patterns beneath for more details how it's done.
 
 h3. DRY Patterns
 
@@ -125,6 +130,20 @@ h4. Resourceful (InheritedResources)
   def resource
     @resource = @resource ||= end_of_association_chain.find(params[:id])
   end</pre>
+
+h3. View Partials
+
+A very common pattern is to break up views in partials, wich is also what DryScaffold does:
+
+* new/edit => _form
+* index => _item
+
+h3. More to come... (TODO)
+
+* Generation of factory stubs instead of fixture stubs that Rails model generator generates
+* Generation of Rails builder stubs (RSS/Atom/...)
+* Break up into multiple generators as dependencies (like Rails generators): dry_controller, dry_views, dry_scaffold, ...
+* 
 
 h2. Setup
 
@@ -191,7 +210,9 @@ h3. Controller Actions
 
 Usage: _actions:new,create,recent,index,...
 
-You can override what actions that should be generated directly in the generator arguments - including custom actions.
+You can override what actions that should be generated directly - including custom actions.
+
+NOTE: Sorry for the a bit ugly prefix (_), but I had to trick the Rails generator a bit to get this working for now. This is definitely something I want to fix sooner or later, but I skipped that for now with this small hack.
 
 h4. Default actions (REST)
 
@@ -214,6 +235,10 @@ The above REST actions are in many RESTful applications the only ones needed. An
 h3. Controller Formats
 
 Usage: _formats:html,xml,txt,...
+
+You can override what respond_to-formats that should be generated directly - only for REST-actions right now because I tried to avoid bad assumptions.
+
+NOTE: Sorry for the a bit ugly prefix (_), but I had to trick the Rails generator a bit to get this working for now. This is definitely something I want to fix sooner or later, but I skipped that for now with this small hack.
 
 h4. Default formats
 
@@ -241,12 +266,13 @@ h3. Options
 
 Example: --skip-resourceful --include-layout
 
+* *skip-pagination*   - Don't generate pagination of collections in controller and views, i.e. don't use *will_paginate*.
 * *skip-resourceful*  - Don't generate resourceful controller, i.e. don't use *inherited_resources*.
 * *skip-formtastic*   - Don't generate formtastic forms in views, i.e. don't use *formtastic*.
 * *skip-views*        - Don't generate views.
 * *skip-helpers*      - Don't generate helpers.
 * *skip-tests*        - Don't generate tests (functional/unit/...).
-* *include-layout*    - Generate application layout.
+* *include-layout*    - Generate a neat application layout.
 
 As dry_scaffold is built upon Rails generator, the default generator options is available as well. For more details; see Rails documentation.
 

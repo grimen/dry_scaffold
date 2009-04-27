@@ -15,4 +15,6 @@
     - @<%= collection_name -%>.each do |<%= singular_name %>|
       = render 'item', :<%= singular_name %> => <%= singular_name %>
       
+<% if options[:pagination] -%>
 = will_paginate(@<%= collection_name %>)
+<% end -%>

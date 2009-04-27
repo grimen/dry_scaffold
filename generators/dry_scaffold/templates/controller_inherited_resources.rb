@@ -16,10 +16,14 @@ class <%= controller_class_name %>Controller < InheritedResources::Base
   protected
     
     def collection
+<% if options[:pagination] -%>
       paginate_options ||= {}
       paginate_options[:page] ||= (params[:page] || 1)
       paginate_options[:per_page] ||= (params[:per_page] || 20)
       @collection = @<%= plural_name %> ||= end_of_association_chain.paginate(paginate_options)
+<% else -%>
+      @collection = @<%= plural_name %> ||= end_of_association_chain.all
+<% end -%>
     end
     
     def resource
