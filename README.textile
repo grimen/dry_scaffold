@@ -192,23 +192,23 @@ h4. will_paginate
 
 h2. Usage
 
-./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests]
+<pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests]</pre>
 
 h3. Model Name
 
-Example: Hello
+Example: <pre>Hello</pre>
 
 Same as in the default scaffold/model generator; the name of a new/existing model.
 
 h3. Model Attributes
 
-Example: title:string description:text ...
+Example: <pre>title:string description:text ...</pre>
 
 Same as in the default scaffold/model generator; model attributes and database migration column types.
 
 h3. Controller Actions
 
-Usage: _actions:new,create,recent,index,...
+Usage: <pre>_actions:new,create,recent,index,...</pre>
 
 You can override what actions that should be generated directly - including custom actions.
 
@@ -234,7 +234,7 @@ The above REST actions are in many RESTful applications the only ones needed. An
 
 h3. Controller Formats
 
-Usage: _formats:html,xml,txt,...
+Usage: <pre>_formats:html,xml,txt,...</pre>
 
 You can override what respond_to-formats that should be generated directly - only for REST-actions right now because I tried to avoid bad assumptions.
 
@@ -264,7 +264,7 @@ The above formats are the most commonly used ones, and respond blocks are alread
 
 h3. Options
 
-Example: --skip-resourceful --include-layout
+Example: <pre>--skip-resourceful --include-layout</pre>
 
 * *skip-pagination*   - Don't generate pagination of collections in controller and views, i.e. don't use *will_paginate*.
 * *skip-resourceful*  - Don't generate resourceful controller, i.e. don't use *inherited_resources*.
@@ -282,10 +282,10 @@ No need for more samples here, just create a new Rails project, install dry_scaf
 
 For your inspiration, you could try the following:
 
-./script/generate dry_scaffold Zebra name:string about:text --skip-resourceful
+<pre>./script/generate dry_scaffold Zebra name:string about:text --skip-resourceful
 ./script/generate dry_scaffold Kangaroo name:string about:text --skip-formtastic
 ./script/generate dry_scaffold Duck name:string about:text _actions:new,create,index,quack
-./script/generate dry_scaffold Parrot name:string about:text _formats:html,xml,yml
+./script/generate dry_scaffold Parrot name:string about:text _formats:html,xml,yml</pre>
 
 ...or just go crazy!
 
