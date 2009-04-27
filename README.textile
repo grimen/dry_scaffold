@@ -6,7 +6,7 @@ h2. Description
 
 DryScaffold is a replacement for the Rails scaffold generator that generates code that most people end up deleting or rewriting anyway becuase of the unusable code. The scaffold concept is powerful, but it has more potential than generating messy and almost useless code. The goal with DryScaffold is to generate DRY, beautiful, and standards compliant code based on common patterns without adding a lot of magic.
 
-h3. Key concepts:
+h4. Key concepts:
 
 * Controllers that are DRY, RESTful, no code-smells, following conventions, and implementing VERY common patterns
 * Views that are DRY, semantic, standards compliant, valid, and more useful in development
@@ -40,7 +40,7 @@ h3. Overview
 
 h3. Formtastic Forms
 
-Quick and dirty; Formtastic makes your form views cleaner, and your life as a Rails developer easier (hands down). Formtastic forms can be turned off, but I would recommend any Rails developer to consider using it - there is really no good reason not to if you not running very old version of Rails.
+Quick and dirty; Formtastic makes your form views cleaner, and your life as a Rails developer easier (for real). Formtastic forms can be turned off, but I would recommend any Rails developer to consider using it - there is really no good reason not to if you not running very old version of Rails.
 
 h4. Default HAML (without Formtastic):
 
@@ -65,9 +65,11 @@ h4. Formtastic + HAML:
   - f.buttons do
     = f.commit_button 'Create'</pre>
 
-Find out more about "formtastic": "http://github.com/justinfrench/formtastic":http://github.com/justinfrench/formtastic
+Find out more about *formtastic*: "http://github.com/justinfrench/formtastic":http://github.com/justinfrench/formtastic
 
 h3. Resourceful Controllers
+
+Quick and dirty; InheritedResources makes your controllers controllers cleaner - almost non existing, and might make experienced Rails developer's life DRYer codewise. This is possible because of REST as a convention in Rails and therefore the patterns that arise in controllers can be DRYed up A LOT. Resoureful - InheritedResources based - controllers can be turned off, but I would recommend any experienced Rails developer to consider using it - there is really no good reason not to unless you are a beginner of Rails, then you should consider get used to the Rails building blocks first.
 
 h4. Default (without InheritedResources)
 
@@ -86,13 +88,13 @@ h4. Resourceful (InheritedResources)
 <pre>actions :new
 respond_to :html, :xml, :json</pre>
 
-Find out more about "inherited_resources": "http://github.com/josevalim/inherited_resources":http://github.com/josevalim/inherited_resources
+Find out more about *inherited_resources*: "http://github.com/josevalim/inherited_resources":http://github.com/josevalim/inherited_resources
 
 h3. Pagination
 
 Pagination is such a common feature that always seems to be implemented anyway, so dry_scaffold will generate a DRY solution for this in each controller that you can tweak - even thought that will not be needed in most cases. See DRY Patterns beneath for more details how it's done.
 
-Find out more about "will_paginate": "http://github.com/mislav/will_paginate":http://github.com/mislav/will_paginate
+Find out more about *will_paginate*: "http://github.com/mislav/will_paginate":http://github.com/mislav/will_paginate
 
 h3. DRY Patterns
 
@@ -142,16 +144,19 @@ A very common pattern is to break up views in partials, wich is also what DrySca
 
 h3. More to come... (TODO)
 
+These are things I have in mind:
+
 * Generation of factory stubs instead of fixture stubs that Rails model generator generates
 * Generation of Rails builder stubs (RSS/Atom/...)
 * Break up into multiple generators as dependencies (like Rails generators): dry_controller, dry_views, dry_scaffold, ...
-* 
 
 h2. Setup
 
 Installing dry_scaffold is easy as 1-2-3...
 
 h3. 1. Installation
+
+Install DryScaffold...
 
 h4. Gem (Recommended)
 
