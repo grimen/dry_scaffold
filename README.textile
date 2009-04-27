@@ -1,46 +1,272 @@
 h1. DRY SCAFFOLD
 
-h2. SYNOPSIS
+A Rails scaffold generator that generates DRYer, cleaner, and more useful code.
+
+h2. Description
 
 ...
 
-h2. FEATURES
+h2. Dependencies
+
+h3. Required:
+
+* haml: http://github.com/nex3/haml
+* will_paginate: http://github.com/mislav/will_paginate
+
+h3. Optional:
+
+* formtastic: http://github.com/justinfrench/formtastic
+* inherited_resources: http://github.com/josevalim/inherited_resources
+
+h2. Features
+
+h3. Overview
+
+* Generates DRY controllers + functional tests
+* Generates DRY, semantic, and standard compliant views in HAML - not just HAMLized templates
+* Generates formtastic - very DRY - forms (using "formtastic" by Justin French et. al.) by default. (Can be turned off)
+* Generates resourceful - even DRYer - controllers (using the "inherited_resources" by José Valim) by default. (Can be turned off)
+* Collection pagination using will_paginate by default
+* Optinally specify what actions/views to generate (stubs for specified REST-actions will be generated)
+* Optinally specify what respond_to-formats to generate (stubs for the most common respond_to-formats will be generated)
+* Generates default helpers/models/migrations, and REST-routes
+
+h3. Formtastic Forms
+
+Quick and dirty; Formtastic makes your form views cleaner, and your life as a Rails developer easier (hands down). Formtastic forms can be turned off, but I would recommend any Rails developer to consider using it - there is really no good reason not to if you not running very old version of Rails.
+
+h4. Default HAML (without Formtastic):
+
+<pre>- form_for(@<%= singular_name %>) do |f|
+  = f.error_messages
+  %ul
+    %li
+      = f.label :title, 'Title'
+      = f.text_field :title
+    %li
+      = f.label :description, 'Description'
+      = f.text_field :description
+  %p.buttons
+    = f.submit 'Create'</pre>
+
+h4. Formtastic + HAML:
+
+<pre>- semantic_form_for(@resource) do |f|
+  - f.inputs do
+    = f.input :title
+    = f.input :description
+  - f.buttons do
+    = f.commit_button 'Create'</pre>
+
+Find out more about Formtastic: http://github.com/justinfrench/formtastic
+
+h3. Resourceful Controllers
+
+h4. Default (ActionController, without InheritedResources)
+
+<pre>def new
+  @duck = Duck.new
+  
+  respond_to do |format|
+    format.html # new.html.haml
+    format.xml  { render :xml => @duck }
+    format.json { render :json => @duck }
+  end
+end</pre>
+
+h4. Resourceful (InheritedResources)
+
+<pre>actions :new
+respond_to :html, :xml, :json</pre>
+
+Find out more about InheritedResources: http://github.com/josevalim/inherited_resources
+
+h3. Pagination
 
 ...
 
-h2. INSTALLATION
+Find out more about WillPaginate: http://github.com/mislav/will_paginate
 
-gem sources -a http://gems.github.com
-sudo gem install grimen-dry_scaffold
+h3. DRY Patterns
 
-h2. BASIC USAGE
+Either if you choosing default or resourceful controllers, this pattern is used to DRYing up controllers a bit more, and at the same time loading resources in the same place using before_filter while adding automatic pagination for collections.
+
+h4. Default (ActionController, without InheritedResources)
+
+<pre>before_filter :load_resource, :only => [:show, :edit, :update, :destroy]
+before_filter :load_and_paginate_resources, :only => [:index]
+
+protected
+  
+  def collection
+    paginate_options ||= {}
+    paginate_options[:page] ||= (params[:page] || 1)
+    paginate_options[:per_page] ||= (params[:per_page] || 20)
+    @collection = @resources ||= Duck.paginate(paginate_options)
+  end
+  alias :load_and_paginate_resources :collection
+  
+  def resource
+    @resource = @resource = ||= Duck.find(params[:id])
+  end
+  alias :load_resource :resource</pre>
+
+h4. Resourceful (InheritedResources)
+
+<pre>protected
+  
+  def collection
+    paginate_options ||= {}
+    paginate_options[:page] ||= (params[:page] || 1)
+    paginate_options[:per_page] ||= (params[:per_page] || 20)
+    @collection = @resources ||= end_of_association_chain.paginate(paginate_options)
+  end
+  
+  def resource
+    @resource = @resource ||= end_of_association_chain.find(params[:id])
+  end</pre>
+
+h2. Setup
+
+Installing dry_scaffold is easy as 1-2-3...
+
+h3. 1. Installation
+
+h4. Gem (Recommended)
+
+<pre>gem sources -a http://gems.github.com
+sudo gem install grimen-dry_scaffold</pre>
+
+h4. Plugin
+
+<pre>./script/plugin install git://github.com/grimen/dry_scaffold.git</pre>
+
+h3. 2. Configuration (Gem only)
+
+In _environment.rb_, or _development.rb_:
+
+<pre>config.gem 'grimen-dry_scaffold', :lib => 'dry_scaffold'</pre>
+
+h3. 3. Install dependencies (Optional)
+
+Install dependencies to release the full power of dry_scaffold. NOTE: You need to add the gems you choose to use to _environment.rb_.
+
+<pre>rake dry_scaffold:dependencies:install</pre>
+
+...or install the gems manually:
+
+h4. haml
+
+<pre>sudo gem install nex3-haml</pre>
+
+h4. formtastic
+
+<pre>sudo gem install justinfrench-formtastic</pre>
+
+h4. inherited_resources
+
+<pre>sudo gem install josevalim-inherited_resources</pre>
+
+h4. will_paginate
+
+<pre>sudo gem install mislav-will_paginate</pre>
+
+h2. Usage
 
 ./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests]
 
 h3. Model Name
 
-...
+Example: Hello
+
+Same as in the default scaffold/model generator; the name of a new/existing model.
 
 h3. Model Attributes
 
-...
+Example: title:string description:text ...
+
+Same as in the default scaffold/model generator; model attributes and database migration column types.
 
 h3. Controller Actions
 
-...
+Usage: _actions:new,create,recent,index,...
+
+You can override what actions that should be generated directly in the generator arguments - including custom actions.
+
+h4. Default actions (REST)
+
+If no actions are specified, the following REST-actions will be generated by default:
+
+* *show*
+* *index*
+* *new*
+* *edit*
+* *create*
+* *update*
+* *destroy*
+
+Default controller action stubs, controller action test stubs, and corresponding views (and required partials), are generated for all of these actions.
+
+h4. Custom actions
+
+The above REST actions are in many RESTful applications the only ones needed. Any other specified actions will generate empty action function stubs for manual implementation. No views will be generated for custom actions.
 
 h3. Controller Formats
 
-...
+Usage: _formats:html,xml,txt,...
+
+h4. Default formats
+
+If no formats are specified, the following formats will be generated by default:
+
+* *html*  => Render: resource using view template (HTML/HAML)
+* *js*    => Render: resource using view template (JS/RJS)
+* *xml*   => Render: resource.to_xml
+* *json*  => Render: resource.to_json
+
+Default respond block stubs are generated for all of these formats - for each generated REST-action.
+
+h4. Additional formats
+
+Default respond block stubs are generated for any of these formats - for each generated REST-action - if they are specified:
+
+* *yaml* or *yml*   => Render: resource.to_yaml
+* *txt* or *text*   => Render: resource.to_s
+
+h4. Custom formats
+
+The above formats are the most commonly used ones, and respond blocks are already implemented using Rails default dependencies. Any other specified formats (such as PDF, CSV, etc.) will generate empty respond block stubs for manual implementation with help of additional dependencies.
 
 h3. Options
 
-...
+Example: --skip-resourceful --include-layout
 
-h2. ADVANCED USAGE
+* *skip-resourceful*  - Don't generate resourceful controller, i.e. don't use *inherited_resources*.
+* *skip-formtastic*   - Don't generate formtastic forms in views, i.e. don't use *formtastic*.
+* *skip-views*        - Don't generate views.
+* *skip-helpers*      - Don't generate helpers.
+* *skip-tests*        - Don't generate tests (functional/unit/...).
+* *include-layout*    - Generate application layout.
 
-...
+As dry_scaffold is built upon Rails generator, the default generator options is available as well. For more details; see Rails documentation.
 
-h2. BUGS & FEEDBACK
+h4. Examples
 
-...
+No need for more samples here, just create a new Rails project, install dry_scaffold and it's dependencies, and try it out!
+
+For your inspiration, you could try the following:
+
+./script/generate dry_scaffold Zebra name:string about:text --skip-resourceful
+./script/generate dry_scaffold Kangaroo name:string about:text --skip-formtastic
+./script/generate dry_scaffold Duck name:string about:text _actions:new,create,index,quack
+./script/generate dry_scaffold Parrot name:string about:text _formats:html,xml,yml
+
+...or just go crazy!
+
+h2. Bugs & Feedback
+
+If you experience any issues/bugs or have feature requests, just file a GitHub-issue or send me a message.
+If you think parts of my implementation could be implemented nicer somehow, please let me know...or just fork it and fix it yourself! =)
+All positive feedback is always appreciated!
+
+Copyright (c) 2009 Jonas Grimfelt

@@ -20,9 +20,9 @@ class <%= controller_class_name %>Controller < ApplicationController
       format.js   # index.js.rjs
 <% when :xml, :json then -%>
       format.<%= _format %>  { render :<%= _format %> => @<%= plural_name %> }
-<% when :yaml then -%>
+<% when :yml, :yaml then -%>
       format.yaml { render :text => @<%= plural_name %>.to_yaml, :content_type => :'text/yaml' }
-<% when :yaml then -%>
+<% when :txt, :text then -%>
       format.txt  { render :text => @<%= plural_name %>.to_s, :content_type => :text }
 <% else -%>
       format.<%= _format %>  { }
@@ -45,9 +45,9 @@ class <%= controller_class_name %>Controller < ApplicationController
       format.js   # show.js.rjs
 <% when :xml, :json then -%>
       format.<%= _format %>  { render :<%= _format %> => @<%= plural_name %> }
-<% when :yaml then -%>
+<% when :yml, :yaml then -%>
       format.yaml { render :text => @<%= plural_name %>.to_yaml, :content_type => :'text/yaml' }
-<% when :yaml then -%>
+<% when :txt, :text then -%>
       format.txt  { render :text => @<%= plural_name %>.to_s, :content_type => :text }
 <% else -%>
       format.<%= _format %>  { }
@@ -72,9 +72,9 @@ class <%= controller_class_name %>Controller < ApplicationController
       format.js   # new.js.rjs
 <% when :xml, :json then -%>
       format.<%= _format %>  { render :<%= _format %> => @<%= singular_name %> }
-<% when :yaml then -%>
+<% when :yml, :yaml then -%>
       format.yaml { render :text => @<%= singular_name %>.to_yaml, :content_type => :'text/yaml' }
-<% when :yaml then -%>
+<% when :txt, :text then -%>
       format.txt  { render :text => @<%= singular_name %>.to_s, :content_type => :text }
 <% else -%>
       format.<%= _format %>  { }
@@ -107,9 +107,9 @@ class <%= controller_class_name %>Controller < ApplicationController
         format.js   # create.js.rjs
 <% when :xml, :json then -%>
         format.<%= _format %>  { render :<%= _format %> => @<%= singular_name %>, :status => :created, :location => @<%= singular_name %> }
-<% when :yaml then -%>
+<% when :yml, :yaml then -%>
       format.yaml { render :text => @<%= singular_name %>.to_yaml, :content_type => :'text/yaml', :status => :created, :location => @<%= singular_name %> }
-<% when :txt then -%>
+<% when :txt, :text then -%>
         format.txt  { render :text => @<%= singular_name %>.to_s, :content_type => :text, :status => :created, :location => @<%= singular_name %> }
 <% else -%>
         format.<%= _format %>  { }
@@ -124,9 +124,9 @@ class <%= controller_class_name %>Controller < ApplicationController
         format.js   # create.js.rjs
 <% when :xml, :json then -%>
         format.<%= _format %>  { render :<%= _format %> => @<%= singular_name %>.errors, :status => :unprocessable_entity }
-<% when :yaml then -%>
+<% when :yml, :yaml then -%>
       format.yaml { render :text => @<%= singular_name %>.errors.to_yaml, :content_type => :'text/yaml', :status => :unprocessable_entity }
-<% when :txt then -%>
+<% when :txt, :text then -%>
         format.txt  { render :text => @<%= singular_name %>.errors.to_s, :content_type => :text, :status => :unprocessable_entity }
 <% else -%>
         format.<%= _format %>  { }
@@ -149,7 +149,7 @@ class <%= controller_class_name %>Controller < ApplicationController
         format.html { redirect_to(@<%= singular_name %>) }
 <% when :js then -%>
         format.js   # update.js.rjs
-<% when :xml, :json, :yaml, :txt then -%>
+<% when :xml, :json, :yml, :yaml, :txt, :text then -%>
         format.<%= _format %>  { head :ok }
 <% else -%>
         format.<%= _format %>  { head :ok }
@@ -164,9 +164,9 @@ class <%= controller_class_name %>Controller < ApplicationController
         format.js   # update.js.rjs
 <% when :xml, :json then -%>
         format.<%= _format %>  { render :<%= _format %> => @<%= singular_name %>.errors, :status => :unprocessable_entity }
-<% when :yaml then -%>
+<% when :yml, :yaml then -%>
         format.yaml { render :text => @<%= singular_name %>.errors.to_yaml, :status => :unprocessable_entity }
-<% when :txt then -%>
+<% when :txt, :text then -%>
         format.txt  { render :text => @<%= singular_name %>.errors.to_s, :status => :unprocessable_entity }
 <% else -%>
         format.<%= _format %>  { head :unprocessable_entity }
@@ -190,7 +190,7 @@ class <%= controller_class_name %>Controller < ApplicationController
         format.html { redirect_to(<%= plural_name %>_url) }
 <% when :js then -%>
         format.js   # destroy.js.rjs
-<% when :xml, :json, :yaml, :txt then -%>
+<% when :xml, :json, :yml, :yaml, :txt, :text then -%>
         format.<%= _format %>  { head :ok }
 <% else -%>
         format.<%= _format %>  { head :ok }
@@ -203,7 +203,7 @@ class <%= controller_class_name %>Controller < ApplicationController
         format.html { redirect_to(<%= singular_name %>_url(@<%= singular_name %>)) }
 <% when :js then -%>
         format.js   # destroy.js.rjs
-<% when :xml, :json, :yaml, :txt then -%>
+<% when :xml, :json, :yml, :yaml, :txt, :text then -%>
         format.<%= _format %>  { head :unprocessable_entity }
 <% else -%>
         format.<%= _format %>  { head :unprocessable_entity }

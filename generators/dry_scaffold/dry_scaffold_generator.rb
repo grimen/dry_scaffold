@@ -93,9 +93,9 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     @args.each do |arg|
       arg_entities = arg.split(':')
       if arg =~ /^_actions/
-        @actions = arg_entities[1].split(',').compact.collect { |action| action.to_sym }
+        @actions = arg_entities[1].split(',').compact.collect { |action| action.dowcase.to_sym }
       elsif arg =~ /^_formats/ || arg =~ /^_respond_to/
-        @formats = arg_entities[1].split(',').compact.collect { |format| format.to_sym }
+        @formats = arg_entities[1].split(',').compact.collect { |format| format.dowcases.to_sym }
       else
         @attributes << Rails::Generator::GeneratedAttribute.new(*arg_entities)
       end

@@ -75,4 +75,10 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
   end
   
 <% end -%>
+<% (actions - DryScaffoldGenerator::DEFAULT_CONTROLLER_ACTIONS).each do |action| -%>
+  test "<%= action.to_s %>" do
+    assert true
+  end
+  
+<% end -%>
 end
