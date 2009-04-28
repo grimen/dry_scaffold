@@ -7,32 +7,50 @@ namespace :dry_scaffold do
   
   namespace :dependencies do
     
+    require File.join(File.dirname(__FILE__), '..', 'lib', 'setup_helper')
+    include SetupHelper
+    
     GEMS = [:haml, :will_paginate, :'josevalim-inherited_resources', :'justinfrench-formtastic'].freeze
     PLUGINS = [].freeze
     
     puts "---------------------------------------"
-    puts " Setup"
+    puts " Dependencies"
     puts "---------------------------------------"
     
     desc "Install dependencies for fully advantage of this generator."
+    puts "Installing gems..."
     task :install => :environment do
-      puts "GEMS: #{GEMS.to_sentence}" unless GEMS.empty?
-      GEMS.each do |gem|
-        puts `sudo gem install #{gem}`
+      # Install gems
+      unless GEMS.empty?
+        puts "GEMS: #{GEMS.to_sentence}" 
+        GEMS.each do |gem|
+          puts `sudo gem install #{gem} --no-ri`
+        end
       end
       
-      puts "PLUGINS: #{PLUGINS.to_sentence}" unless PLUGINS.empty?
-      PLUGINS.each do |plugin|
-        puts `./script/plugin install #{plugin}`
+      # Install plugins
+      unless PLUGINS.empty?
+        puts "PLUGINS: #{PLUGINS.to_sentence}"
+        puts "Installing plugins..."
+        PLUGINS.each do |plugin|
+          puts `./script/plugin install #{plugin}`
+        end
       end
       
-      puts "Setup HAML for this project..."
-      #puts `haml --rails .`
+      # Setup HAML - if missing
+      unless File.directory?(File.join(Rails.root, 'vendor', 'plugins', 'haml'))
+        puts "Initializing HAML for this project..."
+        puts `haml --rails #{Rails.root}`
+      end
+      
+      # Add gems to Rails environment with gems - if missing
+      config_gems File.join(Rails.root, 'config', 'environment.rb'), GEMS
       
       puts "---------------------------------------"
       puts " Configuration"
       puts "---------------------------------------"
-      puts "Update your environment config: 'config/environments/development.rb' <<<"
+      puts "Adding configuration..."
+      puts "File 'config/environments/development.rb' now contains (added automatically):"
       GEMS.each do |gem|
         gem_info = gem.to_s.split('-')
         if gem_info.size > 1
@@ -44,7 +62,7 @@ namespace :dry_scaffold do
           puts "  config.gem '#{gem_lib}'"
         end
       end
-      puts "<<<"
+      puts "---------------------------------------"
     end
     
   end
