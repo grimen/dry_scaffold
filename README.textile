@@ -154,7 +154,7 @@ These are things I have in mind:
 
 h2. Setup
 
-Installing dry_scaffold is easy as 1-2-3...
+Installing DryScaffold is easy as 1-2-3...nah, really:
 
 h3. 1. Installation
 
@@ -175,7 +175,7 @@ In _environment.rb_, or _development.rb_:
 
 <pre>config.gem 'grimen-dry_scaffold', :lib => 'dry_scaffold'</pre>
 
-h3. 3. Install Dependencies (Partly Optional)
+h3. 3. Install Dependencies (Partly optional)
 
 Install dependencies to release the full power of dry_scaffold. Only HAML is really required of these, but how could anyone resist candy? =)
 
@@ -269,13 +269,13 @@ h3. Options/Flags
 
 Example: <pre>--skip-resourceful --include-layout</pre>
 
-* @*--skip-pagination*@   - Don't generate pagination of collections in controller and views, i.e. don't use *will_paginate*.
-* @*--skip-resourceful*@  - Don't generate resourceful controller, i.e. don't use *inherited_resources*.
-* @*--skip-formtastic*@   - Don't generate formtastic forms in views, i.e. don't use *formtastic*.
-* @*--skip-views*@        - Don't generate views.
-* @*--skip-helpers*@      - Don't generate helpers.
-* @*--skip-tests*@        - Don't generate tests (functional/unit/...).
-* @*--include-layout*@    - Generate a neat application layout.
+* **@--skip-pagination@*   - Don't generate pagination of collections in controller and views, i.e. don't use *will_paginate*.
+* *@--skip-resourceful@*  - Don't generate resourceful controller, i.e. don't use *inherited_resources*.
+* *@--skip-formtastic@*   - Don't generate formtastic forms in views, i.e. don't use *formtastic*.
+* *@--skip-views@*        - Don't generate views.
+* *@--skip-helpers@*      - Don't generate helpers.
+* *@--skip-tests@*        - Don't generate tests (functional/unit/...).
+* *@--include-layout@*    - Generate a neat application layout.
 
 As DryScaffold is built upon Rails generator, the default generator options is available as well. For more details; see Rails documentation.
 
