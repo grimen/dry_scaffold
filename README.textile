@@ -177,27 +177,47 @@ In _environment.rb_, or _development.rb_:
 
 h3. 3. Install Dependencies (Partly Optional)
 
-Install dependencies to release the full power of dry_scaffold. NOTE: You need to add the gems you choose to use to _environment.rb_.
-
-<pre>rake dry_scaffold:dependencies:install</pre>
-
-...or install the gems manually:
+Install dependencies to release the full power of dry_scaffold.
 
 h4. haml
 
-<pre>sudo gem install nex3-haml</pre>
+h5. Install
 
-h4. formtastic
+<pre>sudo gem install haml</pre>
 
-<pre>sudo gem install justinfrench-formtastic</pre>
+h5. Config (in _environment.rb_/_development.rb_)
 
-h4. inherited_resources
-
-<pre>sudo gem install josevalim-inherited_resources</pre>
+<pre>config.gem 'haml'</pre>
 
 h4. will_paginate
 
-<pre>sudo gem install mislav-will_paginate</pre>
+h5. Install
+
+<pre>sudo gem install will_paginate</pre>
+
+h5. Config (in _environment.rb_/_development.rb_)
+
+<pre>config.gem 'will_paginate'</pre>
+
+h4. formtastic
+
+h5. Install
+
+<pre>sudo gem install justinfrench-formtastic</pre>
+
+h5. Config (in _environment.rb_/_development.rb_)
+
+<pre>config.gem 'justinfrench-formtastic', :lib => 'formtastic'</pre>
+
+h4. inherited_resources
+
+h5. Install
+
+<pre>sudo gem install josevalim-inherited_resources</pre>
+
+h5. Config (in _environment.rb_/_development.rb_)
+
+<pre>config.gem 'josevalim-inherited_resources', :lib => 'inherited_resources'</pre>
 
 h2. Usage
 
