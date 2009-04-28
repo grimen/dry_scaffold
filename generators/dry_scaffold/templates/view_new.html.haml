@@ -3,13 +3,13 @@
   
 <% if options[:formtastic] -%>
 - semantic_form_for(@<%= singular_name %>) do |form|
-  = render form
+  = render 'form', :form => form
   - form.buttons do
     = form.commit_button 'Create'
 <% else -%>
 - form_for(@<%= singular_name %>) do |form|
   = form.error_messages
-  = render form
+  = render 'form', :form => form
   %p.buttons
     = form.submit 'Create'
 <% end -%>

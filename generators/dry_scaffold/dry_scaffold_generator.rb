@@ -71,6 +71,8 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
                 :controller_singular_name,
                 :controller_plural_name,
                 :collection_name,
+                :model_singular_name,
+                :model_plural_name,
                 :view_template_format,
                 :actions,
                 :formats
@@ -95,6 +97,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     @view_template_format = DEFAULT_VIEW_TEMPLATE_FORMAT
     
     @attributes ||= []
+    @args_for_model ||= []
     
     # Non-attribute args, i.e. "_actions:new,create". Add to options instead
     @args.each do |arg|
@@ -105,6 +108,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         @formats = arg_entities[1].split(NON_ATTR_ARG_VALUE_DIVIDER).compact.collect { |format| format.dowcases.to_sym }
       else
         @attributes << Rails::Generator::GeneratedAttribute.new(*arg_entities)
+        @args_for_model << arg
       end
     end
     
@@ -171,7 +175,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       m.route_resources controller_file_name
       
       # Models - use Rails default generator.
-      m.dependency 'model', [name] + attributes, :collision => :skip
+      m.dependency 'model', [name] + @args_for_model, :collision => :skip
     end
   end
   
@@ -183,9 +187,11 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     
     def assign_names!(name)
       super
-      @collection_name = options[:resourceful] ? RESOURCEFUL_COLLECTION_NAME : @plural_name
-      @singular_name = options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME : @singular_name
-      @plural_name = options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME.pluralize : @plural_name
+      @model_singular_name = @singular_name
+      @model_plural_name = @plural_name
+      @collection_name = options[:resourceful] ? RESOURCEFUL_COLLECTION_NAME : @model_plural_name
+      @singular_name = options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME : @model_singular_name
+      @plural_name = options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME.pluralize : @model_plural_name
     end
     
     def add_options!(opt)

@@ -1,8 +1,8 @@
 NAME
-  dry_scaffold - A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.
+  dry_scaffold - A Rails scaffold generator that generates DRYer, cleaner, and more useful code.
   
 DESCRIPTION
-  See README.
+  A replacement for the Rails scaffold generator that generates code that most people end up deleting or rewriting anyway because of the unusable code. The scaffold concept is powerful, but it has more potential than generating messy and almost useless code. The goal with dry_scaffold is to generate DRY, beautiful, and standards compliant code based on common patterns without adding a lot of magic.
   
 EXAMPLE
-  ./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests]
+  ./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests] [--include-layout]
