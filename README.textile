@@ -171,7 +171,7 @@ h4. Plugin
 
 h3. 2. Configuration (Gem only)
 
-In _environment.rb_, or _development.rb_:
+In: @config/environments/development.rb@
 
 <pre>config.gem 'grimen-dry_scaffold', :lib => 'dry_scaffold'</pre>
 
@@ -186,7 +186,9 @@ h4. Installation, i.e. get the gems
 <pre>sudo gem install justinfrench-formtastic</pre>
 <pre>sudo gem install josevalim-inherited_resources</pre>
 
-h4. Configuration (_config/development/development.rb_)
+h4. Configuration
+
+In: @config/environment.rb@
 
 <pre>config.gem 'haml'</pre>
 <pre>config.gem 'will_paginate'</pre>
