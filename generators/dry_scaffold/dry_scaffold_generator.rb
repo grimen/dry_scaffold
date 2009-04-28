@@ -244,7 +244,8 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         " [--skip-views]" + 
         " [--skip-helpers]" +
         " [--skip-tests]" +
-        " [--include-layout]"
+        " [--include-layout]" +
+      "Alias: dscaffold"
     end
     
 end
