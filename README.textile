@@ -94,7 +94,7 @@ Find out more about *inherited_resources*: "http://github.com/josevalim/inherite
 
 h3. Pagination
 
-Pagination is such a common feature that always seems to be implemented anyway, so dry_scaffold will generate a DRY solution for this in each controller that you can tweak - even thought that will not be needed in most cases. See DRY Patterns beneath for more details how it's done.
+Pagination is such a common feature that always seems to be implemented anyway, so DryScaffold will generate a DRY solution for this in each controller that you can tweak - even thought that will not be needed in most cases. See DRY Patterns beneath for more details how it's done. Pagination - using WillPaginate - can be turned off.
 
 Find out more about *will_paginate*: "http://github.com/mislav/will_paginate":http://github.com/mislav/will_paginate
 
@@ -102,7 +102,7 @@ h3. DRY Patterns
 
 Either if you choosing default or resourceful controllers, this pattern is used to DRYing up controllers a bit more, and at the same time loading resources in the same place using before_filter while adding automatic pagination for collections.
 
-h4. Default (ActionController, without InheritedResources)
+h4. Default (ActionController with pagination - not using InheritedResources)
 
 <pre>before_filter :load_resource, :only => [:show, :edit, :update, :destroy]
 before_filter :load_and_paginate_resources, :only => [:index]
@@ -122,7 +122,7 @@ protected
   end
   alias :load_resource :resource</pre>
 
-h4. Resourceful (InheritedResources)
+h4. Resourceful (InheritedResources with pagination)
 
 <pre>protected
   
@@ -139,7 +139,7 @@ h4. Resourceful (InheritedResources)
 
 h3. View Partials
 
-A very common pattern is to break up views in partials, wich is also what DryScaffold does:
+A very common pattern is to break up views in partials, which is also what DryScaffold does:
 
 * new/edit => _form
 * index => _item
@@ -179,7 +179,17 @@ h3. 3. Install Dependencies (Partly optional)
 
 Install dependencies to release the full power of dry_scaffold. Only HAML is really required of these, but how could anyone resist candy? =)
 
-h4. Installation, i.e. get the gems
+h3. Express
+
+For us lazy ones... =)
+
+<pre>rake dry_scaffold:setup</pre>
+
+Will install the dependencies, initialize HAML within current Rails project if not already done, and automatically referencing the dependency gems within the current Rails project environment config if they are not already in there (note: nothing will be overwritten).
+
+h4. Installation
+
+Get the gems...
 
 <pre>sudo gem install haml</pre>
 <pre>sudo gem install will_paginate</pre>
@@ -199,21 +209,25 @@ h2. Usage
 
 <pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests] [--include-layout]</pre>
 
+...or use the alias (instead of @dry_scaffold@):
+
+<pre>./script/generate dscaffold ...</pre>
+
 h3. Model Name
 
-Example: <pre>Hello</pre>
+Example: <pre>Duck</pre>
 
 Same as in the default scaffold/model generator; the name of a new/existing model.
 
 h3. Model Attributes
 
-Example: <pre>title:string description:text ...</pre>
+Example: <pre>name:string about:text ...</pre>
 
 Same as in the default scaffold/model generator; model attributes and database migration column types.
 
 h3. Controller Actions
 
-Usage: <pre>_actions:new,create,recent,index,...</pre>
+Usage: <pre>_actions:new,create,quack,index,...</pre>
 
 You can override what actions that should be generated directly - including custom actions.
 
@@ -283,7 +297,7 @@ As DryScaffold is built upon Rails generator, the default generator options is a
 
 h2. Examples
 
-No need for more samples here, just create a new Rails project, install dry_scaffold and it's dependencies, and try it out!
+No need for more samples here, just create a new Rails project, install DryScaffold and it's dependencies, and try it out!
 
 For your inspiration, you could try the following:
 

@@ -2,6 +2,7 @@ h1. TODO
 
 h2. Next
 
+* Idea: _actions:*,hello => all default actions including "hello"-action
 * Something like "model_generator_with_factories" (using machinist, factory_girl, ...). Source: http://github.com/vigetlabs/model_generator_with_factories/tree/master
 * Break up in different generators: dry_controller, dry_views, etc., and use as dependencies in dry_scaffold
 * Optionally generate builders (Atom/RSS/...)
