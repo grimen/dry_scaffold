@@ -46,24 +46,24 @@ Quick and dirty; Formtastic makes your form views cleaner, and your life as a Ra
 
 h4. Default HAML (without Formtastic):
 
-<pre>- form_for(@resource) do |f|
+<pre>- form_for(@duck) do |f|
   = f.error_messages
   %ul
     %li
-      = f.label :title, 'Title'
-      = f.text_field :title
+      = f.label :name, 'Name'
+      = f.text_field :name
     %li
-      = f.label :description, 'Description'
-      = f.text_area :description
+      = f.label :about, 'About'
+      = f.text_area :about
   %p.buttons
     = f.submit 'Create'</pre>
 
 h4. Formtastic + HAML:
 
-<pre>- semantic_form_for(@resource) do |f|
+<pre>- semantic_form_for(@duck) do |f|
   - f.inputs do
-    = f.input :title
-    = f.input :description
+    = f.input :name
+    = f.input :about
   - f.buttons do
     = f.commit_button 'Create'</pre>
 
