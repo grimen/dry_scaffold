@@ -46,7 +46,7 @@ Quick and dirty; Formtastic makes your form views cleaner, and your life as a Ra
 
 h4. Default HAML (without Formtastic):
 
-<pre>- form_for(@<%= singular_name %>) do |f|
+<pre>- form_for(@resource) do |f|
   = f.error_messages
   %ul
     %li
@@ -54,7 +54,7 @@ h4. Default HAML (without Formtastic):
       = f.text_field :title
     %li
       = f.label :description, 'Description'
-      = f.text_field :description
+      = f.text_area :description
   %p.buttons
     = f.submit 'Create'</pre>
 
