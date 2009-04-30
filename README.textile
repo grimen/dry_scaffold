@@ -277,8 +277,8 @@ Default respond block stubs are generated for all of these formats - for each ge
 
 Like for actions, these default respond_to-formats can also be included using the alias symbol @*@, which makes it easier to add new formats without having to specify all the default formats explicit. Example:
 
-<pre>_formats:iphone</pre> => <pre>txt</pre>
-<pre>_formats:*,txt</pre> => <pre>html,js,xml,json,iphone</pre>
+@_formats:iphone@ <=> @_formats:iphone@
+@_formats:*,iphone@ <=> @_formats:html,js,xml,json,iphone@
 
 h4. Additional formats
 
