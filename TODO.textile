@@ -4,9 +4,9 @@ h2. Next
 
 * Add feature: Generate Atom/RSS builder stubs for formats - if specified - atom/rss for index action. (Reference: http://gatezero.org/~tim/2008/04/22/generating-valid-atom-feeds-from-rails-202/)
 * Add feature: Something like "model_generator_with_factories" (using machinist, factory_girl, ...). Source: http://github.com/vigetlabs/model_generator_with_factories/tree/master
-* Refactoring: Break up in different generators: dry_controller, dry_views, etc., and use as dependencies in dry_scaffold
 
 h2. Maybe later
 
-* General: Comment the code a bit more =)
+* Clean-up: Comment the code a bit more =)
 * Add feature: Check for overridden templates in: RAILS_ROOT/lib/dry_scaffold/templates/
+* Refactoring: Break up in different generators: dry_controller, dry_views, etc., and use as dependencies in dry_scaffold
