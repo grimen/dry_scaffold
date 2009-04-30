@@ -1,5 +1,4 @@
 require 'rubygems'
-
 begin
   require 'formtastic'
   FORMTASTIC = true
@@ -41,9 +40,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   RESOURCEFUL_COLLECTION_NAME = 'collection'.freeze
   RESOURCEFUL_SINGULAR_NAME =   'resource'.freeze
   
-  ARG_KEY_VALUE_DIVIDER =       ':'.freeze
   NON_ATTR_ARG_KEY_PREFIX =     '_'.freeze
-  NON_ATTR_ARG_VALUE_DIVIDER =  ','.freeze
   
   # :{action} => [:{partial}, ...]
   VIEW_TEMPLATES = {
@@ -99,20 +96,26 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     @attributes ||= []
     @args_for_model ||= []
     
-    # Non-attribute args, i.e. "_actions:new,create". Add to options instead
+    # Non-attribute args, i.e. "_actions:new,create".
     @args.each do |arg|
-      arg_entities = arg.split(ARG_KEY_VALUE_DIVIDER)
+      arg_entities = arg.split(':')
       if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}actions/
-        @actions = arg_entities[1].split(NON_ATTR_ARG_VALUE_DIVIDER).compact.collect { |action| action.dowcase.to_sym }
+        # Replace a '*' with default actions
+        arg_entities[1].gsub!(/\*/, DEFAULT_CONTROLLER_ACTIONS.join(','))
+        arg_actions = arg_entities[1].split(',').compact.uniq
+        @actions = arg_actions.collect { |action| action.downcase.to_sym }
       elsif arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}(formats|respond_to)/
-        @formats = arg_entities[1].split(NON_ATTR_ARG_VALUE_DIVIDER).compact.collect { |format| format.dowcases.to_sym }
+        # Replace a '*' with default respond_to-formats
+        arg_entities[1].gsub!(/\*/, DEFAULT_RESPOND_TO_FORMATS.join(','))
+        arg_formats = arg_entities[1].split(',').compact.uniq
+        @formats = arg_formats.collect { |format| format.downcases.to_sym }
       else
         @attributes << Rails::Generator::GeneratedAttribute.new(*arg_entities)
         @args_for_model << arg
       end
     end
     
-    @actions ||= DEFAULT_COLLECTION_ACTIONS + DEFAULT_MEMBER_ACTIONS
+    @actions ||= DEFAULT_CONTROLLER_ACTIONS
     @formats ||= DEFAULT_RESPOND_TO_FORMATS
   end
   
