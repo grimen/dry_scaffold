@@ -1,5 +1,5 @@
 %h1.heading
-  = "Resource %s" % @<%= singular_name %>.id
+  = "<%= singular_name.humanize %> %s" % @<%= singular_name %>.id
   
 - content_tag_for(:dl, @<%= singular_name %>) do
 <% attributes.each do |attribute| -%>
