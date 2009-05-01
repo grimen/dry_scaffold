@@ -3,7 +3,6 @@ h1. TODO
 h2. Next
 
 * Add feature: Generate Atom/RSS builder stubs for formats - if specified - atom/rss for index action. (Reference: http://gatezero.org/~tim/2008/04/22/generating-valid-atom-feeds-from-rails-202/)
-* Add feature: Something like "model_generator_with_factories" (using machinist, factory_girl, ...). Source: http://github.com/vigetlabs/model_generator_with_factories/tree/master
 
 h2. Maybe later
 

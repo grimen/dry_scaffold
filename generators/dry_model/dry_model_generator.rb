@@ -2,19 +2,19 @@ require 'rubygems'
 begin
   require 'factory_girl'
   FACTORY_GIRL = true
-rescue
+rescue MissingSourceFile
   FACTORY_GIRL = false
 end
 begin
   require 'machinist'
   MACHINIST = true
-rescue
+rescue MissingSourceFile
   MACHINIST = false
 end
 begin
   require 'object_daddy'
   OBJECT_DADDY = true
-rescue
+rescue MissingSourceFile
   OBJECT_DADDY = false
 end
 
@@ -128,11 +128,11 @@ class DryModelGenerator < Rails::Generator::NamedBase
           options[:skip_timestamps] = v
         end
         
-        opt.on("--skip-migration", "Don't generate a migration file for this model.") do |v|
+        opt.on("--skip-migration", "Skip generation of a migration file for this model.") do |v|
           options[:skip_migration] = v
         end
         
-        opt.on("--skip-tests", "Don't generate a migration file for this model.") do |v|
+        opt.on("--skip-tests", "Skip generation of tests for this model.") do |v|
           options[:skip_tests] = v
         end
       end
@@ -156,6 +156,20 @@ end
 module Rails
   module Generator
     class GeneratedAttribute
+      def default_for_fixture
+        @default ||= case type
+        when :integer                     then 1
+        when :float                       then 1.5
+        when :decimal                     then '9.99'
+        when :datetime, :timestamp, :time then Time.now.to_s(:db)
+        when :date                        then Date.today.to_s(:db)
+        when :string                      then 'MyString'
+        when :text                        then 'MyText'
+        when :boolean                     then false
+        else
+          ''
+        end
+      end
       def default_for_factory
         @default ||= case type
         when :integer                     then 1
