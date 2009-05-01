@@ -1,0 +1,6 @@
+<% unless attributes.empty? -%>
+<%= singular_name %>_1:
+<% attributes.each do |attribute| -%>
+  <%= attribute.name %>: <%= attribute.default %>
+<% end -%>
+<% end -%>

@@ -1,0 +1,8 @@
+NAME
+  dry_model a.k.a. dmodel - A Rails scaffold generator that generates DRYer, cleaner, and more useful code - for models.
+  
+DESCRIPTION
+  A replacement for the Rails model generator - a part of the dry_generator toolset.
+  
+EXAMPLE
+  ./script/generate dry_model ModelName [attribute:type attribute:type] [_index:name,owner_id+owner_type,active...] [--fixtures] [--machinist] [--object_daddy] [--factory_girl] [--skip_timestamps] [--skip-migration] [--skip-tests]
