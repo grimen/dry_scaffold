@@ -1,3 +1,3 @@
-h1. 0.1.3 (2009-05-01)
+h1. 0.2.0 (2009-05-01)
 
 * New dry model generator: Extends Rails default model generator with features such as generation of factory_girl/machinis/object_daddy-factories if available and requested (or fixtures), and specifying database column indexes upon generation in a very convenient way.
