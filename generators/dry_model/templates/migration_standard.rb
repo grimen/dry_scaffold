@@ -8,13 +8,13 @@ class <%= migration_name %> < ActiveRecord::Migration
 <% unless options[:skip_timestamps] -%>
       t.timestamps
 <% end -%>
-<% unless indexes.blank? -%>
-      
-<% indexes.each do |index| -%>
-      add_index :<%= table_name %>, <%= index.is_a?(Array) ? "[:#{index.join(', :')}]" : ":#{index}" %>
-<% end -%>
-<% end -%>
     end
+<% unless indexes.blank? -%>
+
+<% indexes.each do |index| -%>
+    add_index :<%= table_name %>, <%= index.is_a?(Array) ? "[:#{index.join(', :')}]" : ":#{index}" %>
+<% end -%>
+<% end -%>
   end
   
   def self.down

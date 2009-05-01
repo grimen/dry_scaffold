@@ -1,4 +1,4 @@
-Factory.define :<%= file_name %> do |f|
+Factory.define :basic_<%= singular_name %> do |f|
 <% attributes.each do |attribute| -%>
   f.<%= attribute.name %> <%= attribute.default_for_factory %>
 <% end -%>

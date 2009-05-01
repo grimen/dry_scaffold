@@ -1,6 +1,27 @@
+require 'rubygems'
+begin
+  require 'factory_girl'
+  FACTORY_GIRL = true
+rescue
+  FACTORY_GIRL = false
+end
+begin
+  require 'machinist'
+  MACHINIST = true
+rescue
+  MACHINIST = false
+end
+begin
+  require 'object_daddy'
+  OBJECT_DADDY = true
+rescue
+  OBJECT_DADDY = false
+end
+
 class DryModelGenerator < Rails::Generator::NamedBase
   
   MODELS_PATH =                 File.join('app', 'models').freeze
+  MIGRATIONS_PATH =             File.join('db', 'migrate').freeze
   TESTS_PATH =                  File.join('test').freeze
   UNIT_TESTS_PATH =             File.join(TESTS_PATH, 'unit').freeze
   FIXTURES_PATH =               File.join(TESTS_PATH, 'fixtures').freeze
@@ -13,14 +34,19 @@ class DryModelGenerator < Rails::Generator::NamedBase
                   :factory_girl => false,
                   :machinist => false,
                   :object_daddy => false,
+                  :faker => false,
                   :skip_timestamps => false,
                   :skip_migration => false,
                   :skip_tests => false
                   
-  attr_reader :indexes
-  
+  attr_reader :indexes,
+              :references
+              
   def initialize(runtime_args, runtime_options = {})
     super
+    
+    @attributes ||= []
+    args_for_model = []
     
     @args.each do |arg|
       arg_entities = arg.split(':')
@@ -28,14 +54,18 @@ class DryModelGenerator < Rails::Generator::NamedBase
         arg_indexes = arg_entities[1].split(',').compact.uniq
         @indexes = arg_indexes.collect do |index|
           if index =~ /\+/
-            index.split('+').collect { |index_entity| index_entity.downcase.to_sym  }
+            index.split('+').collect { |i| i.downcase.to_sym  }
           else
             index.downcase.to_sym
           end
         end
-        @indexes = arg_indexes.collect { |index| index.downcase.to_sym }
+      else
+        @attributes << Rails::Generator::GeneratedAttribute.new(*arg_entities)
+        args_for_model << arg
       end
     end
+    @args = args_for_model
+    @references = attributes.select(&:reference?)
   end
   
   def manifest
@@ -48,12 +78,12 @@ class DryModelGenerator < Rails::Generator::NamedBase
       m.directory File.join(MODELS_PATH, class_path)
       m.directory File.join(UNIT_TESTS_PATH, class_path) unless options[:skip_tests]
       m.directory File.join(FIXTURES_PATH, class_path) if options[:fixtures]
-      m.directory File.join(FACTORY_GIRL_PATH, class_path) if options[:factory_girl]
-      m.directory File.join(MACHINIST_PATH, class_path) if options[:machinist]
+      m.directory File.join(FACTORY_GIRL_FACTORIES_PATH, class_path) if options[:factory_girl]
+      m.directory File.join(MACHINIST_FACTORIES_PATH, class_path) if options[:machinist]
       
       # Model Class + Unit Test.
-      m.template 'model.rb', File.join(MODELS_PATH, class_path, "#{file_name}.rb")
-      m.template 'unit_test.rb', File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
+      m.template 'model_standard.rb', File.join(MODELS_PATH, class_path, "#{file_name}.rb")
+      m.template 'unit_test_standard.rb', File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
       
       # Fixtures/Factories.
       m.template 'fixtures_standard.yml',
@@ -65,7 +95,7 @@ class DryModelGenerator < Rails::Generator::NamedBase
       
       # Migration.
       unless options[:skip_migration]
-        m.migration_template 'migration.rb', 'db/migrate', :assigns => {
+        m.migration_template 'migration_standard.rb', MIGRATIONS_PATH, :assigns => {
           :migration_name => "Create#{class_name.pluralize.gsub(/::/, '')}"
         }, :migration_file_name => "create_#{file_path.gsub(/\//, '_').pluralize}"
       end
@@ -87,28 +117,49 @@ class DryModelGenerator < Rails::Generator::NamedBase
         end
         
         opt.on("--machinist", "Generate machinist blueprints (factories).") do |v|
-          options[:fixtures] = v
+          options[:machinist] = v
         end
         
         opt.on("--factory_girl", "Generate factory_girl factories.") do |v|
-          options[:fixtures] = v
+          options[:factory_girl] = v
         end
         
         opt.on("--object_daddy", "Generate object_daddy generator methods to the model (i.e. factories behaviour).") do |v|
-          options[:fixtures] = v
+          options[:object_daddy] = v
         end
         
-        opt.on("--skip-timestamps", "Don't add timestamps to the migration file for this model") do |v|
+        opt.on("--skip-timestamps", "Don't add timestamps to the migration file for this model.") do |v|
           options[:skip_timestamps] = v
         end
         
-        opt.on("--skip-migration", "Don't generate a migration file for this model") do |v|
+        opt.on("--skip-migration", "Don't generate a migration file for this model.") do |v|
           options[:skip_migration] = v
         end
         
-        opt.on("--skip-tests", "Don't generate a migration file for this model") do |v|
+        opt.on("--skip-tests", "Don't generate a migration file for this model.") do |v|
           options[:skip_tests] = v
         end
       end
       
+end
+
+module Rails
+  module Generator
+    class GeneratedAttribute
+      def default_for_factory
+        @default ||= case type
+        when :integer                     then 1
+        when :float                       then 1.5
+        when :decimal                     then '9.99'
+        when :datetime, :timestamp, :time then 'Time.now'
+        when :date                        then 'Date.today'
+        when :string                      then '"Hello"'
+        when :text                        then '"SomeText"'
+        when :boolean                     then false
+        else
+          ''
+        end
+      end
+    end
+  end
 end
