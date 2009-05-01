@@ -50,13 +50,15 @@ class DryModelGenerator < Rails::Generator::NamedBase
     
     @args.each do |arg|
       arg_entities = arg.split(':')
-      if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}index/
-        arg_indexes = arg_entities[1].split(',').compact.uniq
-        @indexes = arg_indexes.collect do |index|
-          if index =~ /\+/
-            index.split('+').collect { |i| i.downcase.to_sym  }
-          else
-            index.downcase.to_sym
+      if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}/
+        if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}index/
+          arg_indexes = arg_entities[1].split(',').compact.uniq
+          @indexes = arg_indexes.collect do |index|
+            if index =~ /\+/
+              index.split('+').collect { |i| i.downcase.to_sym  }
+            else
+              index.downcase.to_sym
+            end
           end
         end
       else
@@ -150,7 +152,7 @@ class DryModelGenerator < Rails::Generator::NamedBase
       def banner
         ["Usage: #{$0} #{spec.name} ModelName",
           "[field:type field:type]",
-          "[_index:name,owner_id+owner_type,active...]",
+          "[_indexes:name,owner_id+owner_type,active,...]",
           "[--fixtures]",
           "[--fgirl]",
           "[--machinist]",

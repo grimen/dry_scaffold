@@ -115,6 +115,8 @@ h4. Default (ActionController with pagination - not using InheritedResources)
 <pre>before_filter :load_resource, :only => [:show, :edit, :update, :destroy]
 before_filter :load_and_paginate_resources, :only => [:index]
 
+...
+
 protected
   
   def collection
@@ -156,8 +158,8 @@ h3. More To Come... (TODO)
 
 These are things I have in mind:
 
-* Generation of factory stubs instead of fixture stubs that Rails model generator generates
-* Generation of Rails builder stubs (RSS/Atom/...)
+* Generation of Rails builder stubs automatically for formats atom/rss.
+* Read default scaffold options for current Rails porject from a config (say "config/scaffold.yml")
 * Break up into multiple generators as dependencies (like Rails generators): dry_controller, dry_views, dry_scaffold, ...
 
 h2. Setup
@@ -223,19 +225,25 @@ h2. Usage
 
 h3. Model Name
 
-Example: <pre>Duck</pre>
+Example:
+
+<pre>Duck</pre>
 
 Same as in the default scaffold/model generator; the name of a new/existing model.
 
 h3. Model Attributes
 
-Example: <pre>name:string about:text ...</pre>
+Example:
+
+<pre>name:string about:text ...</pre>
 
 Same as in the default scaffold/model generator; model attributes and database migration column types.
 
 h3. Controller Actions
 
-Usage: <pre>_actions:new,create,quack,index,...</pre>
+Usage:
+
+<pre>_actions:new,create,quack,index,...</pre>
 
 You can override what actions that should be generated directly - including custom actions.
 
@@ -266,7 +274,9 @@ The above REST actions are in many RESTful applications the only ones needed. An
 
 h3. Controller Formats
 
-Usage: <pre>_formats:html,xml,txt,...</pre>
+Usage:
+
+<pre>_formats:html,xml,txt,...   # <=> _respond_to:html,xml,txt,...</pre>
 
 You can override what respond_to-formats that should be generated directly - only for REST-actions right now because I tried to avoid bad assumptions.
 
@@ -303,7 +313,9 @@ The above formats are the most commonly used ones, and respond blocks are alread
 
 h3. Options/Flags
 
-Example: <pre>--skip-resourceful --include-layout</pre>
+Example:
+
+<pre>--skip-resourceful --layout</pre>
 
 h4. General
 
@@ -335,7 +347,9 @@ For your inspiration, you could try the following:
 <pre>./script/generate dry_scaffold Zebra name:string about:text --skip-resourceful
 ./script/generate dry_scaffold Kangaroo name:string about:text --skip-formtastic
 ./script/generate dry_scaffold Duck name:string about:text _actions:new,create,index,quack
-./script/generate dry_scaffold Parrot name:string about:text _formats:html,xml,yml</pre>
+./script/generate dry_scaffold Parrot name:string about:text _formats:html,xml,yml
+./script/generate dry_scaffold Parrot name:string about:text _indexes:name --fgirl
+./script/generate dry_scaffold Parrot name:string about:text _indexes:name,name+about --fixtures</pre>
 
 ...or just go crazy!
 

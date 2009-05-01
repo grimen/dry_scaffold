@@ -99,16 +99,18 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     # Non-attribute args, i.e. "_actions:new,create".
     @args.each do |arg|
       arg_entities = arg.split(':')
-      if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}actions/
-        # Replace a '*' with default actions
-        arg_entities[1].gsub!(/\*/, DEFAULT_CONTROLLER_ACTIONS.join(','))
-        arg_actions = arg_entities[1].split(',').compact.uniq
-        @actions = arg_actions.collect { |action| action.downcase.to_sym }
-      elsif arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}(formats|respond_to)/
-        # Replace a '*' with default respond_to-formats
-        arg_entities[1].gsub!(/\*/, DEFAULT_RESPOND_TO_FORMATS.join(','))
-        arg_formats = arg_entities[1].split(',').compact.uniq
-        @formats = arg_formats.collect { |format| format.downcases.to_sym }
+      if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}/
+        if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}action/
+          # Replace a '*' with default actions
+          arg_entities[1].gsub!(/\*/, DEFAULT_CONTROLLER_ACTIONS.join(','))
+          arg_actions = arg_entities[1].split(',').compact.uniq
+          @actions = arg_actions.collect { |action| action.downcase.to_sym }
+        elsif arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}(format|respond_to)/
+          # Replace a '*' with default respond_to-formats
+          arg_entities[1].gsub!(/\*/, DEFAULT_RESPOND_TO_FORMATS.join(','))
+          arg_formats = arg_entities[1].split(',').compact.uniq
+          @formats = arg_formats.collect { |format| format.downcases.to_sym }
+        end
       else
         @attributes << Rails::Generator::GeneratedAttribute.new(*arg_entities)
         @args_for_model << arg
@@ -268,10 +270,11 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     end
     
     def banner
-      ["Usage: #{$0} dry_scaffold ModelName",
+      ["Usage: #{$0} #{spec.name} ModelName",
         "[field:type field:type ...]",
         "[_actions:new,create,...]",
         "[_formats:html,json,...]",
+        "[_indexes:field,field+field,field,...]",
         "[--skip-pagination]",
         "[--skip-resourceful]",
         "[--skip-formtastic]",
