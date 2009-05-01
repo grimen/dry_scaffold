@@ -104,10 +104,6 @@ class DryModelGenerator < Rails::Generator::NamedBase
   
   protected
       
-      def banner
-        "Usage: #{$0} #{spec.name} ModelName [field:type field:type]"
-      end
-      
       def add_options!(opt)
         opt.separator ''
         opt.separator 'Options:'
@@ -116,15 +112,15 @@ class DryModelGenerator < Rails::Generator::NamedBase
           options[:fixtures] = v
         end
         
-        opt.on("--machinist", "Generate machinist blueprints (factories).") do |v|
+        opt.on("--machinist", "Generate \"machinist\" blueprints (factories).") do |v|
           options[:machinist] = v
         end
         
-        opt.on("--factory_girl", "Generate factory_girl factories.") do |v|
+        opt.on("--factory_girl", "Generate \"factory_girl\" factories.") do |v|
           options[:factory_girl] = v
         end
         
-        opt.on("--object_daddy", "Generate object_daddy generator methods to the model (i.e. factories behaviour).") do |v|
+        opt.on("--object_daddy", "Generate \"object_daddy\" generator/factory methods to this model.") do |v|
           options[:object_daddy] = v
         end
         
@@ -139,6 +135,20 @@ class DryModelGenerator < Rails::Generator::NamedBase
         opt.on("--skip-tests", "Don't generate a migration file for this model.") do |v|
           options[:skip_tests] = v
         end
+      end
+      
+      def banner
+        ["Usage: #{$0} #{spec.name} ModelName",
+          "[field:type field:type]",
+          "[_index:name,owner_id+owner_type,active...]",
+          "[--fixtures]",
+          "[--factory_girl]",
+          "[--machinist]",
+          "[--object_daddy]",
+          "[--skip_timestamps]",
+          "[--skip-migration]",
+          "[--skip-tests]"
+        ].join(' ')
       end
       
 end
