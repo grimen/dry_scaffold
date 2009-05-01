@@ -140,7 +140,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         
       # Controller Tests.
       unless options[:skip_tests]
-        m.template 'controller_test_standard.rb',
+        m.template 'functional_test_standard.rb',
           File.join(FUNCTIONAL_TESTS_PATH, controller_class_path, "#{controller_file_name}_controller_test.rb")
       end
       
@@ -178,7 +178,17 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       m.route_resources controller_file_name
       
       # Models - use Rails default generator.
-      m.dependency 'model', [name] + @args_for_model, :collision => :skip
+      m.dependency 'dry_model',
+        [name] + @args_for_model +
+        options.slice(:skip_tests,
+            :fixtures,
+            :factory_girl,
+            :machinist,
+            :object_daddy,
+            :skip_timestamps,
+            :skip_migration
+          ),
+        :collision => :skip
     end
   end
   
@@ -216,6 +226,10 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         options[:formtastic] = !v
       end
       
+      opt.on('--layout', "Generate layout.") do |v|
+        options[:include_layout] = v
+      end
+      
       opt.on('--skip-views', "Skip generation of views.") do |v|
         options[:skip_views] = v
       end
@@ -228,27 +242,50 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         options[:skip_tests] = v
       end
       
-      opt.on('--include-layout', "Generate layout.") do |v|
-        options[:include_layout] = v
+      opt.on('--fixtures', "Model: Generate fixtures.") do |v|
+        options[:fixtures] = v
+      end
+      
+      opt.on('--factory_girl', "Model: Generate \"machinist\" blueprints (factories).") do |v|
+        options[:factory_girl] = v
+      end
+      
+      opt.on('--machinist', "Model: Generate \"factory_girl\" factories.") do |v|
+        options[:machinist] = v
+      end
+      
+      opt.on('--object_daddy', "Model: Generate \"object_daddy\" generator/factory methods") do |v|
+        options[:object_daddy] = v
+      end
+      
+      opt.on('--skip-timestamps', "Model: Don't add timestamps to the migration file.") do |v|
+        options[:skip_timestamps] = v
+      end
+      
+      opt.on('--skip-migration', "Model: Skip generation of migration file.") do |v|
+        options[:skip_migration] = v
       end
     end
     
-    def model_name
-      class_name.demodulize
-    end
-    
     def banner
-      "Usage: #{$0} dry_scaffold ModelName [field:type field:type ...]" +
-        " [_actions:new,create,...]" +
-        " [_formats:html,json,...]" +
-        " [--skip-pagination]" +
-        " [--skip-resourceful]" +
-        " [--skip-formtastic]" +
-        " [--skip-views]" + 
-        " [--skip-helpers]" +
-        " [--skip-tests]" +
-        " [--include-layout]" +
-      "Alias: dscaffold"
+      ["Usage: #{$0} dry_scaffold ModelName",
+        "[field:type field:type ...]",
+        "[_actions:new,create,...]",
+        "[_formats:html,json,...]",
+        "[--skip-pagination]",
+        "[--skip-resourceful]",
+        "[--skip-formtastic]",
+        "[--skip-views]", 
+        "[--skip-helpers]",
+        "[--skip-tests]",
+        "[--layout]",
+        "[--fixtures]",
+        "[--factory_girl]",
+        "[--machinist]",
+        "[--object_daddy]",
+        "[--skip-timestamps]",
+        "[--skip-migration]",
+      ].join(' ')
     end
     
 end

@@ -83,21 +83,31 @@ class DryModelGenerator < Rails::Generator::NamedBase
       
       # Model Class + Unit Test.
       m.template 'model_standard.rb', File.join(MODELS_PATH, class_path, "#{file_name}.rb")
-      m.template 'unit_test_standard.rb', File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
+      unless options[:skip_tests]
+      m.template 'unit_test_standard.rb',
+        File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
+      end
       
       # Fixtures/Factories.
-      m.template 'fixtures_standard.yml',
-        File.join(FIXTURES_PATH, "#{file_name}.yml") if options[:fixtures]
-      m.template 'factories_factory_girl.rb',
-        File.join(FACTORY_GIRL_FACTORIES_PATH, "#{file_name}.rb") if options[:factory_girl]
-      m.template 'factories_machinist.rb',
-        File.join(MACHINIST_FACTORIES_PATH, "#{file_name}.rb") if options[:machinist]
+      if options[:fixtures]
+        m.template 'fixtures_standard.yml',
+          File.join(FIXTURES_PATH, "#{file_name}.yml")
+      end
+      if options[:factory_girl]
+        m.template 'factories_factory_girl.rb',
+          File.join(FACTORY_GIRL_FACTORIES_PATH, "#{file_name}.rb")
+      end
+      if options[:machinist]
+        m.template 'factories_machinist.rb',
+          File.join(MACHINIST_FACTORIES_PATH, "#{file_name}.rb")
+      end
+      # NOTE: :object_daddy handled in model
       
       # Migration.
       unless options[:skip_migration]
-        m.migration_template 'migration_standard.rb', MIGRATIONS_PATH, :assigns => {
-          :migration_name => "Create#{class_name.pluralize.gsub(/::/, '')}"
-        }, :migration_file_name => "create_#{file_path.gsub(/\//, '_').pluralize}"
+        m.migration_template 'migration_standard.rb', MIGRATIONS_PATH,
+          :assigns => {:migration_name => "Create#{class_name.pluralize.gsub(/::/, '')}"},
+          :migration_file_name => "create_#{file_path.gsub(/\//, '_').pluralize}"
       end
     end
   end
@@ -120,19 +130,19 @@ class DryModelGenerator < Rails::Generator::NamedBase
           options[:factory_girl] = v
         end
         
-        opt.on("--object_daddy", "Generate \"object_daddy\" generator/factory methods to this model.") do |v|
+        opt.on("--object_daddy", "Generate \"object_daddy\" generator/factory methods.") do |v|
           options[:object_daddy] = v
         end
         
-        opt.on("--skip-timestamps", "Don't add timestamps to the migration file for this model.") do |v|
+        opt.on("--skip-timestamps", "Don't add timestamps to the migration file.") do |v|
           options[:skip_timestamps] = v
         end
         
-        opt.on("--skip-migration", "Skip generation of a migration file for this model.") do |v|
+        opt.on("--skip-migration", "Skip generation of migration file.") do |v|
           options[:skip_migration] = v
         end
         
-        opt.on("--skip-tests", "Skip generation of tests for this model.") do |v|
+        opt.on("--skip-tests", "Skip generation of tests.") do |v|
           options[:skip_tests] = v
         end
       end
@@ -163,8 +173,8 @@ module Rails
         when :decimal                     then '9.99'
         when :datetime, :timestamp, :time then Time.now.to_s(:db)
         when :date                        then Date.today.to_s(:db)
-        when :string                      then 'MyString'
-        when :text                        then 'MyText'
+        when :string                      then 'Hello'
+        when :text                        then 'Lorem ipsum dolor sit amet...'
         when :boolean                     then false
         else
           ''
@@ -178,7 +188,7 @@ module Rails
         when :datetime, :timestamp, :time then 'Time.now'
         when :date                        then 'Date.today'
         when :string                      then '"Hello"'
-        when :text                        then '"SomeText"'
+        when :text                        then '"Lorem ipsum dolor sit amet..."'
         when :boolean                     then false
         else
           ''
