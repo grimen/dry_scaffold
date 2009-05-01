@@ -6,7 +6,7 @@ h2. Description
 
 DryScaffold is a replacement for the Rails scaffold generator that generates code that most people end up deleting or rewriting anyway because of the unusable code. The scaffold concept is powerful, but it has more potential than generating messy and almost useless code. The goal with DryScaffold is to generate DRY, beautiful, and standards compliant code based on common patterns without adding a lot of magic.
 
-h4. Key concepts:
+h3. Key concepts:
 
 * Controllers that are DRY, RESTful, no code-smells, following conventions, and implementing VERY common patterns
 * Views that are DRY, semantic, standards compliant, valid, and more useful in development
@@ -21,9 +21,17 @@ h3. Required:
 
 h3. Optional:
 
+h4. Controllers/Views
+
 * "*will_paginate*":http://github.com/mislav/will_paginate - Pagination
 * "*formtastic*":http://github.com/justinfrench/formtastic - DRY and semantic forms
 * "*inherited_resources*":http://github.com/josevalim/inherited_resources - DRY/Resourceful controllers
+
+h4. Models
+
+* "*factory_girl*":http://github.com/thoughtbot/factory_girl - Fixture-replacement
+* "*machinist*":http://github.com/notahat/machinist - Fixture-replacement
+* "*object_daddy*":http://github.com/flogic/object_daddy - Fixture-replacement
 
 h2. Features
 
@@ -249,8 +257,8 @@ Default controller action stubs, controller action test stubs, and corresponding
 
 These default actions can also be included using the alias symbol @*@, which makes it easier to add new actions without having to specify all the default actions explicit. Example:
 
-<pre>_actions:quack</pre> => <pre>quack</pre>
-<pre>_actions:*,quack</pre> => <pre>show,index,new,edit,create,update,destroy,quack</pre>
+<pre>_actions:quack     # => quack</pre>
+<pre>_actions:*,quack   # => show,index,new,edit,create,update,destroy,quack</pre>
 
 h4. Custom actions
 
@@ -297,13 +305,24 @@ h3. Options/Flags
 
 Example: <pre>--skip-resourceful --include-layout</pre>
 
+h4. General
+
 * @--skip-pagination@   - Don't generate pagination of collections in controller and views, i.e. don't use *will_paginate*.
 * @--skip-resourceful@  - Don't generate resourceful controller, i.e. don't use *inherited_resources*.
 * @--skip-formtastic@   - Don't generate formtastic forms in views, i.e. don't use *formtastic*.
 * @--skip-views@        - Don't generate views.
 * @--skip-helpers@      - Don't generate helpers.
 * @--skip-tests@        - Don't generate tests (functional/unit/...).
-* @--include-layout@    - Generate a neat application layout.
+* @--layout@            - Generate layout.
+
+h4. Model-specific
+
+* @--fixtures@          - Generate fixtures.
+* @--fgirl@             - Generate *factory_girl* factories.
+* @--machinist@         - Generate *machinist* blueprints (factories).
+* @--odaddy@            - Generate *object_daddy* generator/factory methods.
+* @--skip-timestamps@   - Don't add timestamps to the migration file.
+* @--skip-migration@    - Skip generation of migration file.
 
 As DryScaffold is built upon Rails generator, the default generator options is available as well. For more details; see Rails documentation.
 

@@ -246,15 +246,15 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         options[:fixtures] = v
       end
       
-      opt.on('--factory_girl', "Model: Generate \"machinist\" blueprints (factories).") do |v|
-        options[:factory_girl] = v
-      end
-      
-      opt.on('--machinist', "Model: Generate \"factory_girl\" factories.") do |v|
+      opt.on('--fgirl', "Model: Generate \"factory_girl\" factories.") do |v|
         options[:machinist] = v
       end
       
-      opt.on('--object_daddy', "Model: Generate \"object_daddy\" generator/factory methods") do |v|
+      opt.on('--machinist', "Model: Generate \"machinist\" blueprints (factories).") do |v|
+        options[:factory_girl] = v
+      end
+      
+      opt.on('--odaddy', "Model: Generate \"object_daddy\" generator/factory methods.") do |v|
         options[:object_daddy] = v
       end
       

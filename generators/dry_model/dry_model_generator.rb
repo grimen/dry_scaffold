@@ -122,15 +122,15 @@ class DryModelGenerator < Rails::Generator::NamedBase
           options[:fixtures] = v
         end
         
+        opt.on("--fgirl", "Generate \"factory_girl\" factories.") do |v|
+          options[:factory_girl] = v
+        end
+        
         opt.on("--machinist", "Generate \"machinist\" blueprints (factories).") do |v|
           options[:machinist] = v
         end
         
-        opt.on("--factory_girl", "Generate \"factory_girl\" factories.") do |v|
-          options[:factory_girl] = v
-        end
-        
-        opt.on("--object_daddy", "Generate \"object_daddy\" generator/factory methods.") do |v|
+        opt.on("--odaddy", "Generate \"object_daddy\" generator/factory methods.") do |v|
           options[:object_daddy] = v
         end
         
@@ -152,9 +152,9 @@ class DryModelGenerator < Rails::Generator::NamedBase
           "[field:type field:type]",
           "[_index:name,owner_id+owner_type,active...]",
           "[--fixtures]",
-          "[--factory_girl]",
+          "[--fgirl]",
           "[--machinist]",
-          "[--object_daddy]",
+          "[--odaddy]",
           "[--skip_timestamps]",
           "[--skip-migration]",
           "[--skip-tests]"
