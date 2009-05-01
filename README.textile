@@ -8,10 +8,11 @@ DryScaffold is a replacement for the Rails scaffold generator that generates cod
 
 h3. Key concepts:
 
-* Controllers that are DRY, RESTful, no code-smells, following conventions, and implementing VERY common patterns
-* Views that are DRY, semantic, standards compliant, valid, and more useful in development
-* Generator that gets smart with additional arguments - but not stupid without them
-* Any Rails developer should be able to switch generator with no effort - follow current conventions, but extend them
+* Controllers that are DRY, RESTful, no code-smells, following conventions, and implementing VERY common patterns.
+* Views that are DRY, semantic, standards compliant, valid, and more useful in development.
+* Factories instead of fixtures.
+* Generator that gets smart with additional arguments - but not stupid without them.
+* Any Rails developer should be able to switch generator with no effort - follow current conventions, but extend them.
 
 h2. Dependencies
 
