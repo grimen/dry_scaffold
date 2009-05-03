@@ -1,4 +1,4 @@
-h1. 0.3.0 (2009-05-03)
+h1. 0.2.1 (2009-05-03)
 
 * New feature: Possible to set generator default args in a config file (config/scaffold.yml), or rely on defaults.
 * Fixed issue: Rails default_options don't seem to work at all; replacing it with own solution.
