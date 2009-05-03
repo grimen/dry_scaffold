@@ -1,25 +1,35 @@
 require 'rubygems'
-begin
-  require 'factory_girl'
-  FACTORY_GIRL = true
-rescue MissingSourceFile
-  FACTORY_GIRL = false
-end
-begin
-  require 'machinist'
-  MACHINIST = true
-rescue MissingSourceFile
-  MACHINIST = false
-end
-begin
-  require 'object_daddy'
-  OBJECT_DADDY = true
-rescue MissingSourceFile
-  OBJECT_DADDY = false
+%w(factory_girl machinist object_daddy).each do |lib|
+  begin
+    require lib
+  rescue MissingSourceFile
+    eval("#{lib.upcase} = #{false}")
+  else
+    eval("#{lib.upcase} = #{false}")
+  end
 end
 
 class DryModelGenerator < Rails::Generator::NamedBase
   
+  # Load defaults from config file - default or custom.
+  begin
+    default_config_file = File.join(File.dirname(__FILE__), '..', '..', 'config', 'scaffold.yml')
+    custom_config_file = File.join(Rails.root, 'config', 'scaffold.yml')
+    config_file = File.join(File.exist?(custom_config_file) ? custom_config_file : default_config_file)
+    config = YAML::load(File.open(config_file))
+    CONFIG_OPTIONS = config['dry_model']['options'] rescue nil
+  end
+  
+  DEFAULT_OPTIONS = {
+      :fixtures => CONFIG_OPTIONS['fixtures'] || false,
+      :factory_girl => CONFIG_OPTIONS['factory_girl'] || false,
+      :machinist => CONFIG_OPTIONS['machinist'] || false,
+      :object_daddy => !CONFIG_OPTIONS['object_daddy'] || false,
+      :skip_timestamps => !CONFIG_OPTIONS['skip_timestamps'] || false,
+      :skip_migration => !CONFIG_OPTIONS['skip_migration'] || false,
+      :skip_tests => CONFIG_OPTIONS['skip_tests'] || false
+    }
+    
   MODELS_PATH =                 File.join('app', 'models').freeze
   MIGRATIONS_PATH =             File.join('db', 'migrate').freeze
   TESTS_PATH =                  File.join('test').freeze
@@ -29,15 +39,6 @@ class DryModelGenerator < Rails::Generator::NamedBase
   MACHINIST_FACTORIES_PATH =    File.join(TESTS_PATH, 'blueprints').freeze
   
   NON_ATTR_ARG_KEY_PREFIX =     '_'.freeze
-  
-  default_options :fixtures => false,
-                  :factory_girl => false,
-                  :machinist => false,
-                  :object_daddy => false,
-                  :faker => false,
-                  :skip_timestamps => false,
-                  :skip_migration => false,
-                  :skip_tests => false
                   
   attr_reader :indexes,
               :references
@@ -66,8 +67,10 @@ class DryModelGenerator < Rails::Generator::NamedBase
         args_for_model << arg
       end
     end
+    
     @args = args_for_model
     @references = attributes.select(&:reference?)
+    @options = DEFAULT_OPTIONS.merge(runtime_options)
   end
   
   def manifest
@@ -90,6 +93,7 @@ class DryModelGenerator < Rails::Generator::NamedBase
         File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
       end
       
+      puts options.inspect
       # Fixtures/Factories.
       if options[:fixtures]
         m.template 'fixtures_standard.yml',

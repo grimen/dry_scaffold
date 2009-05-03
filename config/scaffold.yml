@@ -1,0 +1,22 @@
+---
+dry_scaffold:
+  args:
+    actions: index,show,new,edit,create,update,destroy
+    formats: html,js,xml,json
+  options:
+    formtastic: true
+    resourceful: true
+    pagination: true
+    views: true
+    helpers: true
+    tests: true
+    layout: false
+dry_model:
+  options:
+    fixtures: false
+    fgirl: false
+    machinist: false
+    object_daddy: false
+    migration: true
+    timestamps: true
+    tests: true

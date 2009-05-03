@@ -3,10 +3,10 @@ h1. TODO
 h2. Next
 
 * Feature: Generate Atom/RSS builder stubs for formats - if specified - atom/rss for index action. (Reference: http://gatezero.org/~tim/2008/04/22/generating-valid-atom-feeds-from-rails-202/)
-* Feature: Read default scaffold options from a config in: "RAILS_ROOT/config/scaffold.yml"
+* Feature: If route is already declared in config/routes.rb, then don't generate it.
 
 h2. Maybe later
 
 * Clean-up: Comment the code a bit more =)
+* Refactor: Break up in different generators: dry_controller, dry_views, etc., and use as dependencies in dry_scaffold?
 * Feature: Check for overridden templates in: RAILS_ROOT/lib/dry_scaffold/templates/
-* Refactor: Break up in different generators: dry_controller, dry_views, etc., and use as dependencies in dry_scaffold

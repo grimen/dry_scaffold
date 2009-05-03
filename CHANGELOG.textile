@@ -1,3 +1,10 @@
+h1. 0.3.0 (2009-05-03)
+
+* New feature: Possible to set generator default args in a config file (config/scaffold.yml), or rely on defaults.
+* Fixed issue: Rails default_options don't seem to work at all; replacing it with own solution.
+* Fixed bug: Typo in formats arg parser.
+* Refactor: Gem requires less hardcoded.
+
 h1. 0.2.0 (2009-05-01)
 
 * New dry model generator: Extends Rails default model generator with features such as generation of factory_girl/machinis/object_daddy-factories if available and requested (or fixtures), and specifying database column indexes upon generation in a very convenient way.

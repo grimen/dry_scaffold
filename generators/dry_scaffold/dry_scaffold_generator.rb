@@ -1,25 +1,40 @@
 require 'rubygems'
-begin
-  require 'formtastic'
-  FORMTASTIC = true
-rescue
-  FORMTASTIC = false
-end
-begin
-  require 'inherited_resources'
-  INHERITED_RESOURCES = true
-rescue
-  INHERITED_RESOURCES = false
-end
-begin
-  require 'will_paginate'
-  WILL_PAGINATE = true
-rescue
-  WILL_PAGINATE = false
+%w(will_paginate formtastic inherited_resources).each do |lib|
+  begin
+    require lib
+  rescue MissingSourceFile
+    eval("#{lib.upcase} = #{false}")
+  else
+    eval("#{lib.upcase} = #{false}")
+  end
 end
 
 class DryScaffoldGenerator < Rails::Generator::NamedBase
   
+  # Load defaults from config file - default or custom.
+  begin
+    default_config_file = File.join(File.dirname(__FILE__), '..', '..', 'config', 'scaffold.yml')
+    custom_config_file = File.join(Rails.root, 'config', 'scaffold.yml')
+    config_file = File.join(File.exist?(custom_config_file) ? custom_config_file : default_config_file)
+    config = YAML::load(File.open(config_file))
+    CONFIG_ARGS = config['dry_scaffold']['args'] rescue nil
+    CONFIG_OPTIONS = config['dry_scaffold']['options'] rescue nil
+  end
+  
+  DEFAULT_ARGS = {
+      :actions => (CONFIG_ARGS['actions'].split(',').compact.uniq.collect { |v| v.downcase.to_sym } rescue nil),
+      :formats => (CONFIG_ARGS['formats'].split(',').compact.uniq.collect { |v| v.downcase.to_sym } rescue nil)
+    }
+  DEFAULT_OPTIONS = {
+      :resourceful => CONFIG_OPTIONS['resourceful'] || INHERITED_RESOURCES,
+      :formtastic => CONFIG_OPTIONS['formtastic'] || FORMTASTIC,
+      :pagination => CONFIG_OPTIONS['pagination'] || WILL_PAGINATE,
+      :skip_tests => !CONFIG_OPTIONS['tests'] || false,
+      :skip_helpers => !CONFIG_OPTIONS['helpers'] || false,
+      :skip_views => !CONFIG_OPTIONS['views'] || false,
+      :generate_layout => CONFIG_OPTIONS['layout'] || false
+    }
+    
   DEFAULT_RESPOND_TO_FORMATS =          [:html, :xml, :json].freeze
   DEFAULT_MEMBER_ACTIONS =              [:show, :new, :edit, :create, :update, :destroy].freeze
   DEFAULT_MEMBER_AUTOLOAD_ACTIONS =     (DEFAULT_MEMBER_ACTIONS - [:new, :create])
@@ -50,14 +65,6 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     :edit   => [:form]
   }.freeze
   
-  default_options :resourceful => INHERITED_RESOURCES,
-                  :formtastic => FORMTASTIC,
-                  :pagination => WILL_PAGINATE,
-                  :skip_tests => false,
-                  :skip_helpers => false,
-                  :skip_views => false,
-                  :include_layout => false
-                  
   attr_reader   :controller_name,
                 :controller_class_path,
                 :controller_file_path,
@@ -72,7 +79,8 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
                 :model_plural_name,
                 :view_template_format,
                 :actions,
-                :formats
+                :formats,
+                :config
                 
   alias_method  :controller_file_name, :controller_underscore_name
   alias_method  :controller_table_name, :controller_plural_name
@@ -109,7 +117,9 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
           # Replace a '*' with default respond_to-formats
           arg_entities[1].gsub!(/\*/, DEFAULT_RESPOND_TO_FORMATS.join(','))
           arg_formats = arg_entities[1].split(',').compact.uniq
-          @formats = arg_formats.collect { |format| format.downcases.to_sym }
+          @formats = arg_formats.collect { |format| format.downcase.to_sym }
+        elsif arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}index/
+          @args_for_model << arg
         end
       else
         @attributes << Rails::Generator::GeneratedAttribute.new(*arg_entities)
@@ -117,8 +127,9 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       end
     end
     
-    @actions ||= DEFAULT_CONTROLLER_ACTIONS
-    @formats ||= DEFAULT_RESPOND_TO_FORMATS
+    @actions ||= DEFAULT_ARGS[:actions] || DEFAULT_CONTROLLER_ACTIONS
+    @formats ||= DEFAULT_ARGS[:formats] || DEFAULT_RESPOND_TO_FORMATS
+    @options = DEFAULT_OPTIONS.merge(runtime_options)
   end
   
   def manifest
@@ -171,7 +182,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       end
       
       # Layout.
-      if options[:include_layout]
+      if options[:generate_layout]
         m.template "view_layout.html.#{view_template_format}",
           File.join(LAYOUTS_PATH, "#{controller_file_name}.html.#{view_template_format}")
       end
@@ -180,17 +191,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       m.route_resources controller_file_name
       
       # Models - use Rails default generator.
-      m.dependency 'dry_model',
-        [name] + @args_for_model +
-        options.slice(:skip_tests,
-            :fixtures,
-            :factory_girl,
-            :machinist,
-            :object_daddy,
-            :skip_timestamps,
-            :skip_migration
-          ),
-        :collision => :skip
+      m.dependency 'dry_model', [name] + @args_for_model, :collision => :skip
     end
   end
   
@@ -213,6 +214,8 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       opt.separator ''
       opt.separator 'Options:'
       
+      ### CONTROLLERS + VIEWS
+      
       opt.on('--skip-pagination',
         "Skip 'will_paginate' for collections in controllers and views, wich requires gem 'mislav-will_paginate'.") do |v|
         options[:pagination] = !v
@@ -229,7 +232,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       end
       
       opt.on('--layout', "Generate layout.") do |v|
-        options[:include_layout] = v
+        options[:generate_layout] = v
       end
       
       opt.on('--skip-views', "Skip generation of views.") do |v|
@@ -240,9 +243,13 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         options[:skip_helpers] = v
       end
       
+      ### CONTROLLERS + MODELS
+      
       opt.on('--skip-tests', "Skip generation of tests.") do |v|
         options[:skip_tests] = v
       end
+      
+      ### MODELS ONLY
       
       opt.on('--fixtures', "Model: Generate fixtures.") do |v|
         options[:fixtures] = v

@@ -1,25 +1,47 @@
 namespace :dry_scaffold do
   
+  GEM_ROOT = File.join(File.dirname(__FILE__), '..').freeze
+  
   desc "Setup for this plugin/gem."
   task :setup => :environment do
     Rake::Task['dry_scaffold:dependencies:install'].invoke
+    Rake::Task['dry_scaffold:config:generate'].invoke
+  end
+  
+  namespace :config do
+    
+    desc "Generate a dry_scaffold config file as 'RAILS_ROOT/config/scaffold.yml'"
+    task :generate do
+      template = File.join(GEM_ROOT, 'config', 'scaffold.yml')
+      to_file = File.join(Rails.root, 'config', 'scaffold.yml')
+      
+      `cp #{template} #{to_file}`
+      
+      if  File.exists?(to_file)
+        puts "Generated config file: '#{to_file}'"
+      else
+        puts "Could not create the config file. Hint: Try with sudo." 
+      end
+    end
+    
   end
   
   namespace :dependencies do
     
-    require File.join(File.dirname(__FILE__), '..', 'lib', 'setup_helper')
+    require File.join(GEM_ROOT, 'lib', 'setup_helper')
     include SetupHelper
     
     GEMS = [:haml, :will_paginate, :'josevalim-inherited_resources', :'justinfrench-formtastic'].freeze
     PLUGINS = [].freeze
     
-    puts "---------------------------------------"
-    puts " Dependencies"
-    puts "---------------------------------------"
-    
     desc "Install dependencies for fully advantage of this generator."
-    puts "Installing gems..."
     task :install => :environment do
+      
+      puts "---------------------------------------"
+      puts " Dependencies"
+      puts "---------------------------------------"
+      puts "Installing gems..."
+      
       # Install gems
       unless GEMS.empty?
         puts "GEMS: #{GEMS.to_sentence}" 
