@@ -246,7 +246,7 @@ Same as in the default scaffold/model generator; model attributes and database m
 
 h3. Controller Actions
 
-Usage:
+Example:
 
 <pre>_actions:new,create,quack,index,...</pre>
 
@@ -279,7 +279,7 @@ The above REST actions are in many RESTful applications the only ones needed. An
 
 h3. Controller Formats
 
-Usage:
+Example:
 
 <pre>_formats:html,xml,txt,...   # <=> _respond_to:html,xml,txt,...</pre>
 
@@ -318,11 +318,11 @@ The above formats are the most commonly used ones, and respond blocks are alread
 
 h3. Model Indexes
 
-Usage:
+Example:
 
 If model attributes are specified as:
 
-<pre>name:string reference:owner</pre>
+<pre>name:string owner:reference</pre>
 
 ...then we could do this (for polymorphic association):
 
