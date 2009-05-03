@@ -93,7 +93,6 @@ class DryModelGenerator < Rails::Generator::NamedBase
         File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
       end
       
-      puts options.inspect
       # Fixtures/Factories.
       if options[:fixtures]
         m.template 'fixtures_standard.yml',
