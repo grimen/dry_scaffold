@@ -51,6 +51,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   MODELS_PATH =           File.join('app', 'models').freeze
   FUNCTIONAL_TESTS_PATH = File.join('test', 'functional').freeze
   UNIT_TESTS_PATH =       File.join('test', 'unit', 'helpers').freeze
+  ROUTES_FILE_PATH =      File.join(Rails.root, 'config', 'routes.rb').freeze
   
   RESOURCEFUL_COLLECTION_NAME = 'collection'.freeze
   RESOURCEFUL_SINGULAR_NAME =   'resource'.freeze
@@ -188,7 +189,10 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       end
       
       # Routes.
-      m.route_resources controller_file_name
+      
+      unless resource_route_exists?
+        m.route_resources controller_file_name
+      end
       
       # Models - use Rails default generator.
       m.dependency 'dry_model', [name] + @args_for_model, :collision => :skip
@@ -207,12 +211,12 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     "#{collection_name}_url"
   end
   
-  def show_link(object_name = resource_instance)
-    "#{singular_name}_url(#{object_name})"
-  end
-  
   def new_link
     "new_#{singular_name}_url"
+  end
+  
+  def show_link(object_name = resource_instance)
+    "#{singular_name}_url(#{object_name})"
   end
   
   def edit_link(object_name = resource_instance)
@@ -224,6 +228,11 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   end
   
   protected
+    
+    def resource_route_exists?
+      puts route_exp = "map.resources :#{controller_file_name}"
+      File.read(ROUTES_FILE_PATH) =~ /(#{route_exp.strip}|#{route_exp.strip.tr('\'', '\"')})/
+    end
     
     def symbol_array_to_expression(array)
       ":#{array.compact.join(', :')}" if array.present?

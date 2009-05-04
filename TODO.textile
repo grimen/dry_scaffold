@@ -3,8 +3,7 @@ h1. TODO
 h2. Next
 
 * Feature: Generate Atom/RSS builder stubs for formats - if specified - atom/rss for index action. (Reference: http://gatezero.org/~tim/2008/04/22/generating-valid-atom-feeds-from-rails-202/)
-* Feature: If route is already declared in config/routes.rb, then don't generate it.
-* Refactor: Make links cleaner, i.e. edit_post_url, ...
+* Feature: Handle belongs_to, i.e. specify MODEL --belongs-to PARENT_MODEL, which generates proper routes, proper before-filters if inherited_resources-controller, adding belongs_to-association in model, and correct form_for arguments.
 
 h2. Maybe later
 

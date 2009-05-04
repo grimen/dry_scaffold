@@ -1,3 +1,8 @@
+h1. 0.2.2 (2009-05-04)
+
+* Feature: If route is already declared in "config/routes.rb", then don't generate the route.
+* Refactor: Cleaned up views with generator helpers.
+
 h1. 0.2.1 (2009-05-03)
 
 * New feature: Possible to set generator default args in a config file (config/scaffold.yml), or rely on defaults.
