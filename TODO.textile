@@ -4,6 +4,7 @@ h2. Next
 
 * Feature: Generate Atom/RSS builder stubs for formats - if specified - atom/rss for index action. (Reference: http://gatezero.org/~tim/2008/04/22/generating-valid-atom-feeds-from-rails-202/)
 * Feature: If route is already declared in config/routes.rb, then don't generate it.
+* Refactor: Make links cleaner, i.e. edit_post_url, ...
 
 h2. Maybe later
 

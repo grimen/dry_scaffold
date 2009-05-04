@@ -5,7 +5,7 @@ require 'rubygems'
   rescue MissingSourceFile
     eval("#{lib.upcase} = #{false}")
   else
-    eval("#{lib.upcase} = #{false}")
+    eval("#{lib.upcase} = #{true}")
   end
 end
 

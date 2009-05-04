@@ -30,12 +30,12 @@ class <%= controller_class_name %>Controller < InheritedResources::Base
       paginate_options[:per_page] ||= (params[:per_page] || 20)
       @<%= plural_name %> = @<%= model_plural_name %> ||= end_of_association_chain.paginate(paginate_options)
 <% else -%>
-      @<%= plural_name %> = @<%= model_plural_name %> ||= end_of_association_chain.all
+      @collection = @<%= model_plural_name %> ||= end_of_association_chain.all
 <% end -%>
     end
     
     def resource
-      @<%= singular_name %> = @<%= model_singular_name %> ||= end_of_association_chain.find(params[:id])
+      @resource = @<%= model_singular_name %> ||= end_of_association_chain.find(params[:id])
     end
     
 end

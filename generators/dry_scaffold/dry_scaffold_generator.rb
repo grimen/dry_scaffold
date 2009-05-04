@@ -5,7 +5,7 @@ require 'rubygems'
   rescue MissingSourceFile
     eval("#{lib.upcase} = #{false}")
   else
-    eval("#{lib.upcase} = #{false}")
+    eval("#{lib.upcase} = #{true}")
   end
 end
 
@@ -193,6 +193,34 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       # Models - use Rails default generator.
       m.dependency 'dry_model', [name] + @args_for_model, :collision => :skip
     end
+  end
+  
+  def collection_instance
+    "@#{collection_name}"
+  end
+  
+  def resource_instance
+    "@#{singular_name}"
+  end
+  
+  def index_link
+    "#{collection_name}_url"
+  end
+  
+  def show_link(object_name = resource_instance)
+    "#{singular_name}_url(#{object_name})"
+  end
+  
+  def new_link
+    "new_#{singular_name}_url"
+  end
+  
+  def edit_link(object_name = resource_instance)
+    "edit_#{show_link(object_name)}"
+  end
+  
+  def destroy_link(object_name = resource_instance)
+    "#{object_name}"
   end
   
   protected

@@ -3,8 +3,8 @@
   %td.<%= attribute.name %>= h <%= singular_name %>.try(:<%= attribute.name %>)
 <% end -%>
   %td.actions
-    = link_to 'Show', <%= singular_name %>
+    = link_to 'Show', <%= show_link(singular_name) %>
     |
-    = link_to 'Edit', edit_<%= singular_name %>_url(<%= singular_name %>)
+    = link_to 'Edit', <%= edit_link(singular_name) %>
     |
-    = link_to 'Destroy', <%= singular_name %>, :confirm => 'Are you sure?', :method => :delete
+    = link_to 'Destroy', <%= destroy_link(singular_name) %>, :confirm => 'Are you sure?', :method => :delete

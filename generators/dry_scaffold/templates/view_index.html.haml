@@ -2,7 +2,7 @@
   = "<%= plural_name.humanize %>"
   
 %p.actions
-  = link_to 'New <%= singular_name.humanize %>', new_<%= singular_name %>_url
+  = link_to 'New <%= singular_name.humanize %>', <%= new_link %>
   
 %table
   %thead.header
@@ -12,9 +12,9 @@
 <% end -%>
       %th.actions= 'Actions'
   %tbody.items.<%= plural_name %>
-    - @<%= collection_name -%>.each do |<%= singular_name %>|
+    - <%= collection_instance %>.each do |<%= singular_name %>|
       = render 'item', :<%= singular_name %> => <%= singular_name %>
       
 <% if options[:pagination] -%>
-= will_paginate(@<%= collection_name %>)
+= will_paginate(<%= collection_instance %>)
 <% end -%>

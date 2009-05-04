@@ -62,7 +62,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # GET /<%= plural_name %>/new<%= ".#{_format}" unless _format == :html %>
 <% end -%>
   def new
-    @<%= singular_name %> = <%= class_name %>.new
+    <%= resource_instance %> = <%= class_name %>.new
     
     respond_to do |format|
 <% formats.each do |_format| -%>
@@ -71,11 +71,11 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% when :js then -%>
       format.js   # new.js.rjs
 <% when :xml, :json then -%>
-      format.<%= _format %>  { render :<%= _format %> => @<%= singular_name %> }
+      format.<%= _format %>  { render :<%= _format %> => <%= resource_instance %> }
 <% when :yml, :yaml then -%>
-      format.yaml { render :text => @<%= singular_name %>.to_yaml, :content_type => :'text/yaml' }
+      format.yaml { render :text => <%= resource_instance %>.to_yaml, :content_type => :'text/yaml' }
 <% when :txt, :text then -%>
-      format.txt  { render :text => @<%= singular_name %>.to_s, :content_type => :text }
+      format.txt  { render :text => <%= resource_instance %>.to_s, :content_type => :text }
 <% else -%>
       format.<%= _format %>  { }
 <% end -%>
@@ -95,22 +95,22 @@ class <%= controller_class_name %>Controller < ApplicationController
   # POST /<%= plural_name %><%= ".#{_format}" unless _format == :html %>
 <% end -%>
   def create
-    @<%= singular_name %> = <%= class_name %>.new(params[:<%= singular_name %>])
+    <%= resource_instance %> = <%= class_name %>.new(params[:<%= singular_name %>])
     
     respond_to do |format|
-      if @<%= singular_name %>.save
+      if <%= resource_instance %>.save
         flash[:notice] = '<%= singular_name.humanize %> was successfully created.'
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
-        format.html { redirect_to(@<%= singular_name %>) }
+        format.html { redirect_to(<%= resource_instance %>) }
 <% when :js then -%>
         format.js   # create.js.rjs
 <% when :xml, :json then -%>
-        format.<%= _format %>  { render :<%= _format %> => @<%= singular_name %>, :status => :created, :location => @<%= singular_name %> }
+        format.<%= _format %>  { render :<%= _format %> => <%= resource_instance %>, :status => :created, :location => <%= resource_instance %> }
 <% when :yml, :yaml then -%>
-      format.yaml { render :text => @<%= singular_name %>.to_yaml, :content_type => :'text/yaml', :status => :created, :location => @<%= singular_name %> }
+      format.yaml { render :text => <%= resource_instance %>.to_yaml, :content_type => :'text/yaml', :status => :created, :location => <%= resource_instance %> }
 <% when :txt, :text then -%>
-        format.txt  { render :text => @<%= singular_name %>.to_s, :content_type => :text, :status => :created, :location => @<%= singular_name %> }
+        format.txt  { render :text => <%= resource_instance %>.to_s, :content_type => :text, :status => :created, :location => <%= resource_instance %> }
 <% else -%>
         format.<%= _format %>  { }
 <% end -%>
@@ -123,11 +123,11 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% when :js then -%>
         format.js   # create.js.rjs
 <% when :xml, :json then -%>
-        format.<%= _format %>  { render :<%= _format %> => @<%= singular_name %>.errors, :status => :unprocessable_entity }
+        format.<%= _format %>  { render :<%= _format %> => <%= resource_instance %>.errors, :status => :unprocessable_entity }
 <% when :yml, :yaml then -%>
-      format.yaml { render :text => @<%= singular_name %>.errors.to_yaml, :content_type => :'text/yaml', :status => :unprocessable_entity }
+      format.yaml { render :text => <%= resource_instance %>.errors.to_yaml, :content_type => :'text/yaml', :status => :unprocessable_entity }
 <% when :txt, :text then -%>
-        format.txt  { render :text => @<%= singular_name %>.errors.to_s, :content_type => :text, :status => :unprocessable_entity }
+        format.txt  { render :text => <%= resource_instance %>.errors.to_s, :content_type => :text, :status => :unprocessable_entity }
 <% else -%>
         format.<%= _format %>  { }
 <% end -%>
@@ -143,10 +143,10 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% end -%>
   def update
     respond_to do |format|
-      if @<%= singular_name %>.update_attributes(params[:<%= singular_name %>])
+      if <%= resource_instance %>.update_attributes(params[:<%= singular_name %>])
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
-        format.html { redirect_to(@<%= singular_name %>) }
+        format.html { redirect_to(<%= resource_instance %>) }
 <% when :js then -%>
         format.js   # update.js.rjs
 <% when :xml, :json, :yml, :yaml, :txt, :text then -%>
@@ -163,11 +163,11 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% when :js then -%>
         format.js   # update.js.rjs
 <% when :xml, :json then -%>
-        format.<%= _format %>  { render :<%= _format %> => @<%= singular_name %>.errors, :status => :unprocessable_entity }
+        format.<%= _format %>  { render :<%= _format %> => <%= resource_instance %>.errors, :status => :unprocessable_entity }
 <% when :yml, :yaml then -%>
-        format.yaml { render :text => @<%= singular_name %>.errors.to_yaml, :status => :unprocessable_entity }
+        format.yaml { render :text => <%= resource_instance %>.errors.to_yaml, :status => :unprocessable_entity }
 <% when :txt, :text then -%>
-        format.txt  { render :text => @<%= singular_name %>.errors.to_s, :status => :unprocessable_entity }
+        format.txt  { render :text => <%= resource_instance %>.errors.to_s, :status => :unprocessable_entity }
 <% else -%>
         format.<%= _format %>  { head :unprocessable_entity }
 <% end -%>
@@ -183,7 +183,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% end -%>
   def destroy
     respond_to do |format|
-      if @<%= singular_name %>.destroy
+      if <%= resource_instance %>.destroy
         flash[:notice] = '<%= singular_name.humanize %> was successfully destroyed.'
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
@@ -200,7 +200,7 @@ class <%= controller_class_name %>Controller < ApplicationController
         flash[:error] = '<%= singular_name.humanize %> could not be destroyed.'
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
-        format.html { redirect_to(<%= singular_name %>_url(@<%= singular_name %>)) }
+        format.html { redirect_to(<%= singular_name %>_url(<%= resource_instance %>)) }
 <% when :js then -%>
         format.js   # destroy.js.rjs
 <% when :xml, :json, :yml, :yaml, :txt, :text then -%>
@@ -236,7 +236,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     alias :load_and_paginate_resources :collection
     
     def resource
-      @resource = @<%= singular_name %> ||= <%= class_name %>.find(params[:id])
+      @resource = <%= resource_instance %> ||= <%= class_name %>.find(params[:id])
     end
     alias :load_resource :resource
     
