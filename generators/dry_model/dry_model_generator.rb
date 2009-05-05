@@ -89,7 +89,7 @@ class DryModelGenerator < Rails::Generator::NamedBase
       # Model Class + Unit Test.
       m.template 'model_standard.rb', File.join(MODELS_PATH, class_path, "#{file_name}.rb")
       unless options[:skip_tests]
-      m.template 'unit_test_standard.rb',
+      m.template 'model_unit_test_standard.rb',
         File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
       end
       

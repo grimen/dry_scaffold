@@ -12,6 +12,8 @@ class ResourcesController < ApplicationController
       #format.js  # index.js.rjs
       format.xml  { render :xml => @resources }
       format.json { render :json => @resources }
+      format.atom # index.atom.builder
+      format.rss  # index.rss.builder
     end
   end
   

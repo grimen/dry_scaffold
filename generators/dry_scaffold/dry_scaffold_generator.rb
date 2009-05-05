@@ -154,7 +154,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         
       # Controller Tests.
       unless options[:skip_tests]
-        m.template 'functional_test_standard.rb',
+        m.template 'controller_functional_test_standard.rb',
           File.join(FUNCTIONAL_TESTS_PATH, controller_class_path, "#{controller_file_name}_controller_test.rb")
       end
       
@@ -164,7 +164,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
           File.join(HELPERS_PATH, controller_class_path, "#{controller_file_name}_helper.rb")
         # Helper Tests
         unless options[:skip_tests]
-          m.template 'helper_test_standard.rb',
+          m.template 'helper_unit_test_standard.rb',
             File.join(UNIT_TESTS_PATH, controller_class_path, "#{controller_file_name}_helper_test.rb")
         end
       end
@@ -225,6 +225,42 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   
   def destroy_link(object_name = resource_instance)
     "#{object_name}"
+  end
+  
+  def feed_link(format)
+    case format
+    when :atom then
+      ":href => #{plural_name}_url(:#{format}), :rel => 'self'"
+    when :rss then
+      "#{plural_name}_url(#{singular_name}, :#{format})"
+    end
+  end
+  
+  def feed_entry_link(format)
+    case format
+    when :atom then
+      ":href => #{singular_name}_url(#{singular_name}, :#{format})"
+    when :rss then
+      "#{singular_name}_url(#{singular_name}, :#{format})"
+    end
+  end
+  
+  def feed_date(format)
+    case format
+    when :atom then
+      "(#{collection_instance}.first.created_at rescue Time.now.utc).strftime('%Y-%m-%dT%H:%M:%SZ')"
+    when :rss then
+      "(#{collection_instance}.first.created_at rescue Time.now.utc).to_s(:rfc822)"
+    end
+  end
+  
+  def feed_entry_date(format)
+    case format
+    when :atom then
+      "#{singular_name}.try(:updated_at).strftime('%Y-%m-%dT%H:%M:%SZ')"
+    when :rss then
+      "#{singular_name}.try(:updated_at).to_s(:rfc822)"
+    end
   end
   
   protected

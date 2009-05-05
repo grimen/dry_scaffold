@@ -1,19 +1,21 @@
 xml.instruct! :xml, :version => '1.0'
-xml.rss(:version => '2.0'){
-  xml.channel{
-    xml.title(@resources.first.blog.title)
-    xml.link("http://localhost:3000/blog_posts.rss")
-    xml.description(@resources.first.blog.description)
-    xml.language(I18n.default_locale)
+xml.rss(:version => '2.0') do
+  xml.channel do
+    xml.title 'Resources'
+    xml.description 'Index of all resources.'
+    xml.link resources_url(:rss)
+    xml.lastBuildDate (@resources.first.created_at rescue Time.now.utc).to_s(:rfc822)
+    xml.language I18n.locale
     
     @resources.each do |resource|
       xml.item do
-        xml.title(resource.title)
-        xml.description(resource.body)
-        xml.pubDate(resource.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
-        xml.link("http://localhost:3000/blog_posts/" + resource.id.to_s)
-        xml.guid("http://localhost:3000/blog_posts/" + resource.id.to_s)
+        xml.title 'title'
+        xml.description 'summary'
+        xml.pubDate resource.try(:created_at).to_s(:rfc822)
+        xml.link resource_url(resource, :rss)
+        
+        xml.author 'author_name'
       end
     end
-  }
-}
+  end
+end
