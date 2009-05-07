@@ -309,15 +309,15 @@ h4. Additional Formats
 
 Also, default respond block stubs are generated for any of these formats - for each generated REST-action - if they are specified:
 
-* @atom@            # => Render: 
-* @yaml@ or @yml@   # => Render: resource.to_yaml
-* @txt@ or @text@   # => Render: resource.to_s
+* @atom@        => Render: 
+* @yaml@/@yml@  => Render: resource.to_yaml
+* @txt@/@text@  => Render: resource.to_s
 
 NOTE: Only for Non-InheritedResources controllers for now.
 
 For the feed formats @atom@ and @rss@, builders are automatically generated if @index@-action is specified. Example:
 
-@app/views/ducks/index.atom.rss@
+@app/views/ducks/index.atom.builder@
 
 <pre>
   atom_feed(:language => I18n.locale) do |feed|
