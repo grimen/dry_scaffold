@@ -1,7 +1,12 @@
-h1. 0.2.2 (2009-05-04)
+h1. 0.2.2 (2009-05-06)
 
-* Feature: If route is already declared in "config/routes.rb", then don't generate the route.
+* Feature: Specifying actions new+ instead of new, then actions new/create. Same applies to edit+, i.e. edit/update.
+* Feature: For respond_to-formats ATOM/RSS; builders will be generated unless --skip-builders flag is specified
+* Feature: If route is already declared in 'config/routes.rb', then don't generate the route again.
+* Refactor: New template directory structure and naming conventions - more generic. Preparing for optional test frameworks.
 * Refactor: Cleaned up views with generator helpers.
+* Fixed bug: Options for factory_girl vs. machinist got in-versed, i.e. typo.
+* Fixed bug: Options got ignored because of a typo. Grrr....
 
 h1. 0.2.1 (2009-05-03)
 

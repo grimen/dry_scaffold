@@ -25,6 +25,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       :actions => (CONFIG_ARGS['actions'].split(',').compact.uniq.collect { |v| v.downcase.to_sym } rescue nil),
       :formats => (CONFIG_ARGS['formats'].split(',').compact.uniq.collect { |v| v.downcase.to_sym } rescue nil)
     }
+    
   DEFAULT_OPTIONS = {
       :resourceful => CONFIG_OPTIONS['resourceful'] || INHERITED_RESOURCES,
       :formtastic => CONFIG_OPTIONS['formtastic'] || FORMTASTIC,
@@ -32,10 +33,15 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       :skip_tests => !CONFIG_OPTIONS['tests'] || false,
       :skip_helpers => !CONFIG_OPTIONS['helpers'] || false,
       :skip_views => !CONFIG_OPTIONS['views'] || false,
-      :generate_layout => CONFIG_OPTIONS['layout'] || false
+      :layout => CONFIG_OPTIONS['layout'] || false
     }
     
+  # Formats.
   DEFAULT_RESPOND_TO_FORMATS =          [:html, :xml, :json].freeze
+  ENHANCED_RESPOND_TO_FORMATS =         [:yml, :yaml, :txt, :text, :atom, :rss].freeze
+  RESPOND_TO_FEED_FORMATS =             [:atom, :rss].freeze
+  
+  # Actions.
   DEFAULT_MEMBER_ACTIONS =              [:show, :new, :edit, :create, :update, :destroy].freeze
   DEFAULT_MEMBER_AUTOLOAD_ACTIONS =     (DEFAULT_MEMBER_ACTIONS - [:new, :create])
   DEFAULT_COLLECTION_ACTIONS =          [:index].freeze
@@ -43,6 +49,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   DEFAULT_CONTROLLER_ACTIONS =          (DEFAULT_COLLECTION_ACTIONS + DEFAULT_MEMBER_ACTIONS)
   
   DEFAULT_VIEW_TEMPLATE_FORMAT =        :haml
+  DEFAULT_TEST_FRAMEWORK =              :test_unit
   
   CONTROLLERS_PATH =      File.join('app', 'controllers').freeze
   HELPERS_PATH =          File.join('app', 'helpers').freeze
@@ -50,7 +57,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   LAYOUTS_PATH =          File.join(VIEWS_PATH, 'layouts').freeze
   MODELS_PATH =           File.join('app', 'models').freeze
   FUNCTIONAL_TESTS_PATH = File.join('test', 'functional').freeze
-  UNIT_TESTS_PATH =       File.join('test', 'unit', 'helpers').freeze
+  UNIT_TESTS_PATH =       File.join('test', 'unit').freeze
   ROUTES_FILE_PATH =      File.join(Rails.root, 'config', 'routes.rb').freeze
   
   RESOURCEFUL_COLLECTION_NAME = 'collection'.freeze
@@ -59,13 +66,17 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   NON_ATTR_ARG_KEY_PREFIX =     '_'.freeze
   
   # :{action} => [:{partial}, ...]
-  VIEW_TEMPLATES = {
-    :index  => [:item],
-    :show   => [],
-    :new    => [:form],
-    :edit   => [:form]
-  }.freeze
+  ACTION_VIEW_TEMPLATES = {
+      :index  => [:item],
+      :show   => [],
+      :new    => [:form],
+      :edit   => [:form]
+    }.freeze
   
+  ACTION_FORMAT_BUILDERS = {
+      :index => [:atom, :rss]
+    }
+    
   attr_reader   :controller_name,
                 :controller_class_path,
                 :controller_file_path,
@@ -79,6 +90,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
                 :model_singular_name,
                 :model_plural_name,
                 :view_template_format,
+                :test_framework,
                 :actions,
                 :formats,
                 :config
@@ -101,6 +113,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     end
     
     @view_template_format = DEFAULT_VIEW_TEMPLATE_FORMAT
+    @test_framework = DEFAULT_TEST_FRAMEWORK
     
     @attributes ||= []
     @args_for_model ||= []
@@ -110,13 +123,17 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       arg_entities = arg.split(':')
       if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}/
         if arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}action/
-          # Replace a '*' with default actions
+          # Replace quantifiers with default actions
           arg_entities[1].gsub!(/\*/, DEFAULT_CONTROLLER_ACTIONS.join(','))
+          arg_entities[1].gsub!(/new\+/, [:new, :create].join(','))
+          arg_entities[1].gsub!(/edit\+/, [:edit, :update].join(','))
+          
           arg_actions = arg_entities[1].split(',').compact.uniq
           @actions = arg_actions.collect { |action| action.downcase.to_sym }
         elsif arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}(format|respond_to)/
-          # Replace a '*' with default respond_to-formats
+          # Replace quantifiers with default respond_to-formats
           arg_entities[1].gsub!(/\*/, DEFAULT_RESPOND_TO_FORMATS.join(','))
+          
           arg_formats = arg_entities[1].split(',').compact.uniq
           @formats = arg_formats.collect { |format| format.downcase.to_sym }
         elsif arg =~ /^#{NON_ATTR_ARG_KEY_PREFIX}index/
@@ -130,7 +147,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
     
     @actions ||= DEFAULT_ARGS[:actions] || DEFAULT_CONTROLLER_ACTIONS
     @formats ||= DEFAULT_ARGS[:formats] || DEFAULT_RESPOND_TO_FORMATS
-    @options = DEFAULT_OPTIONS.merge(runtime_options)
+    @options = DEFAULT_OPTIONS.merge(options)
   end
   
   def manifest
@@ -138,7 +155,6 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       # Check for class naming collisions.
       m.class_collisions "#{controller_class_name}Controller", "#{controller_class_name}ControllerTest"
       m.class_collisions "#{controller_class_name}Helper", "#{controller_class_name}HelperTest"
-      m.class_collisions "#{class_path}", "#{class_name}"
       
       # Directories.
       m.directory File.join(CONTROLLERS_PATH, controller_class_path)
@@ -148,54 +164,66 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       m.directory File.join(UNIT_TESTS_PATH, controller_class_path) unless options[:skip_tests]
       
       # Controllers.
-      controller_template = options[:resourceful] ? 'inherited_resources' : 'standard'
-      m.template "controller_#{controller_template}.rb",
+      controller_template = options[:resourceful] ? 'inherited_resources' : 'action'
+      m.template File.join('controllers', "#{controller_template}_controller.rb"),
         File.join(CONTROLLERS_PATH, controller_class_path, "#{controller_file_name}_controller.rb")
         
       # Controller Tests.
       unless options[:skip_tests]
-        m.template 'controller_functional_test_standard.rb',
+        m.template File.join('controllers', 'tests',"#{test_framework}", 'functional_test.rb'),
           File.join(FUNCTIONAL_TESTS_PATH, controller_class_path, "#{controller_file_name}_controller_test.rb")
       end
       
       # Helpers.
       unless options[:skip_helpers]
-        m.template 'helper_standard.rb',
+        m.template File.join('helpers', 'helper.rb'),
           File.join(HELPERS_PATH, controller_class_path, "#{controller_file_name}_helper.rb")
+          
         # Helper Tests
         unless options[:skip_tests]
-          m.template 'helper_unit_test_standard.rb',
-            File.join(UNIT_TESTS_PATH, controller_class_path, "#{controller_file_name}_helper_test.rb")
+          m.template File.join('helpers', 'tests', "#{test_framework}", 'unit_test.rb'),
+            File.join(UNIT_TESTS_PATH, 'helpers', controller_class_path, "#{controller_file_name}_helper_test.rb")
         end
       end
       
       # Views.
       unless options[:skip_views]
         # View template for each action.
-        (actions & VIEW_TEMPLATES.keys).each do |action|
-          m.template "view_#{action}.html.#{view_template_format}", File.join(VIEWS_PATH, controller_file_name, "#{action}.html.#{view_template_format}")
+        (actions & ACTION_VIEW_TEMPLATES.keys).each do |action|
+          m.template File.join('views', "#{view_template_format}", "#{action}.html.#{view_template_format}"),
+            File.join(VIEWS_PATH, controller_file_name, "#{action}.html.#{view_template_format}")
+            
           # View template for each partial - if not already copied.
-          (VIEW_TEMPLATES[action] || []).each do |partial|
-            m.template "view__#{partial}.html.#{view_template_format}",
+          (ACTION_VIEW_TEMPLATES[action] || []).each do |partial|
+            m.template File.join('views', "#{view_template_format}", "_#{partial}.html.#{view_template_format}"),
               File.join(VIEWS_PATH, controller_file_name, "_#{partial}.html.#{view_template_format}")
           end
         end
       end
       
+      # Builders.
+      unless options[:skip_builders]
+        (actions & ACTION_FORMAT_BUILDERS.keys).each do |action|
+          (formats & ACTION_FORMAT_BUILDERS[action] || []).each do |format|
+            m.template File.join('views', 'builder', "#{action}.#{format}.builder"),
+              File.join(VIEWS_PATH, controller_file_name, "#{action}.#{format}.builder")
+          end
+        end
+      end
+      
       # Layout.
-      if options[:generate_layout]
-        m.template "view_layout.html.#{view_template_format}",
+      if options[:layout]
+        m.template File.join('views', "#{view_template_format}", "layout.html.#{view_template_format}"),
           File.join(LAYOUTS_PATH, "#{controller_file_name}.html.#{view_template_format}")
       end
       
       # Routes.
-      
       unless resource_route_exists?
         m.route_resources controller_file_name
       end
       
       # Models - use Rails default generator.
-      m.dependency 'dry_model', [name] + @args_for_model, :collision => :skip
+      m.dependency 'dry_model', [name] + @args_for_model, options.merge(:collision => :skip)
     end
   end
   
@@ -266,7 +294,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   protected
     
     def resource_route_exists?
-      puts route_exp = "map.resources :#{controller_file_name}"
+      route_exp = "map.resources :#{controller_file_name}"
       File.read(ROUTES_FILE_PATH) =~ /(#{route_exp.strip}|#{route_exp.strip.tr('\'', '\"')})/
     end
     
@@ -305,7 +333,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       end
       
       opt.on('--layout', "Generate layout.") do |v|
-        options[:generate_layout] = v
+        options[:layout] = v
       end
       
       opt.on('--skip-views', "Skip generation of views.") do |v|
@@ -314,6 +342,10 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       
       opt.on('--skip-helper', "Skip generation of helpers.") do |v|
         options[:skip_helpers] = v
+      end
+      
+      opt.on('--skip-builders', "Skip generation of helpers.") do |v|
+        options[:skip_builders] = v
       end
       
       ### CONTROLLERS + MODELS
@@ -329,11 +361,11 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       end
       
       opt.on('--fgirl', "Model: Generate \"factory_girl\" factories.") do |v|
-        options[:machinist] = v
+        options[:factory_girl] = v
       end
       
       opt.on('--machinist', "Model: Generate \"machinist\" blueprints (factories).") do |v|
-        options[:factory_girl] = v
+        options[:machinist] = v
       end
       
       opt.on('--odaddy', "Model: Generate \"object_daddy\" generator/factory methods.") do |v|
@@ -361,13 +393,14 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
         "[--skip-views]", 
         "[--skip-helpers]",
         "[--skip-tests]",
+        "[--skip-builders]",
         "[--layout]",
         "[--fixtures]",
         "[--factory_girl]",
         "[--machinist]",
         "[--object_daddy]",
         "[--skip-timestamps]",
-        "[--skip-migration]",
+        "[--skip-migration]"
       ].join(' ')
     end
     

@@ -2,11 +2,12 @@ h1. TODO
 
 h2. Next
 
-* Feature: Generate Atom/RSS builder stubs for formats - if specified - atom/rss for index action. (Reference: http://gatezero.org/~tim/2008/04/22/generating-valid-atom-feeds-from-rails-202/)
 * Feature: Handle belongs_to, i.e. specify MODEL --belongs-to PARENT_MODEL, which generates proper routes, proper before-filters if inherited_resources-controller, adding belongs_to-association in model, and correct form_for arguments.
+* Choose test suits: testunit/shoulda/rspec
 
 h2. Maybe later
 
 * Clean-up: Comment the code a bit more =)
 * Refactor: Break up in different generators: dry_controller, dry_views, etc., and use as dependencies in dry_scaffold?
 * Feature: Check for overridden templates in: RAILS_ROOT/lib/dry_scaffold/templates/
+* Feature: Builder for podcast-feed, similar to RSS/Atom-builders.

@@ -14,6 +14,7 @@ class <%= controller_class_name %>Controller < InheritedResources::Base
   before_filter :load_and_paginate_resources, :only => [<%= symbol_array_to_expression(actions & DryScaffoldGenerator::DEFAULT_COLLECTION_AUTOLOAD_ACTIONS) %>]
   
 <% end -%>
+
 <% (actions - DryScaffoldGenerator::DEFAULT_CONTROLLER_ACTIONS).each do |action| -%>
   # GET /<%= plural_name %>/<%= action.to_s %>
   def <%= action.to_s %>

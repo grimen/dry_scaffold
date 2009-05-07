@@ -24,12 +24,14 @@ class DryModelGenerator < Rails::Generator::NamedBase
       :fixtures => CONFIG_OPTIONS['fixtures'] || false,
       :factory_girl => CONFIG_OPTIONS['factory_girl'] || false,
       :machinist => CONFIG_OPTIONS['machinist'] || false,
-      :object_daddy => !CONFIG_OPTIONS['object_daddy'] || false,
-      :skip_timestamps => !CONFIG_OPTIONS['skip_timestamps'] || false,
-      :skip_migration => !CONFIG_OPTIONS['skip_migration'] || false,
-      :skip_tests => CONFIG_OPTIONS['skip_tests'] || false
+      :object_daddy => CONFIG_OPTIONS['object_daddy'] || false,
+      :skip_timestamps => !CONFIG_OPTIONS['timestamps'] || false,
+      :skip_migration => !CONFIG_OPTIONS['migration'] || false,
+      :skip_tests => !CONFIG_OPTIONS['tests'] || false
     }
     
+  DEFAULT_TEST_FRAMEWORK =      :test_unit
+  
   MODELS_PATH =                 File.join('app', 'models').freeze
   MIGRATIONS_PATH =             File.join('db', 'migrate').freeze
   TESTS_PATH =                  File.join('test').freeze
@@ -41,10 +43,13 @@ class DryModelGenerator < Rails::Generator::NamedBase
   NON_ATTR_ARG_KEY_PREFIX =     '_'.freeze
                   
   attr_reader :indexes,
-              :references
+              :references,
+              :test_framework
               
   def initialize(runtime_args, runtime_options = {})
     super
+    
+    @test_framework = DEFAULT_TEST_FRAMEWORK
     
     @attributes ||= []
     args_for_model = []
@@ -70,13 +75,12 @@ class DryModelGenerator < Rails::Generator::NamedBase
     
     @args = args_for_model
     @references = attributes.select(&:reference?)
-    @options = DEFAULT_OPTIONS.merge(runtime_options)
+    @options = DEFAULT_OPTIONS.merge(options)
   end
   
   def manifest
     record do |m|
       # Check for class naming collisions.
-      m.class_collisions class_name, "#{class_name}"
       m.class_collisions class_name, "#{class_name}Test"
       
       # Directories.
@@ -86,31 +90,34 @@ class DryModelGenerator < Rails::Generator::NamedBase
       m.directory File.join(FACTORY_GIRL_FACTORIES_PATH, class_path) if options[:factory_girl]
       m.directory File.join(MACHINIST_FACTORIES_PATH, class_path) if options[:machinist]
       
-      # Model Class + Unit Test.
-      m.template 'model_standard.rb', File.join(MODELS_PATH, class_path, "#{file_name}.rb")
+      # Model
+      m.template File.join('models', 'active_record_model.rb'),
+        File.join(MODELS_PATH, class_path, "#{file_name}.rb")
+        
+      # Model Tests.
       unless options[:skip_tests]
-      m.template 'model_unit_test_standard.rb',
-        File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
+        m.template File.join('models', 'tests', "#{test_framework}", 'unit_test.rb'),
+          File.join(UNIT_TESTS_PATH, class_path, "#{file_name}_test.rb")
       end
       
       # Fixtures/Factories.
       if options[:fixtures]
-        m.template 'fixtures_standard.yml',
+        m.template File.join('models', 'test_data', 'active_record_fixtures.yml'),
           File.join(FIXTURES_PATH, "#{file_name}.yml")
       end
       if options[:factory_girl]
-        m.template 'factories_factory_girl.rb',
+        m.template File.join('models', 'test_data', 'factory_girl_factories.rb'),
           File.join(FACTORY_GIRL_FACTORIES_PATH, "#{file_name}.rb")
       end
       if options[:machinist]
-        m.template 'factories_machinist.rb',
+        m.template File.join('models', 'test_data', 'machinist_factories.rb'),
           File.join(MACHINIST_FACTORIES_PATH, "#{file_name}.rb")
       end
       # NOTE: :object_daddy handled in model
       
       # Migration.
       unless options[:skip_migration]
-        m.migration_template 'migration_standard.rb', MIGRATIONS_PATH,
+        m.migration_template File.join('models', 'active_record_migration.rb') , MIGRATIONS_PATH,
           :assigns => {:migration_name => "Create#{class_name.pluralize.gsub(/::/, '')}"},
           :migration_file_name => "create_#{file_path.gsub(/\//, '_').pluralize}"
       end

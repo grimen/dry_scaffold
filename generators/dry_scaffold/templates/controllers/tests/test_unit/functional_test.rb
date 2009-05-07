@@ -20,7 +20,7 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
   test "destroy" do
     <%= class_name %>.any_instance.expects(:destroy).returns(true)
     delete :destroy, :id => <%= table_name %>(:one).to_param
-    assert_not_nil flash[:notice]
+    assert_not_nil flash[:notice] 
     assert_response :redirect
   end
   

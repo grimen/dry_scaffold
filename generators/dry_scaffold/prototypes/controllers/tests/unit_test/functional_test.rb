@@ -5,7 +5,7 @@ class ResourceControllerTest < ActionController::TestCase
   test "create" do
     Resource.any_instance.expects(:save).returns(true)
     post :create, :resource => { }
-    assert_response :redirect
+    assert_response :redirect 
   end
   
   test "create_with_failure" do

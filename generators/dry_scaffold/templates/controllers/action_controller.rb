@@ -24,6 +24,12 @@ class <%= controller_class_name %>Controller < ApplicationController
       format.yaml { render :text => @<%= plural_name %>.to_yaml, :content_type => :'text/yaml' }
 <% when :txt, :text then -%>
       format.txt  { render :text => @<%= plural_name %>.to_s, :content_type => :text }
+<% when :atom, :rss then -%>
+<% unless options[:skip_builders] -%>
+      format.<%= _format %> # index.<%= _format %>.builder
+<% else -%>
+      format.<%= _format %> { }
+<% end -%>
 <% else -%>
       format.<%= _format %>  { }
 <% end -%>
