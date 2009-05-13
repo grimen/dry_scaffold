@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+
+`ruby script/generate dry_scaffold #{ARGV.join(' ')}`

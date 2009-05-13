@@ -7,6 +7,7 @@ SUMMARY = %Q{A DRYer scaffold generator for Rails. Generates dry semantic and st
 HOMEPAGE = "http://github.com/grimen/#{NAME}/tree/master"
 AUTHOR = "Jonas Grimfelt"
 EMAIL = "grimen@gmail.com"
+SUPPORT_FILES = %w(README.textile TODO.textile CHANGELOG.textile)
 
 begin
   require 'jeweler'
@@ -19,9 +20,9 @@ begin
     gem.email = EMAIL
     
     gem.require_paths = %w{lib}
-    gem.files = %w(MIT-LICENSE README.textile TODO.textile Rakefile) + Dir.glob(File.join('{generators,rails,tasks}', '**', '*'))
-    gem.executables = %w()
-    gem.extra_rdoc_files = %w{README.textile}
+    gem.files = %w(MIT-LICENSE Rakefile) + SUPPORT_FILES + Dir.glob(File.join('{bin,generators,rails,tasks}', '**', '*'))
+    gem.executables = %w(dscaffold dry_scaffold dmodel dry_model)
+    gem.extra_rdoc_files = SUPPORT_FILES
   end
 rescue LoadError
   puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
@@ -42,6 +43,6 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = NAME
   rdoc.options << '--line-numbers' << '--inline-source' << '--charset=UTF-8'
-  rdoc.rdoc_files.include('README.textile')
+  rdoc.rdoc_files.include(SUPPORT_FILES)
   rdoc.rdoc_files.include(File.join('lib', '**', '*.rb'))
 end
