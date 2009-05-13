@@ -2,21 +2,29 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dry_scaffold}
-  s.version = "0.2.2"
+  s.version = "0.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jonas Grimfelt"]
-  s.date = %q{2009-05-07}
+  s.date = %q{2009-05-13}
   s.description = %q{A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.}
   s.email = %q{grimen@gmail.com}
+  s.executables = ["dscaffold", "dry_scaffold", "dmodel", "dry_model"]
   s.extra_rdoc_files = [
-    "README.textile"
+    "CHANGELOG.textile",
+    "README.textile",
+    "TODO.textile"
   ]
   s.files = [
+    "CHANGELOG.textile",
     "MIT-LICENSE",
     "README.textile",
     "Rakefile",
     "TODO.textile",
+    "bin/dmodel",
+    "bin/dry_model",
+    "bin/dry_scaffold",
+    "bin/dscaffold",
     "generators/dmodel/dmodel_generator.rb",
     "generators/dry_model/USAGE",
     "generators/dry_model/dry_model_generator.rb",
@@ -66,11 +74,10 @@ Gem::Specification.new do |s|
     "rails/init.rb",
     "tasks/dry_scaffold.rake"
   ]
-  s.has_rdoc = true
   s.homepage = %q{http://github.com/grimen/dry_scaffold/tree/master}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.2}
+  s.rubygems_version = %q{1.3.3}
   s.summary = %q{A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.}
 
   if s.respond_to? :specification_version then
