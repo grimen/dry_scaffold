@@ -6,7 +6,7 @@ h2. Description
 
 DryScaffold is a replacement for the Rails scaffold generator that generates code that most people end up deleting or rewriting anyway because of the unusable code. The scaffold concept is powerful, but it has more potential than generating messy and almost useless code - something that might change with Rails 3 though. The goal with DryScaffold is to generate DRY, beautiful, and standards compliant code based on common patterns without adding a lot of assumptions.
 
-Key Concepts:
+*Key Concepts:*
  
 * Controllers that are DRY, RESTful, no code-smells, following conventions, and implementing VERY common patterns.
 * Views that are DRY, semantic, standards compliant, valid, and more useful in development.
@@ -285,7 +285,7 @@ The above REST actions are in many RESTful applications the only ones needed. An
 
 h3. Controller Formats
 
-h4. Example:
+Example:
 
 <pre>_formats:html,xml,txt,...   # <=> _respond_to:html,xml,txt,...</pre>
 
@@ -349,7 +349,7 @@ The above formats are the most commonly used ones, and respond blocks are alread
 
 h3. Model Indexes
 
-h4. Example:
+Example:
 
 If model attributes are specified as:
 
@@ -367,7 +367,7 @@ NOTE: Of course...you need to specify indexes based on attributes that exists fo
 
 h3. Options/Flags
 
-h4. Example:
+Example:
 
 <pre>--skip-resourceful --layout</pre>
 
@@ -383,7 +383,7 @@ These are the options for the scaffold-generator.
 * @--skip-tests@        - Don't generate tests (functional/unit/...).
 * @--skip-builders@     - Don't generate builders.
 * @--layout@            - Generate layout.
-
+ 
 h4. Model
 
 These are the options for the model/scaffold-generators.
@@ -411,10 +411,10 @@ For your inspiration, you could try the following:
 
 <pre>./script/generate dry_scaffold Zebra name:string about:text --skip-resourceful
 ./script/generate dry_scaffold Kangaroo name:string about:text --skip-formtastic
-./script/generate dry_scaffold Duck name:string about:text _actions:new,create,index,quack
-./script/generate dry_scaffold Parrot name:string about:text _formats:html,xml,yml
-./script/generate dry_scaffold GoldFish name:string about:text _indexes:name --fgirl
-./script/generate dry_scaffold Frog name:string about:text _indexes:name,name+about --fixtures</pre>
+./script/generate dscaffold Duck name:string about:text _actions:new,create,index,quack
+./script/generate dscaffold Parrot name:string about:text _formats:html,xml,yml
+./script/generate dscaffold GoldFish name:string about:text _indexes:name --fgirl
+./script/generate dry_model Frog name:string about:text _indexes:name,name+about --fixtures</pre>
 
 ...or just go crazy!
 
@@ -426,4 +426,4 @@ At last, positive feedback is always appreciated!
 
 h2. License
 
-Copyright (c) 2009 Jonas Grimfelt, released under the MIT-license
+Copyright (c) 2009 Jonas Grimfelt, released under the MIT-license.
