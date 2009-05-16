@@ -1,13 +1,13 @@
 h1. DRY SCAFFOLD
 
-A Rails scaffold generator that generates DRYer, cleaner, and more useful code.
+_A Rails scaffold generator that generates DRYer, cleaner, and more useful code._
 
 h2. Description
 
 DryScaffold is a replacement for the Rails scaffold generator that generates code that most people end up deleting or rewriting anyway because of the unusable code. The scaffold concept is powerful, but it has more potential than generating messy and almost useless code - something that might change with Rails 3 though. The goal with DryScaffold is to generate DRY, beautiful, and standards compliant code based on common patterns without adding a lot of assumptions.
 
-h3. Key Concepts:
-
+Key Concepts:
+ 
 * Controllers that are DRY, RESTful, no code-smells, following conventions, and implementing VERY common patterns.
 * Views that are DRY, semantic, standards compliant, valid, and more useful in development.
 * Factories instead of fixtures.
@@ -17,19 +17,19 @@ h3. Key Concepts:
 h2. Dependencies
 
 h3. Required:
-
+ 
 * "*haml*":http://github.com/nex3/haml - ERB sucks like PHP, end of story
 
 h3. Optional:
 
 h4. Controllers/Views
-
+ 
 * "*will_paginate*":http://github.com/mislav/will_paginate - Pagination
 * "*formtastic*":http://github.com/justinfrench/formtastic - DRY and semantic forms
 * "*inherited_resources*":http://github.com/josevalim/inherited_resources - DRY/Resourceful controllers
 
 h4. Models
-
+ 
 * "*factory_girl*":http://github.com/thoughtbot/factory_girl - Fixture-replacement
 * "*machinist*":http://github.com/notahat/machinist - Fixture-replacement
 * "*object_daddy*":http://github.com/flogic/object_daddy - Fixture-replacement
@@ -53,7 +53,9 @@ h3. Formtastic Forms
 
 Quick and dirty; Formtastic makes your form views cleaner, and your life as a Rails developer easier (for real). Formtastic forms can be turned off, but I would recommend any Rails developer to consider using it - there is really no good reason not to if you not running very old version of Rails.
 
-h4. Default HAML (without Formtastic):
+h4. Standard
+
+HAML + ActionView FormHelpers:
 
 <pre>- form_for(@duck) do |f|
   = f.error_messages
@@ -67,7 +69,9 @@ h4. Default HAML (without Formtastic):
   %p.buttons
     = f.submit 'Create'</pre>
 
-h4. Formtastic + HAML:
+h4. Formtastic
+
+HAML + Formtastic:
 
 <pre>- semantic_form_for(@duck) do |f|
   - f.inputs do
@@ -82,7 +86,9 @@ h3. Resourceful Controllers
 
 Quick and dirty; InheritedResources makes your controllers controllers cleaner, and might make experienced Rails developer's life DRYer code wise. This is possible because of REST as a convention in Rails, and therefore the patterns that arise in controllers can be DRYed up A LOT. Resourceful - InheritedResources-based - controllers can be turned off, but I would recommend any experienced Rails developer to consider using it - there is really no good reason not to unless maybe if you are a Rails beginner, then you should consider get used to the basic Rails building blocks first.
 
-h4. Default (without InheritedResources)
+h4. Standard
+
+Using ActionController:
 
 <pre>def new
   @duck = Duck.new
@@ -94,7 +100,9 @@ h4. Default (without InheritedResources)
   end
 end</pre>
 
-h4. Resourceful (InheritedResources)
+h4. Resourceful
+
+Using InheritedResources:
 
 <pre>actions :new
 respond_to :html, :xml, :json</pre>
@@ -107,11 +115,13 @@ Pagination is such a common feature that always seems to be implemented anyway, 
 
 Find out more about *will_paginate*: "http://github.com/mislav/will_paginate":http://github.com/mislav/will_paginate
 
-h3. DRY Patterns
+h3. DRYying Patterns
 
 Either if you choosing default or resourceful controllers, this pattern is used to DRYing up controllers a bit more, and at the same time loading resources in the same place using before_filter while adding automatic pagination for collections.
 
-h4. Default (ActionController with pagination - not using InheritedResources)
+h4. Standard
+
+ActionController with pagination:
 
 <pre>before_filter :load_resource, :only => [:show, :edit, :update, :destroy]
 before_filter :load_and_paginate_resources, :only => [:index]
@@ -133,7 +143,9 @@ protected
   end
   alias :load_resource :resource</pre>
 
-h4. Resourceful (InheritedResources with pagination)
+h4. Resourceful
+
+InheritedResources with pagination:
 
 <pre>protected
   
@@ -152,8 +164,8 @@ h3. View Partials
 
 A very common pattern is to break up views in partials, which is also what DryScaffold does:
 
-* new/edit => _form
-* index => _item
+* @new@/@edit@ => @_form@
+* @index@ => @_item@
 
 h3. More To Come... (TODO)
 
@@ -164,7 +176,7 @@ These are things I have in mind:
 
 h2. Setup
 
-Installing DryScaffold is easy as 1-2-3...nah, really:
+Installing DryScaffold is easy:
 
 h3. 1. Installation
 
@@ -172,24 +184,21 @@ Install DryScaffold...
 
 h4. Gem (Recommended)
 
-<pre>gem sources -a http://gems.github.com
-sudo gem install grimen-dry_scaffold</pre>
+<pre>sudo gem install grimen-dry_scaffold --source http://gems.github.com</pre>
+
+...and in config: @config/environments/development.rb@
+
+<pre>config.gem 'grimen-dry_scaffold', :lib => 'dry_scaffold', :source => 'http://gems.github.com'</pre>
 
 h4. Plugin
 
 <pre>./script/plugin install git://github.com/grimen/dry_scaffold.git</pre>
 
-h3. 2. Configuration (Gem only)
-
-In: @config/environments/development.rb@
-
-<pre>config.gem 'grimen-dry_scaffold', :lib => 'dry_scaffold'</pre>
-
-h3. 3. Install Dependencies (Partly optional)
+h3. 2. Install Dependencies (Partly optional)
 
 Install dependencies to release the full power of dry_scaffold. Only HAML is really required of these, but how could anyone resist candy? =)
 
-h4. Express
+h4. Automatic/Express
 
 For us lazy ones... =)
 
@@ -197,23 +206,21 @@ For us lazy ones... =)
 
 Will install the dependencies, initialize HAML within current Rails project if not already done, and automatically referencing the dependency gems within the current Rails project environment config if they are not already in there (note: nothing will be overwritten).
 
-h4. Installation
+h4. Manual
 
-Get the gems...
+Get the gems...you want:
 
-<pre>sudo gem install haml</pre>
-<pre>sudo gem install will_paginate</pre>
-<pre>sudo gem install justinfrench-formtastic</pre>
-<pre>sudo gem install josevalim-inherited_resources</pre>
+<pre>sudo gem install haml
+sudo gem install will_paginate
+sudo gem install justinfrench-formtastic
+sudo gem install josevalim-inherited_resources</pre>
 
-h4. B2. Configuration
+...and same for the config config: @config/environments/development.rb@
 
-In: @config/environment.rb@
-
-<pre>config.gem 'haml'</pre>
-<pre>config.gem 'will_paginate'</pre>
-<pre>config.gem 'justinfrench-formtastic', :lib => 'formtastic, :source => 'http://gems.github.com'</pre>
-<pre>config.gem 'josevalim-inherited_resources', :lib => 'inherited_resources', :source => 'http://gems.github.com'</pre>
+<pre>config.gem 'haml'
+config.gem 'will_paginate'
+config.gem 'justinfrench-formtastic', :lib => 'formtastic, :source => 'http://gems.github.com'
+config.gem 'josevalim-inherited_resources', :lib => 'inherited_resources', :source => 'http://gems.github.com'</pre>
 
 h2. Usage
 
@@ -278,7 +285,7 @@ The above REST actions are in many RESTful applications the only ones needed. An
 
 h3. Controller Formats
 
-Example:
+h4. Example:
 
 <pre>_formats:html,xml,txt,...   # <=> _respond_to:html,xml,txt,...</pre>
 
@@ -342,7 +349,7 @@ The above formats are the most commonly used ones, and respond blocks are alread
 
 h3. Model Indexes
 
-Example:
+h4. Example:
 
 If model attributes are specified as:
 
@@ -360,11 +367,13 @@ NOTE: Of course...you need to specify indexes based on attributes that exists fo
 
 h3. Options/Flags
 
-Example:
+h4. Example:
 
 <pre>--skip-resourceful --layout</pre>
 
-h4. General
+h4. Scaffold
+
+These are the options for the scaffold-generator.
 
 * @--skip-pagination@   - Don't generate pagination of collections in controller and views, i.e. don't use *will_paginate*.
 * @--skip-resourceful@  - Don't generate resourceful controller, i.e. don't use *inherited_resources*.
@@ -375,7 +384,9 @@ h4. General
 * @--skip-builders@     - Don't generate builders.
 * @--layout@            - Generate layout.
 
-h4. Model-specific
+h4. Model
+
+These are the options for the model/scaffold-generators.
 
 * @--fixtures@          - Generate fixtures.
 * @--fgirl@             - Generate *factory_girl* factories.
@@ -413,4 +424,6 @@ If you experience any issues/bugs or have feature requests, just file a GitHub-i
 If you think parts of my implementation could be implemented nicer somehow, please let me know...or just fork it and fix it yourself! =)
 At last, positive feedback is always appreciated!
 
-Copyright (c) 2009 Jonas Grimfelt, released under MIT-license
+h2. License
+
+Copyright (c) 2009 Jonas Grimfelt, released under the MIT-license

@@ -10,4 +10,4 @@ h2. Maybe later
 * Clean-up: Comment the code a bit more =)
 * Refactor: Break up in different generators: dry_controller, dry_views, etc., and use as dependencies in dry_scaffold?
 * Feature: Check for overridden templates in: RAILS_ROOT/lib/dry_scaffold/templates/
-* Feature: Builder for podcast-feed, similar to RSS/Atom-builders.
+* Feature: Builder for podcast-feed, similar to RSS/Atom-builders. http://wiki.github.com/radiant/radiant/host-a-podcast
