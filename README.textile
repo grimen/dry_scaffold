@@ -21,13 +21,13 @@ h3. Required:
 * "*haml*":http://github.com/nex3/haml - ERB sucks like PHP, end of story
 
 h3. Optional:
-
+ 
 h4. Controllers/Views
  
 * "*will_paginate*":http://github.com/mislav/will_paginate - Pagination
 * "*formtastic*":http://github.com/justinfrench/formtastic - DRY and semantic forms
 * "*inherited_resources*":http://github.com/josevalim/inherited_resources - DRY/Resourceful controllers
-
+ 
 h4. Models
  
 * "*factory_girl*":http://github.com/thoughtbot/factory_girl - Fixture-replacement
