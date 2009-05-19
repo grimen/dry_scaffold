@@ -161,7 +161,7 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
       m.directory File.join(HELPERS_PATH, controller_class_path) unless options[:skip_helpers]
       m.directory File.join(VIEWS_PATH, controller_class_path, controller_file_name) unless options[:skip_views]
       m.directory File.join(FUNCTIONAL_TESTS_PATH, controller_class_path) unless options[:skip_tests]
-      m.directory File.join(UNIT_TESTS_PATH, controller_class_path) unless options[:skip_tests]
+      m.directory File.join(UNIT_TESTS_PATH, 'helpers', controller_class_path) unless options[:skip_tests] || options[:skip_helpers]
       
       # Controllers.
       controller_template = options[:resourceful] ? 'inherited_resources' : 'action'
