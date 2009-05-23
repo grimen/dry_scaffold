@@ -13,8 +13,8 @@ class DryScaffoldGenerator < Rails::Generator::NamedBase
   
   # Load defaults from config file - default or custom.
   begin
-    default_config_file = File.join(File.dirname(__FILE__), '..', '..', 'config', 'scaffold.yml')
-    custom_config_file = File.join(Rails.root, 'config', 'scaffold.yml')
+    default_config_file = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'config', 'scaffold.yml'))
+    custom_config_file = File.expand_path(File.join(Rails.root, 'config', 'scaffold.yml'))
     config_file = File.join(File.exist?(custom_config_file) ? custom_config_file : default_config_file)
     config = YAML::load(File.open(config_file))
     CONFIG_ARGS = config['dry_scaffold']['args'] rescue nil

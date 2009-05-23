@@ -20,7 +20,7 @@ begin
     gem.email = EMAIL
     
     gem.require_paths = %w{lib}
-    gem.files = %w(MIT-LICENSE Rakefile) + SUPPORT_FILES + Dir.glob(File.join('{bin,generators,rails,tasks}', '**', '*'))
+    gem.files = %w(MIT-LICENSE Rakefile) + SUPPORT_FILES + Dir.glob(File.join('{bin,config,generators,lib,rails,tasks}', '**', '*'))
     gem.executables = %w(dscaffold dry_scaffold dmodel dry_model)
     gem.extra_rdoc_files = SUPPORT_FILES
   end
