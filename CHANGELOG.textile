@@ -1,3 +1,16 @@
+h1. 0.2.5 (2009-06-12)
+
+* Fixed typo: Gem configuration instructions in README.
+* Fixed bug: Re-generated gemspec - missing files. (cjheath)
+
+h1. 0.2.4 (2009-05-19)
+
+* Fixed bug: Causing generator to fail if test/unit/helpers path don't exist. 
+
+h1. 0.2.3 (2009-05-12)
+
+* Fixed bug: Missing executables in gemspec.
+
 h1. 0.2.2 (2009-05-06)
 
 * Feature: Specifying actions new+ instead of new, then actions new/create. Same applies to edit+, i.e. edit/update.

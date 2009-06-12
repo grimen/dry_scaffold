@@ -188,7 +188,7 @@ h4. Gem (Recommended)
 
 ...and in config: @config/environments/development.rb@
 
-<pre>config.gem 'grimen-dry_scaffold', :lib => 'dry_scaffold', :source => 'http://gems.github.com'</pre>
+<pre>config.gem 'grimen-dry_scaffold', :lib => false, :source => 'http://gems.github.com'</pre>
 
 h4. Plugin
 
