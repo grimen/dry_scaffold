@@ -34,9 +34,11 @@ class <%= controller_class_name %>Controller < InheritedResources::Base
       @collection = @<%= model_plural_name %> ||= end_of_association_chain.all
 <% end -%>
     end
+    alias :load_and_paginate_resources :collection
     
     def resource
       @resource = @<%= model_singular_name %> ||= end_of_association_chain.find(params[:id])
     end
+    alias :load_resource :resource
     
 end
