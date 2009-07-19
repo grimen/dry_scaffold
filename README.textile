@@ -219,7 +219,7 @@ sudo gem install josevalim-inherited_resources</pre>
 
 <pre>config.gem 'haml'
 config.gem 'will_paginate'
-config.gem 'justinfrench-formtastic', :lib => 'formtastic, :source => 'http://gems.github.com'
+config.gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
 config.gem 'josevalim-inherited_resources', :lib => 'inherited_resources', :source => 'http://gems.github.com'</pre>
 
 h2. Usage
