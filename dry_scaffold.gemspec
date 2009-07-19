@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dry_scaffold}
-  s.version = "0.2.6"
+  s.version = "0.2.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jonas Grimfelt"]
-  s.date = %q{2009-07-03}
+  s.date = %q{2009-07-19}
   s.description = %q{A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.}
   s.email = %q{grimen@gmail.com}
   s.executables = ["dscaffold", "dry_scaffold", "dmodel", "dry_model"]
@@ -45,7 +45,8 @@ Gem::Specification.new do |s|
     "generators/dry_scaffold/dry_scaffold_generator.rb",
     "generators/dry_scaffold/prototypes/controllers/action_controller.rb",
     "generators/dry_scaffold/prototypes/controllers/inherited_resources_controller.rb",
-    "generators/dry_scaffold/prototypes/controllers/tests/unit_test/functional_test.rb",
+    "generators/dry_scaffold/prototypes/controllers/tests/shoulda/default_functional_test.rb",
+    "generators/dry_scaffold/prototypes/controllers/tests/test_unit/functional_test.rb",
     "generators/dry_scaffold/prototypes/helpers/helper.rb",
     "generators/dry_scaffold/prototypes/helpers/tests/test_unit/unit_test.rb",
     "generators/dry_scaffold/prototypes/views/builder/index.atom.builder",
