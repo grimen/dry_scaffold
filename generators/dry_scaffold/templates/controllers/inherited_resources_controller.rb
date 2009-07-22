@@ -29,7 +29,7 @@ class <%= controller_class_name %>Controller < InheritedResources::Base
       paginate_options ||= {}
       paginate_options[:page] ||= (params[:page] || 1)
       paginate_options[:per_page] ||= (params[:per_page] || 20)
-      @<%= plural_name %> = @<%= model_plural_name %> ||= end_of_association_chain.paginate(paginate_options)
+      @collection = @<%= model_plural_name %> ||= end_of_association_chain.paginate(paginate_options)
 <% else -%>
       @collection = @<%= model_plural_name %> ||= end_of_association_chain.all
 <% end -%>

@@ -105,7 +105,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     
     respond_to do |format|
       if <%= resource_instance %>.save
-        flash[:notice] = '<%= singular_name.humanize %> was successfully created.'
+        flash[:notice] = "<%= singular_name.humanize %> was successfully created."
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
         format.html { redirect_to(<%= resource_instance %>) }
@@ -122,7 +122,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% end -%>
 <% end -%>
       else
-        #flash[:error] = '<%= singular_name.humanize %> could not be created.'
+        flash[:error] = "<%= singular_name.humanize %> could not be created."
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
         format.html { render 'new' }
@@ -150,6 +150,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   def update
     respond_to do |format|
       if <%= resource_instance %>.update_attributes(params[:<%= singular_name %>])
+        flash[:notice] = "<%= singular_name.humanize %> was successfully updated."
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
         format.html { redirect_to(<%= resource_instance %>) }
@@ -162,7 +163,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% end -%>
 <% end -%>
       else
-        #flash[:error] = '<%= singular_name.humanize %> could not be updated.'
+        flash[:error] = "<%= singular_name.humanize %> could not be updated."
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
         format.html { render 'edit' }
@@ -190,7 +191,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   def destroy
     respond_to do |format|
       if <%= resource_instance %>.destroy
-        flash[:notice] = '<%= singular_name.humanize %> was successfully destroyed.'
+        flash[:notice] = "<%= singular_name.humanize %> was successfully destroyed."
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
         format.html { redirect_to(<%= plural_name %>_url) }
@@ -203,7 +204,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% end -%>
 <% end -%>
       else
-        flash[:error] = '<%= singular_name.humanize %> could not be destroyed.'
+        flash[:error] = "<%= singular_name.humanize %> could not be destroyed."
 <% formats.each do |_format| -%>
 <% case _format when :html then -%>
         format.html { redirect_to(<%= singular_name %>_url(<%= resource_instance %>)) }

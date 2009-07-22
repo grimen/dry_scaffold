@@ -1,3 +1,3 @@
-module ResourcesHelper
+module DucksHelper
   
 end

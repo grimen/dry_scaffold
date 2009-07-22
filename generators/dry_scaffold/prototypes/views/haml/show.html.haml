@@ -1,13 +1,13 @@
 %h1.heading
-  = "Resource %s" % @resource.id
+  = "Duck %s" % @duck.id
   
-- content_tag_for(:dl, @resource) do
+- content_tag_for(:dl, @duck) do
   %dt.label= 'Title'
-  %dd.title= h @resource.try(:title)
+  %dd.title= h @duck.try(:title)
   %dt.label= 'Description'
-  %dd.description= h @resource.try(:description)
+  %dd.description= h @duck.try(:description)
   
 %p.actions
-  = link_to 'Edit', edit_resource_url(@resource)
+  = link_to 'Edit', edit_duck_url(@duck)
   |
-  = link_to 'Index', resources_url
+  = link_to 'Index', ducks_url

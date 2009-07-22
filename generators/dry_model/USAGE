@@ -5,8 +5,5 @@ DESCRIPTION
   A replacement for the Rails model generator - a part of the dry_generator toolset.
   
 EXAMPLE
-  ./script/generate dry_model ModelName [attribute:type attribute:type] [_index:name,owner_id+owner_type,active,...] [--fixtures] [--fgirl] [--machinist] [--odaddy] [--skip-timestamps] [--skip-migration] [--skip-tests]
-  
-  ...or the shortcut version:
-  
-  ./script/generate dmodel ...
+  ./script/generate dmodel GoldFish name:string about:text _indexes:name --fgirl
+  ./script/generate dmodel Frog name:string about:text _indexes:name,name+about --fixtures

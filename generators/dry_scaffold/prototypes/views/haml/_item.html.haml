@@ -1,9 +1,9 @@
-- content_tag_for(:tr, resource) do
-  %td.title= h resource.try(:title)
-  %td.description= h resource.try(:description)
+- content_tag_for(:tr, duck) do
+  %td.title= h duck.try(:title)
+  %td.description= h duck.try(:description)
   %td.actions
-    = link_to 'Show', resource_url(resource)
+    = link_to 'Show', duck_url(duck)
     |
-    = link_to 'Edit', edit_resource_url(resource)
+    = link_to 'Edit', edit_duck_url(duck)
     |
-    = link_to 'Destroy', resource_url(resource), :confirm => 'Are you sure?', :method => :delete
+    = link_to 'Destroy', duck_url(duck), :confirm => 'Are you sure?', :method => :delete

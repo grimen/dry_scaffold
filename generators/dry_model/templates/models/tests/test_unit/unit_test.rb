@@ -1,8 +1,16 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'test_helper'))
+require 'test_helper'
 
-class <%= class_name %>Test < ActiveSupport::TestCase
+class <%= class_name %>Test < ActiveRecord::TestCase
   
-  test "something" do
+<% if options[:fixtures] -%>
+  fixtures :<%= plural_name %>
+  
+<% end -%>
+  setup do
+    
+  end
+  
+  test 'something' do
     assert true
   end
   

@@ -2,7 +2,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'test_hel
  
 class DucksHelperTest < ActionView::TestCase
   
-  test 'something' do
+  should 'test something' do
     assert true
   end
   

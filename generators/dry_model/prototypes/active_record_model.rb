@@ -1,6 +1,6 @@
-class Resource < ActiveRecord::Base
+class Duck < ActiveRecord::Base
   
-  belongs_to :user
+  belongs_to :owner
   
   # object_daddy
   generator_for(:name) { "AString" }

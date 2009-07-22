@@ -1,8 +1,8 @@
 %h1.heading
-  = 'Sections'
+  = 'Ducks'
   
 %p.actions
-  = link_to 'New resource', new_resource_url
+  = link_to 'New duck', new_duck_url
   
 %table
   %thead.header
@@ -11,7 +11,7 @@
       %th.description= 'Description'
       %th.actions= 'Actions'
   %tbody.items.resources
-    - @collection.each do |resource|
-      = render 'item', :resource => resource
+    - @ducks.each do |duck|
+      = render 'item', :duck => duck
       
-= will_paginate(@collection)
+= will_paginate(@ducks)

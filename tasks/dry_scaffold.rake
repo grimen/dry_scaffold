@@ -31,7 +31,11 @@ namespace :dry_scaffold do
     require File.join(GEM_ROOT, 'lib', 'setup_helper')
     include SetupHelper
     
-    GEMS = [:haml, :will_paginate, :'josevalim-inherited_resources', :'justinfrench-formtastic'].freeze
+    GEMS = [:haml,
+            :'mislav-will_paginate',
+            :'josevalim-inherited_resources',
+            :'justinfrench-formtastic',
+            :'thoughtbot-shoulda'].freeze
     PLUGINS = [].freeze
     
     desc "Install dependencies for fully advantage of this generator."

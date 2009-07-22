@@ -1,4 +1,4 @@
-class CreateResources < ActiveRecord::Migration
+class CreateDucks < ActiveRecord::Migration
   def self.up
     create_table :resources, :force => true do |t|
       t.string :name

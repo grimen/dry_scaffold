@@ -1,10 +1,10 @@
 %h1.heading
-  = "Editing resource %s" % @resource.id
+  = "Editing duck %s" % @duck.id
   
-- semantic_form_for(@resource) do |form|
+- semantic_form_for(@duck) do |form|
   = render 'form', :form => form
   - form.buttons do
     = form.commit_button 'Update'
     
 %p.actions
-  = link_to 'Cancel', resources_url
+  = link_to 'Cancel', ducks_url

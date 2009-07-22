@@ -1,6 +1,6 @@
 class <%= migration_name %> < ActiveRecord::Migration
   def self.up
-    create_table :<%= table_name %>, :force => true do |t|
+    create_table :<%= table_name %> do |t|
 <% attributes.each do |attribute| -%>
       t.<%= attribute.type %> :<%= attribute.name %>
 <% end -%>
@@ -10,7 +10,7 @@ class <%= migration_name %> < ActiveRecord::Migration
 <% end -%>
     end
 <% unless indexes.blank? -%>
-
+    
 <% indexes.each do |index| -%>
     add_index :<%= table_name %>, <%= index.is_a?(Array) ? "[:#{index.join(', :')}]" : ":#{index}" %>
 <% end -%>

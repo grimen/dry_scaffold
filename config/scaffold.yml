@@ -5,18 +5,26 @@ dry_scaffold:
     formats: html,js,xml,json
   options:
     formtastic: true
-    resourceful: true
+    resourceful: false
     pagination: true
+    layout: false
     views: true
     helpers: true
     tests: true
-    layout: false
-dry_model:
-  options:
-    fixtures: false
+    tunit: true
+    shoulda: false
+    fixtures: true
     fgirl: false
     machinist: false
     object_daddy: false
+dry_model:
+  options:
     migration: true
     timestamps: true
     tests: true
+    tunit: true
+    shoulda: false
+    fixtures: true
+    fgirl: false
+    machinist: false
+    object_daddy: false

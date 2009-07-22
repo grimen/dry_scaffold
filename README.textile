@@ -24,15 +24,19 @@ h3. Optional:
  
 h4. Controllers/Views
  
-* "*will_paginate*":http://github.com/mislav/will_paginate - Pagination
-* "*formtastic*":http://github.com/justinfrench/formtastic - DRY and semantic forms
 * "*inherited_resources*":http://github.com/josevalim/inherited_resources - DRY/Resourceful controllers
+* "*formtastic*":http://github.com/justinfrench/formtastic - DRY and semantic forms
+* "*will_paginate*":http://github.com/mislav/will_paginate - Pagination
  
 h4. Models
  
 * "*factory_girl*":http://github.com/thoughtbot/factory_girl - Fixture-replacement
 * "*machinist*":http://github.com/notahat/machinist - Fixture-replacement
 * "*object_daddy*":http://github.com/flogic/object_daddy - Fixture-replacement
+ 
+h4. Testing
+ 
+* "*Shoulda*":http://github.com/thoughtbot/shoulda - Testing framework
 
 h2. Features
 
@@ -47,7 +51,7 @@ The most characteristic features:
 * Collection pagination using will_paginate by default. Note: Can be turned off.
 * Optionally specify what actions/views to generate (stubs for specified REST-actions will be generated).
 * Optionally specify what respond_to-formats to generate (stubs for the most common respond_to-formats will be generated).
-* Generates default helpers/models/migrations, and REST-routes.
+* Generates default helpers/models/migrations, and REST-routes (if not already defined).
 
 h3. Formtastic Forms
 
@@ -211,7 +215,7 @@ h4. Manual
 Get the gems...you want:
 
 <pre>sudo gem install haml
-sudo gem install will_paginate
+sudo gem install mislav-will_paginate
 sudo gem install justinfrench-formtastic
 sudo gem install josevalim-inherited_resources</pre>
 
@@ -224,13 +228,13 @@ config.gem 'josevalim-inherited_resources', :lib => 'inherited_resources', :sour
 
 h2. Usage
 
-<pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [_indexes:attribute,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests] [--include-layout] [--fixtures] [--fgirl] [--machinist] [--odaddy] [--skip-migration] [--skip-timestamps]</pre>
+<pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [_indexes:attribute,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-migration] [--skip-timestamps] [--skip-tests] [--layout] [--tunit] [--shoulda] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
 
 ...or use the alias @dscaffold@ instead of @dry_scaffold@.
 
 For generating just a *model*, then use:
 
-<pre>./script/generate dry_model ModelName [attribute:type attribute:type] [_indexes:attribute,...] [--fixtures] [--fgirl] [--machinist] [--odaddy] [--skip-migration] [--skip-timestamps] [--skip-tests]</pre>
+<pre>./script/generate dry_model ModelName [attribute:type attribute:type] [_indexes:attribute,...] [--skip-migration] [--skip-timestamps] [--skip-tests] [--tunit] [--shoulda] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
 
 ...or use the alias @dmodel@ instead of @dry_model@.
 
@@ -380,7 +384,6 @@ These are the options for the scaffold-generator.
 * @--skip-formtastic@   - Don't generate formtastic forms in views, i.e. don't use *formtastic*.
 * @--skip-views@        - Don't generate views.
 * @--skip-helpers@      - Don't generate helpers.
-* @--skip-tests@        - Don't generate tests (functional/unit/...).
 * @--skip-builders@     - Don't generate builders.
 * @--layout@            - Generate layout.
  
@@ -388,16 +391,22 @@ h4. Model
 
 These are the options for the model/scaffold-generators.
 
-* @--fixtures@          - Generate fixtures.
-* @--fgirl@             - Generate *factory_girl* factories.
-* @--machinist@         - Generate *machinist* blueprints (factories).
-* @--odaddy@            - Generate *object_daddy* generator/factory methods.
 * @--skip-timestamps@   - Don't add timestamps to the migration file.
 * @--skip-migration@    - Skip generation of migration file.
+ 
+h4. All
+
+* @--skip-tests@        - Don't generate tests (functional/unit/...).
+* @--tunit@             - Generate/Use test_unit tests. Note: Rails default.
+* @--shoulda@           - Generate/Use *shoulda* tests.
+* @--fixtures@          - Generate/Use fixtures. Note: Rails default.
+* @--fgirl@             - Generate/Use *factory_girl* factories.
+* @--machinist@         - Generate/Use *machinist* blueprints (factories).
+* @--odaddy@            - Generate/Use *object_daddy* generator/factory methods.
 
 As DryScaffold is built upon Rails generator, the default generator options is available as well. For more details; see Rails documentation.
 
-h3. Setting Defaults 
+h3. Setting Defaults
 
 You can set defaults for the generator args/options in @config/scaffold.yml@. To generate this file, simply do:
 
@@ -410,11 +419,11 @@ No need for more samples here, just create a new Rails project, install DryScaff
 For your inspiration, you could try the following:
 
 <pre>./script/generate dry_scaffold Zebra name:string about:text --skip-resourceful
-./script/generate dry_scaffold Kangaroo name:string about:text --skip-formtastic
+./script/generate dscaffold Kangaroo name:string about:text --skip-formtastic
 ./script/generate dscaffold Duck name:string about:text _actions:new,create,index,quack
 ./script/generate dscaffold Parrot name:string about:text _formats:html,xml,yml
-./script/generate dscaffold GoldFish name:string about:text _indexes:name --fgirl
-./script/generate dry_model Frog name:string about:text _indexes:name,name+about --fixtures</pre>
+./script/generate dmodel GoldFish name:string about:text _indexes:name --fgirl
+./script/generate dmodel Frog name:string about:text _indexes:name,name+about --fixtures</pre>
 
 ...or just go crazy!
 

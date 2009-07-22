@@ -5,8 +5,7 @@ DESCRIPTION
   A replacement for the Rails scaffold generator that generates code that most people end up deleting or rewriting anyway because of the unusable code. The scaffold concept is powerful, but it has more potential than generating messy and almost useless code. The goal with dry_scaffold is to generate DRY, beautiful, and standards compliant code based on common patterns without adding a lot of magic.
   
 EXAMPLE
-  ./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-tests] [--skip-builders] [--layout]
-  
-  ...or the shortcut version:
-  
-  ./script/generate dscaffold ...
+  ./script/generate dry_scaffold Zebra name:string about:text --skip-resourceful
+  ./script/generate dscaffold Kangaroo name:string about:text --skip-formtastic
+  ./script/generate dscaffold Duck name:string about:text _actions:new,create,index,quack
+  ./script/generate dscaffold Parrot name:string about:text _formats:html,xml,yml

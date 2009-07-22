@@ -1,8 +1,14 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'test_helper'))
+require 'test_helper'
 
-class ResourceTest < ActiveSupport::TestCase
+class DuckTest < ActiveRecord::TestCase
   
-  test "something" do
+  fixtures :ducks
+  
+  setup do
+    
+  end
+  
+  test 'something' do
     assert true
   end
   

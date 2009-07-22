@@ -1,110 +1,110 @@
-class ResourcesController < ApplicationController
+class DucksController < ApplicationController
   
   before_filter :load_resource, :only => [:show, :edit, :update, :destroy]
-  before_filter :load_and_paginate_resources, :only => [:index]
+  before_filter :load_and_paginate_resource, :only => [:index]
   
-  # GET /resources
-  # GET /resources.xml
-  # GET /resources.json
+  # GET /ducks
+  # GET /ducks.xml
+  # GET /ducks.json
   def index
     respond_to do |format|
       format.html # index.html.haml
       #format.js  # index.js.rjs
-      format.xml  { render :xml => @resources }
-      format.json { render :json => @resources }
+      format.xml  { render :xml => @ducks }
+      format.json { render :json => @ducks }
       format.atom # index.atom.builder
       format.rss  # index.rss.builder
     end
   end
   
-  # GET /resources/:id
-  # GET /resources/:id.xml
-  # GET /resources/:id.json
+  # GET /ducks/:id
+  # GET /ducks/:id.xml
+  # GET /ducks/:id.json
   def show
     respond_to do |format|
       format.html # show.html.haml
       #format.js  # show.js.rjs
-      format.xml  { render :xml => @resource }
-      format.json { render :json => @resource }
+      format.xml  { render :xml => @duck }
+      format.json { render :json => @duck }
     end
   end
   
-  # GET /resources/new
-  # GET /resources/new.xml
-  # GET /resources/new.json
+  # GET /ducks/new
+  # GET /ducks/new.xml
+  # GET /ducks/new.json
   def new
-    @resource = Resource.new
+    @duck = Duck.new
     
     respond_to do |format|
       format.html # new.html.haml
       #format.js  # new.js.rjs
-      format.xml  { render :xml => @resource }
-      format.json { render :json => @resource }
+      format.xml  { render :xml => @duck }
+      format.json { render :json => @duck }
     end
   end
   
-  # GET /resources/:id/edit
+  # GET /ducks/:id/edit
   def edit
   end
   
-  # POST /resources
-  # POST /resources.xml
-  # POST /resources.json
+  # POST /ducks
+  # POST /ducks.xml
+  # POST /ducks.json
   def create
-    @resource = Resource.new(params[:resource])
+    @duck = Duck.new(params[:duck])
     
     respond_to do |format|
-      if @resource.save
-        flash[:notice] = 'Resource was successfully created.'
-        format.html { redirect_to(@resource) }
+      if @duck.save
+        flash[:notice] = "Duck was successfully created."
+        format.html { redirect_to(@duck) }
         #format.js  # create.js.rjs
-        format.xml  { render :xml => @resource, :status => :created, :location => @resource }
-        format.json { render :json => @resource, :status => :created, :location => @resource }
+        format.xml  { render :xml => @duck, :status => :created, :location => @duck }
+        format.json { render :json => @duck, :status => :created, :location => @duck }
       else
-        #flash[:error] = 'Resource could not be created.'
+        flash[:error] = "Duck could not be created."
         format.html { render 'new' }
         #format.js  # create.js.rjs
-        format.xml  { render :xml => @resource.errors, :status => :unprocessable_entity }
-        format.json { render :json => @resource.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @duck.errors, :status => :unprocessable_entity }
+        format.json { render :json => @duck.errors, :status => :unprocessable_entity }
       end
     end
   end
   
-  # PUT /resources/:id
-  # PUT /resources/:id.xml
-  # PUT /resources/:id.json
+  # PUT /ducks/:id
+  # PUT /ducks/:id.xml
+  # PUT /ducks/:id.json
   def update
     respond_to do |format|
-      if @resource.update_attributes(params[:resource])
-        flash[:notice] = 'Resource was successfully updated.'
-        format.html { redirect_to(@resource) }
+      if @duck.update_attributes(params[:duck])
+        flash[:notice] = "Duck was successfully updated."
+        format.html { redirect_to(@duck) }
         #format.js  # update.js.rjs
         format.xml  { head :ok }
         format.json { head :ok }
       else
-        #flash[:error] = 'Resource could not be updated.'
+        flash[:error] = "Duck could not be updated."
         format.html { render 'edit' }
         #format.js  # update.js.rjs
-        format.xml  { render :xml => @resource.errors, :status => :unprocessable_entity }
-        format.json { render :json => @resource.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @duck.errors, :status => :unprocessable_entity }
+        format.json { render :json => @duck.errors, :status => :unprocessable_entity }
       end
     end
   end
   
-  # DELETE /resources/:id
-  # DELETE /resources/:id.xml
-  # DELETE /resources/:id.json
+  # DELETE /ducks/:id
+  # DELETE /ducks/:id.xml
+  # DELETE /ducks/:id.json
   def destroy
     respond_to do |format|
-      if @resource.destroy
-        flash[:notice] = 'Resource was successfully destroyed.'
-        format.html { redirect_to(resources_url) }
+      if @duck.destroy
+        flash[:notice] = "Duck was successfully destroyed."
+        format.html { redirect_to(ducks_url) }
         #format.js  # destroy.js.rjs
         format.xml  { head :ok }
         format.json { head :ok }
       else
-        flash[:error] = 'Resource could not be destroyed.'
-        format.html { redirect_to(resource_url(@resource)) }
+        flash[:error] = "Duck could not be destroyed."
+        format.html { redirect_to(duck_url(@duck)) }
         #format.js  # destroy.js.rjs
         format.xml  { head :unprocessable_entity }
         format.json { head :unprocessable_entity }
@@ -112,7 +112,7 @@ class ResourcesController < ApplicationController
     end
   end
   
-  # GET /resources/custom_action
+  # GET /ducks/custom_action
   def custom_action
   end
   
@@ -122,12 +122,12 @@ class ResourcesController < ApplicationController
       paginate_options ||= {}
       paginate_options[:page] ||= (params[:page] || 1)
       paginate_options[:per_page] ||= (params[:per_page] || 20)
-      @collection = @resources ||= Resource.paginate(paginate_options)
+      @collection = @ducks ||= Duck.paginate(paginate_options)
     end
-    alias :load_and_paginate_resources :collection
+    alias :load_and_paginate_ducks :collection
     
     def resource
-      @resource = @resource = ||= Resource.find(params[:id])
+      @resource = @duck = ||= Duck.find(params[:id])
     end
     alias :load_resource :resource
     

@@ -1,6 +1,5 @@
 !!! 1.1
-
-%html{html_attrs(I18n.locale)}
+%html{html_attrs(I18n.locale).update(:lang => nil)}
   %head
     %title= "#{controller_class_name}: #{controller.action_name}"
     
