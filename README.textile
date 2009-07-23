@@ -176,7 +176,7 @@ h3. More To Come... (TODO)
 These are things I have in mind:
 
 * Handle belongs_to, i.e. specify MODEL --belongs-to PARENT_MODEL, which generates proper routes, proper before-filters if inherited_resources-controller, adding belongs_to-association in model, and correct form_for arguments.
-* Choose test suits: testunit/shoulda/rspec
+* RSpec-support?
 
 h2. Setup
 

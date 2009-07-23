@@ -114,6 +114,7 @@ class DucksController < ApplicationController
   
   # GET /ducks/custom_action
   def custom_action
+    
   end
   
   protected

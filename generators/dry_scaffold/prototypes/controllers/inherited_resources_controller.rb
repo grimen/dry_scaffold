@@ -6,6 +6,7 @@ class DucksController < InheritedResources::Base
   
   # GET /ducks/custom_action
   def custom_action
+    
   end
   
   protected

@@ -89,7 +89,7 @@ class DryGenerator < Rails::Generator::NamedBase
     end
     
     def banner
-      "\nUsage: \n\n#{$0} #{spec.name} ModelName"
+      "\nUsage: \n\n#{$0} #{spec.name} MODEL_NAME"
     end
     
     def add_options!(opt)

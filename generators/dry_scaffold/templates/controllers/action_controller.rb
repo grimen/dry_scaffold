@@ -224,7 +224,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 <% (actions - DryScaffoldGenerator::DEFAULT_CONTROLLER_ACTIONS).each do |action| -%>
   # GET /<%= plural_name %>/<%= action.to_s %>
   def <%= action.to_s %>
-    # TODO: Implement action "<%= plural_name %>/<%= action.to_s %>"
+    
   end
   
 <% end -%>

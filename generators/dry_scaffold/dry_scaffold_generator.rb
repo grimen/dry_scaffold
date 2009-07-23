@@ -208,6 +208,8 @@ class DryScaffoldGenerator < DryGenerator
     end
   end
   
+  ### Fixture/Factory Helpers.
+  
   def build_object
     case options[:factory_framework]
       when :factory_girl then
@@ -221,6 +223,8 @@ class DryScaffoldGenerator < DryGenerator
     end
   end
   
+  ### Link Helpers.
+  
   def collection_instance
     "@#{collection_name}"
   end
@@ -229,25 +233,47 @@ class DryScaffoldGenerator < DryGenerator
     "@#{singular_name}"
   end
   
-  def index_link
+  def index_path
+    "#{collection_name}_path"
+  end
+  
+  def new_path
+    "new_#{singular_name}_path"
+  end
+  
+  def show_path(object_name = resource_instance)
+    "#{singular_name}_path(#{object_name})"
+  end
+  
+  def edit_path(object_name = resource_instance)
+    "edit_#{show_path(object_name)}"
+  end
+  
+  def destroy_path(object_name = resource_instance)
+    "#{object_name}"
+  end
+  
+  def index_url
     "#{collection_name}_url"
   end
   
-  def new_link
+  def new_url
     "new_#{singular_name}_url"
   end
   
-  def show_link(object_name = resource_instance)
+  def show_url(object_name = resource_instance)
     "#{singular_name}_url(#{object_name})"
   end
   
-  def edit_link(object_name = resource_instance)
-    "edit_#{show_link(object_name)}"
+  def edit_url(object_name = resource_instance)
+    "edit_#{show_url(object_name)}"
   end
   
-  def destroy_link(object_name = resource_instance)
+  def destroy_url(object_name = resource_instance)
     "#{object_name}"
   end
+  
+  ### Feed Helpers.
   
   def feed_link(format)
     case format
