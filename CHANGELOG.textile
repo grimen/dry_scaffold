@@ -1,4 +1,4 @@
-h1. 0.2.8 (2009-07-23)
+h1. 0.3.0 (2009-07-23)
 
 * Major refactoring of the code.
 * Test/Fixture-stuff re-written from the ground, now tested thoroughly and considered stable - was not before. Plenty sloppy bugs squashed.
