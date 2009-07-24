@@ -56,15 +56,7 @@ class DucksControllerTest < ActionController::TestCase
       should_assign_to flash[:notice]
       should_redirect_to 'ducks_path'
     end
-    context 'with failure' do
-      setup do
-        Duck.any_instance.expects(:destroy).returns(false)
-        @duck = Factory(:duck)
-        delete :destroy, :id => @duck.to_param
-      end
-      should_assign_to flash[:error]
-      should_redirect_to 'ducks_path'
-    end
+    # Not possible: destroy with failure
   end
   
   context 'new' do

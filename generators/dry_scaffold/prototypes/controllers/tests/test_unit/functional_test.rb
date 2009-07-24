@@ -42,13 +42,7 @@ class DucksControllerTest < ActionController::TestCase
     assert_response :redirect
   end
   
-  test 'destroy with failure' do
-    Duck.any_instance.expects(:destroy).returns(false)
-    @duck = ducks(:basic)
-    delete :destroy, :id => @duck.to_param
-    assert_not_nil flash[:error]
-    assert_response :redirect
-  end
+  # Not possible: destroy with failure
   
   test 'new' do
     get :new

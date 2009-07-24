@@ -1,5 +1,5 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'test_helper'))
- 
+require 'test_helper'
+
 class DucksHelperTest < ActionView::TestCase
   
   should 'test something' do

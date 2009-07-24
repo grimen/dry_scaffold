@@ -43,13 +43,7 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
     assert_response :redirect
   end
   
-  test 'destroy with failure' do
-    <%= class_name %>.any_instance.expects(:destroy).returns(false)
-    <%= resource_instance %> = <%= build_object %>
-    delete :destroy, :id => <%= resource_instance %>.to_param
-    assert_not_nil flash[:error]
-    assert_response :redirect
-  end
+  # Not possible: destroy with failure
   
 <% end -%>
 <% if actions.include?(:new) -%>

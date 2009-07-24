@@ -5,6 +5,7 @@ h2. Next
 * Bug/Issue: InheritedResources functional testing issue.
 * Feature: RSpec-templates?
 * Optimization: Write even better functional tests for REST-actions. Goal: Killer-tests, i.e. "best practice"-tests. Suggestion: Routing, formats, ...
+* Feature: Auto-detection of testing frameworks in working project.
 
 h2. Maybe
 
@@ -17,7 +18,7 @@ h2. Issues
 
 * Contact José regarding the InheritedResources-issue:
 
-1) ActionController::RoutingError: parrot_url failed to generate from {:controller=>"parrots", :id=>#<Parrot id: nil, name: "Hello", created_at: "2009-07-21 18:53:25", updated_at: "2009-07-21 18:53:25">, :action=>"show"}, expected: {:controller=>"parrots", :action=>"show"}, diff: {:id=>#<Parrot id: nil, name: "Hello", created_at: "2009-07-21 18:53:25", updated_at: "2009-07-21 18:53:25">}
+ActionController::RoutingError: parrot_url failed to generate from {:controller=>"parrots", :id=>#<Parrot id: nil, name: "Hello", created_at: "2009-07-21 18:53:25", updated_at: "2009-07-21 18:53:25">, :action=>"show"}, expected: {:controller=>"parrots", :action=>"show"}, diff: {:id=>#<Parrot id: nil, name: "Hello", created_at: "2009-07-21 18:53:25", updated_at: "2009-07-21 18:53:25">}
   (eval):16:in `parrot_url'
 /opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/url_helpers.rb:194:in `resource_url'
 /opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/base_helpers.rb:311:in `send'
@@ -35,16 +36,5 @@ h2. Issues
     Donkey.any_instance.expects(:save).returns(true)
     @donkey = donkeys(:basic)
     post :create, :donkey => @donkey.attributes   # <<<<<<<<<<<<< donkeys_controller_test.rb:8
-    assert_response :redirect
-  end
-  
-2) test_destroy_with_failure(DonkeysControllerTest) [/test/functional/donkeys_controller_test.rb:45]:
-<nil> expected to not be nil.
-  
-  test 'destroy with failure' do
-    Donkey.any_instance.expects(:destroy).returns(false)
-    @donkey = donkeys(:basic)
-    delete :destroy, :id => @donkey.to_param
-    assert_not_nil flash[:error]                  # <<<<<<<<<<<<< donkeys_controller_test.rb:45
     assert_response :redirect
   end
