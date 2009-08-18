@@ -43,10 +43,10 @@ class DryGenerator < Rails::Generator::NamedBase
       :skip_views       => !CONFIG_OPTIONS['views']       || false,
       :layout           => CONFIG_OPTIONS['layout']       || false,
       :fixtures         => CONFIG_OPTIONS['fixtures']     || false,
-      :fgirl            => CONFIG_OPTIONS['factory_girl'] || false,
+      :factory_girl     => CONFIG_OPTIONS['factory_girl'] || CONFIG_OPTIONS['fgirl'] || false,
       :machinist        => CONFIG_OPTIONS['machinist']    || false,
-      :odaddy           => CONFIG_OPTIONS['object_daddy'] || false,
-      :tunit            => CONFIG_OPTIONS['test_unit']    || true,
+      :object_daddy     => CONFIG_OPTIONS['object_daddy'] || CONFIG_OPTIONS['odaddy'] || false,
+      :test_unit        => CONFIG_OPTIONS['test_unit']    || CONFIG_OPTIONS['tunit'] || true,
       :shoulda          => CONFIG_OPTIONS['shoulda']      || false
     }.freeze
   

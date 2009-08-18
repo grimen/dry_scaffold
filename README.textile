@@ -36,7 +36,7 @@ h4. Models
  
 h4. Testing
  
-* "*Shoulda*":http://github.com/thoughtbot/shoulda - Testing framework
+* "*shoulda*":http://github.com/thoughtbot/shoulda - Testing framework
 
 h2. Features
 
