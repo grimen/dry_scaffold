@@ -3,7 +3,7 @@ require 'test_helper'
 class <%= class_name %>Test < ActiveRecord::TestCase
   
 <% if options[:fixtures] -%>
-  fixtures :<%= plural_name %>
+  fixtures :<%= table_name %>
   
 <% end -%>
   setup do

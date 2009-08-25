@@ -219,7 +219,7 @@ class DryScaffoldGenerator < DryGenerator
       when :object_daddy then
         "#{class_name}.generate"
       else #:fixtures
-        "#{plural_name}(:basic)"
+        "#{table_name}(:basic)"
     end
   end
   

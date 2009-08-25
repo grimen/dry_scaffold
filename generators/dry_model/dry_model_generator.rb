@@ -70,7 +70,7 @@ class DryModelGenerator < DryGenerator
           fixtures_path = File.join(TEST_PATHS[test_framework], 'fixtures')
           m.directory File.join(fixtures_path, class_path)
           m.template File.join('models', 'fixture_data', 'active_record_fixtures.yml'),
-            File.join(fixtures_path, class_path, "#{plural_name}.yml")
+            File.join(fixtures_path, class_path, "#{table_name}.yml")
         end
         if options[:factory_girl]
           factory_girl_path = File.join(TEST_PATHS[test_framework], 'factories')
