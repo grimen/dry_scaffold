@@ -142,7 +142,7 @@ class DryScaffoldGenerator < DryGenerator
         
       # Controller Tests.
       unless options[:skip_tests]
-        controller_tests_path = File.join(TEST_PATHS[test_framework], 'functional')
+        controller_tests_path = File.join(TEST_PATHS[test_framework], FUNCTIONAL_TESTS_PATH[test_framework])
         m.directory File.join(controller_tests_path, controller_class_path)
         m.template File.join('controllers', 'tests', "#{test_framework}", 'functional_test.rb'),
           File.join(controller_tests_path, controller_class_path, "#{controller_file_name}_controller_test.rb")

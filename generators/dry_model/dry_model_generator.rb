@@ -60,7 +60,7 @@ class DryModelGenerator < DryGenerator
         
       # Model Tests.
       unless options[:skip_tests]
-        model_tests_path = File.join(TEST_PATHS[test_framework], 'unit')
+        model_tests_path = File.join(TEST_PATHS[test_framework], UNIT_TESTS_PATH[test_framework])
         m.directory File.join(model_tests_path, class_path)
         m.template File.join('models', 'tests', "#{test_framework}", 'unit_test.rb'),
           File.join(model_tests_path, class_path, "#{file_name}_test.rb")

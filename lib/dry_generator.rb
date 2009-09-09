@@ -63,8 +63,16 @@ class DryGenerator < Rails::Generator::NamedBase
   DEFAULT_FACTORY_FRAMEWORK =   :fixtures
   
   TESTS_PATH =                  File.join('test').freeze
-  FUNCTIONAL_TESTS_PATH =       File.join(TESTS_PATH, 'functional').freeze
-  UNIT_TESTS_PATH =             File.join(TESTS_PATH, 'unit').freeze
+  FUNCTIONAL_TESTS_PATH =       {
+    :test       => 'functional',
+    :shoulda    => 'functional',
+    :rspec      => 'controllers'
+  }
+  UNIT_TESTS_PATH =  {
+    :test       => 'unit',
+    :shoulda    => 'unit',
+    :rspec      => 'models',
+  }
   
   NON_ATTR_ARG_KEY_PREFIX =     '_'.freeze
   
