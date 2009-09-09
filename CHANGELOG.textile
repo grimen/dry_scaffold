@@ -1,3 +1,7 @@
+h1. 0.3.1 (2009-09-09)
+
+* Added Rspec tests generation
+
 h1. 0.3.0 (2009-07-23)
 
 * Major refactoring of the code.

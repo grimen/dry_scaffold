@@ -37,6 +37,7 @@ h4. Models
 h4. Testing
  
 * "*shoulda*":http://github.com/thoughtbot/shoulda - Testing framework
+* "*rspec*":http://wiki.github.com/dchelimsky/rspec - Testing framework
 
 h2. Features
 
@@ -228,13 +229,13 @@ config.gem 'josevalim-inherited_resources', :lib => 'inherited_resources', :sour
 
 h2. Usage
 
-<pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [_indexes:attribute,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-migration] [--skip-timestamps] [--skip-tests] [--layout] [--tunit] [--shoulda] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
+<pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [_indexes:attribute,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-migration] [--skip-timestamps] [--skip-tests] [--layout] [--tunit] [--shoulda] [--rspec] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
 
 ...or use the alias @dscaffold@ instead of @dry_scaffold@.
 
 For generating just a *model*, then use:
 
-<pre>./script/generate dry_model ModelName [attribute:type attribute:type] [_indexes:attribute,...] [--skip-migration] [--skip-timestamps] [--skip-tests] [--tunit] [--shoulda] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
+<pre>./script/generate dry_model ModelName [attribute:type attribute:type] [_indexes:attribute,...] [--skip-migration] [--skip-timestamps] [--skip-tests] [--tunit] [--shoulda] [--rspec] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
 
 ...or use the alias @dmodel@ instead of @dry_model@.
 
@@ -399,6 +400,7 @@ h4. All
 * @--skip-tests@        - Don't generate tests (functional/unit/...).
 * @--tunit@             - Generate/Use test_unit tests. Note: Rails default.
 * @--shoulda@           - Generate/Use *shoulda* tests.
+* @--rspec@             - Generate/Use *rspec* tests.
 * @--fixtures@          - Generate/Use fixtures. Note: Rails default.
 * @--fgirl@             - Generate/Use *factory_girl* factories.
 * @--machinist@         - Generate/Use *machinist* blueprints (factories).

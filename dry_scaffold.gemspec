@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jonas Grimfelt"]
   s.date = %q{2009-08-18}
-  s.description = %q{A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.}
+  s.description = %q{A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers. Has support for Rspec, Shoulda, Formtastic, Inherited Resources, Factory Girl, Machinist, Object Daddy, Will Paginate}
   s.email = %q{grimen@gmail.com}
   s.executables = ["dscaffold", "dry_scaffold", "dmodel", "dry_model"]
   s.extra_rdoc_files = [
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
     "generators/dry_model/prototypes/fixture_data/active_record_fixtures.yml",
     "generators/dry_model/prototypes/fixture_data/factory_girl_factories.rb",
     "generators/dry_model/prototypes/fixture_data/machinist_blueprints.rb",
+    "generators/dry_model/prototypes/tests/rspec/unit_test.rb",
     "generators/dry_model/prototypes/tests/shoulda/unit_test.rb",
     "generators/dry_model/prototypes/tests/test_unit/unit_test.rb",
     "generators/dry_model/templates/models/active_record_migration.rb",
@@ -41,15 +42,18 @@ Gem::Specification.new do |s|
     "generators/dry_model/templates/models/fixture_data/active_record_fixtures.yml",
     "generators/dry_model/templates/models/fixture_data/factory_girl_factories.rb",
     "generators/dry_model/templates/models/fixture_data/machinist_blueprints.rb",
+    "generators/dry_model/templates/models/tests/rspec/unit_test.rb",
     "generators/dry_model/templates/models/tests/shoulda/unit_test.rb",
     "generators/dry_model/templates/models/tests/test_unit/unit_test.rb",
     "generators/dry_scaffold/USAGE",
     "generators/dry_scaffold/dry_scaffold_generator.rb",
     "generators/dry_scaffold/prototypes/controllers/action_controller.rb",
     "generators/dry_scaffold/prototypes/controllers/inherited_resources_controller.rb",
+    "generators/dry_scaffold/prototypes/controllers/tests/rspec/functional_test.rb",
     "generators/dry_scaffold/prototypes/controllers/tests/shoulda/functional_test.rb",
     "generators/dry_scaffold/prototypes/controllers/tests/test_unit/functional_test.rb",
     "generators/dry_scaffold/prototypes/helpers/helper.rb",
+    "generators/dry_scaffold/prototypes/helpers/tests/rspec/unit_test.rb",
     "generators/dry_scaffold/prototypes/helpers/tests/shoulda/unit_test.rb",
     "generators/dry_scaffold/prototypes/helpers/tests/test_unit/unit_test.rb",
     "generators/dry_scaffold/prototypes/views/builder/index.atom.builder",
@@ -63,9 +67,11 @@ Gem::Specification.new do |s|
     "generators/dry_scaffold/prototypes/views/haml/show.html.haml",
     "generators/dry_scaffold/templates/controllers/action_controller.rb",
     "generators/dry_scaffold/templates/controllers/inherited_resources_controller.rb",
+    "generators/dry_scaffold/templates/controllers/tests/rspec/functional_test.rb",
     "generators/dry_scaffold/templates/controllers/tests/shoulda/functional_test.rb",
     "generators/dry_scaffold/templates/controllers/tests/test_unit/functional_test.rb",
     "generators/dry_scaffold/templates/helpers/helper.rb",
+    "generators/dry_scaffold/templates/helpers/tests/rspec/unit_test.rb",
     "generators/dry_scaffold/templates/helpers/tests/shoulda/unit_test.rb",
     "generators/dry_scaffold/templates/helpers/tests/test_unit/unit_test.rb",
     "generators/dry_scaffold/templates/views/builder/index.atom.builder",

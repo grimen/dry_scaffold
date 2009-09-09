@@ -4,6 +4,7 @@ class DryGenerator < Rails::Generator::NamedBase
   HAS_FORMTASTIC =            defined?(Formtastic)
   HAS_INHERITED_RESOURCES =   defined?(InheritedResources)
   HAS_SHOULDA =               defined?(Shoulda)
+  HAS_RSPEC =                 defined?(Rspec)
   
   # Load defaults from config file - default or custom.
   begin
@@ -23,6 +24,7 @@ class DryGenerator < Rails::Generator::NamedBase
   BANNER_OPTIONS = [
       "[--skip-tests]",
       "[--shoulda]",
+      "[--rspec]",
       "[--fixtures]",
       "[--fgirl]",
       "[--machinist]",
@@ -47,12 +49,14 @@ class DryGenerator < Rails::Generator::NamedBase
       :machinist        => CONFIG_OPTIONS['machinist']    || false,
       :object_daddy     => CONFIG_OPTIONS['object_daddy'] || CONFIG_OPTIONS['odaddy'] || false,
       :test_unit        => CONFIG_OPTIONS['test_unit']    || CONFIG_OPTIONS['tunit'] || true,
-      :shoulda          => CONFIG_OPTIONS['shoulda']      || false
+      :shoulda          => CONFIG_OPTIONS['shoulda']      || false,
+      :rspec            => CONFIG_OPTIONS['rspec']        || false
     }.freeze
   
   TEST_PATHS = {
       :test_unit        => 'test',
-      :shoulda          => 'test'
+      :shoulda          => 'test',
+      :rspec            => 'spec'
     }.freeze
     
   DEFAULT_TEST_FRAMEWORK =      :test_unit
@@ -110,12 +114,10 @@ class DryGenerator < Rails::Generator::NamedBase
         options[:test_framework] = :shoulda
       end
       
-      #opt.on('--rspec', "Test: Generate \"rspec\" tests.") do |v|
-      #  # TODO: Implement RSpec templates. Maybe.
-      #  puts '[dry_scaffold:] RSpec currently not supported.'
-      #  options[:rspec] = v
-      #  options[:test_framework] = :rspec
-      #end
+      opt.on("--rspec", "Test: Generate \"rspec\" tests.") do |v|
+        options[:rspec] = v
+        options[:test_framework] = :rspec
+      end
       
       opt.on("--fixtures", "Test: Generate fixtures. Note: Rails default.") do |v|
         options[:fixtures] = v

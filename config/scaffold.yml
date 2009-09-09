@@ -5,7 +5,7 @@ dry_scaffold:
     formats: html,js,xml,json
   options:
     formtastic: true
-    resourceful: false
+    resourceful: true
     pagination: true
     layout: false
     views: true
@@ -13,6 +13,7 @@ dry_scaffold:
     tests: true
     tunit: true
     shoulda: false
+    rspec: false
     fixtures: true
     fgirl: false
     machinist: false
