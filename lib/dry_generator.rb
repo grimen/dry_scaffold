@@ -12,7 +12,6 @@ class DryGenerator < Rails::Generator::NamedBase
     custom_config_file = File.expand_path(File.join(Rails.root, 'config', 'scaffold.yml'))
     config_file = File.join(File.exist?(custom_config_file) ? custom_config_file : default_config_file)
     config = YAML::load(File.open(config_file))
-    
     CONFIG_ARGS = config['dry_scaffold']['args'] rescue nil
     CONFIG_OPTIONS = config['dry_scaffold']['options'] rescue nil
   end
@@ -48,7 +47,7 @@ class DryGenerator < Rails::Generator::NamedBase
       :factory_girl     => CONFIG_OPTIONS['factory_girl'] || CONFIG_OPTIONS['fgirl'] || false,
       :machinist        => CONFIG_OPTIONS['machinist']    || false,
       :object_daddy     => CONFIG_OPTIONS['object_daddy'] || CONFIG_OPTIONS['odaddy'] || false,
-      :test_unit        => CONFIG_OPTIONS['test_unit']    || CONFIG_OPTIONS['tunit'] || true,
+      :test_unit        => CONFIG_OPTIONS['test_unit']    || CONFIG_OPTIONS['tunit'] || false,
       :shoulda          => CONFIG_OPTIONS['shoulda']      || false,
       :rspec            => CONFIG_OPTIONS['rspec']        || false
     }.freeze
@@ -70,12 +69,12 @@ class DryGenerator < Rails::Generator::NamedBase
   
   TESTS_PATH =                  File.join('test').freeze
   FUNCTIONAL_TESTS_PATH =       {
-    :test       => 'functional',
+    :test_unit  => 'functional',
     :shoulda    => 'functional',
     :rspec      => 'controllers'
   }
   UNIT_TESTS_PATH =  {
-    :test       => 'unit',
+    :test_unit  => 'unit',
     :shoulda    => 'unit',
     :rspec      => 'models',
   }
@@ -89,7 +88,9 @@ class DryGenerator < Rails::Generator::NamedBase
   def initialize(runtime_args, runtime_options = {})
     super(runtime_args, runtime_options)
     
-    @test_framework = options[:test_framework] || DEFAULT_TEST_FRAMEWORK
+    @test_framework = ( options[:test_framework] && options[:test_framework].to_sym ) || 
+                      [:rspec,:test_unit,:shoulda].detect{|t|options[t]} || 
+                      DEFAULT_TEST_FRAMEWORK
   end
   
   protected
