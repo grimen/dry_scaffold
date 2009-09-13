@@ -6,6 +6,6 @@ describe <%= class_name %> do
 
 <% end -%>
   it "should be valid" do
-    Comment.new.should be_valid
+    <%= class_name %>.new.should be_valid
   end
 end
