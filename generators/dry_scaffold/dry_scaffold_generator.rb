@@ -145,7 +145,7 @@ class DryScaffoldGenerator < DryGenerator
         controller_tests_path = File.join(TEST_PATHS[test_framework], FUNCTIONAL_TESTS_PATH[test_framework])
         m.directory File.join(controller_tests_path, controller_class_path)
         m.template File.join('controllers', 'tests', "#{test_framework}", 'functional_test.rb'),
-          File.join(controller_tests_path, controller_class_path, "#{controller_file_name}_controller_test.rb")
+          File.join(controller_tests_path, controller_class_path, "#{controller_file_name}_controller_#{TEST_POST_FIX[test_framework]}.rb")
       end
       
       # Helpers.
@@ -156,10 +156,10 @@ class DryScaffoldGenerator < DryGenerator
           
         # Helper Tests
         unless options[:skip_tests]
-          helper_tests_path = File.join(TEST_PATHS[test_framework], 'unit', 'helpers')
+          helper_tests_path = File.join(TEST_PATHS[test_framework], 'helpers')
           m.directory File.join(helper_tests_path, controller_class_path)
           m.template File.join('helpers', 'tests', "#{test_framework}", 'unit_test.rb'),
-            File.join(helper_tests_path, controller_class_path, "#{controller_file_name}_helper_test.rb")
+            File.join(helper_tests_path, controller_class_path, "#{controller_file_name}_helper_#{TEST_POST_FIX[test_framework]}.rb")
         end
       end
       

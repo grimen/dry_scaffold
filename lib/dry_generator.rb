@@ -59,6 +59,12 @@ class DryGenerator < Rails::Generator::NamedBase
       :rspec            => 'spec'
     }.freeze
     
+  TEST_POST_FIX = {
+      :test_unit        => 'test',
+      :shoulda          => 'test',
+      :rspec            => 'spec'
+    }.freeze
+
   DEFAULT_TEST_FRAMEWORK =      :test_unit
   DEFAULT_FACTORY_FRAMEWORK =   :fixtures
   
