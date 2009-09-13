@@ -25,6 +25,7 @@ dry_model:
     tests: true
     tunit: true
     shoulda: false
+    rspec: false
     fixtures: true
     fgirl: false
     machinist: false
