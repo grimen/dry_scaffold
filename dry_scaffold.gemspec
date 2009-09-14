@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dry_scaffold}
-  s.version = "0.3.3"
+  s.version = "0.3.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jonas Grimfelt"]
-  s.date = %q{2009-09-13}
+  s.date = %q{2009-09-14}
   s.description = %q{A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.}
   s.email = %q{grimen@gmail.com}
   s.executables = ["dscaffold", "dry_scaffold", "dmodel", "dry_model"]
@@ -95,7 +95,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/grimen/dry_scaffold/tree/master}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.3}
   s.summary = %q{A DRYer scaffold generator for Rails. Generates dry semantic and standards compliant views, and dry RESTful controllers.}
 
   if s.respond_to? :specification_version then
