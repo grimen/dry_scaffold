@@ -88,10 +88,7 @@ Gem::Specification.new do |s|
      "generators/dry_scaffold/templates/views/haml/show.html.haml",
      "generators/dscaffold/dscaffold_generator.rb",
      "lib/dry_generator.rb",
-<<<<<<< HEAD:dry_scaffold.gemspec
      "lib/dry_scaffold/tasks.rb",
-=======
->>>>>>> 035bfb9da98a4b7d03c70a7a452876898ab33ddc:dry_scaffold.gemspec
      "lib/setup_helper.rb",
      "rails/init.rb",
      "tasks/dry_scaffold.rake"
