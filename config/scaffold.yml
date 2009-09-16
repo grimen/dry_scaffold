@@ -11,7 +11,7 @@ dry_scaffold:
     views: true
     helpers: true
     tests: true
-    tunit: true
+    test_unit: true
     shoulda: false
     rspec: false
     fixtures: true
@@ -23,8 +23,9 @@ dry_model:
     migration: true
     timestamps: true
     tests: true
-    tunit: true
+    test_unit: true
     shoulda: false
+    rspec: false
     fixtures: true
     fgirl: false
     machinist: false
