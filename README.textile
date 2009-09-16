@@ -201,7 +201,7 @@ Install dependencies to release the full power of dry_scaffold. Only HAML is rea
 
 h4. Automatic/Express
 
-For us lazy ones... =)
+For us lazy ones... =) *Note:* Probably won't work without require the rake tasks first in the project @Rakefile@: @require 'dry_scaffold/tasks'@
 
 <pre>rake dry_scaffold:setup</pre>
 
@@ -223,7 +223,7 @@ config.gem 'will_paginate'
 config.gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
 config.gem 'josevalim-inherited_resources', :lib => 'inherited_resources', :source => 'http://gems.github.com'</pre>
 
-Also configure @config/environments/test.rb@ with the Rspec library if you want to
+Also configure @config/environments/test.rb@ with the RSpec library if you want to
 
 <pre>config.gem 'rspec'
 config.gem 'rspec-rails'</pre>
@@ -231,6 +231,16 @@ config.gem 'rspec-rails'</pre>
 And don't forget to initialize it as well:
 
 <pre>./script/generate rspec</pre>
+
+To access Rake tasks in Rails from the gem version of DryScaffold you need to do this:
+
+In your project @Rakefile@:
+
+<pre>
+  require 'dry_scaffold/tasks'
+</pre>
+
+Don't ask me why me why this is the only way with gems...Ask the Rails core team, because this is not conventions over configuration. Raur...
 
 h2. Usage
 
