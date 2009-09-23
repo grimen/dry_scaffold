@@ -244,7 +244,7 @@ Don't ask me why me why this is the only way with gems...Ask the Rails core team
 
 h2. Usage
 
-<pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [_indexes:attribute,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-migration] [--skip-timestamps] [--skip-tests] [--layout] [--tunit] [--shoulda] [--rspec] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
+<pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [_indexes:attribute,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-migration] [--skip-timestamps] [--skip-tests] [--skip-controller-tests] [--layout] [--tunit] [--shoulda] [--rspec] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
 
 ...or use the alias @dscaffold@ instead of @dry_scaffold@.
 
@@ -401,6 +401,7 @@ These are the options for the scaffold-generator.
 * @--skip-views@        - Don't generate views.
 * @--skip-helpers@      - Don't generate helpers.
 * @--skip-builders@     - Don't generate builders.
+* @--skip-controller-tests@ - Don't generate controller tests
 * @--layout@            - Generate layout.
  
 h4. Model

@@ -141,7 +141,7 @@ class DryScaffoldGenerator < DryGenerator
         File.join(CONTROLLERS_PATH, controller_class_path, "#{controller_file_name}_controller.rb")
         
       # Controller Tests.
-      unless options[:skip_tests]
+      unless options[:skip_tests] || options[:skip_controller_tests]
         controller_tests_path = File.join(TEST_PATHS[test_framework], FUNCTIONAL_TESTS_PATH[test_framework])
         m.directory File.join(controller_tests_path, controller_class_path)
         m.template File.join('controllers', 'tests', "#{test_framework}", 'functional_test.rb'),
@@ -350,6 +350,10 @@ class DryScaffoldGenerator < DryGenerator
         options[:formtastic] = !v
       end
       
+      opt.on("--skip-controller-tests", "Controller: Skip generation of tests for controller.") do |v|
+        options[:skip_controller_tests] = v
+      end
+
       opt.on('--skip-views', "View: Skip generation of views.") do |v|
         options[:skip_views] = v
       end
@@ -381,6 +385,10 @@ class DryScaffoldGenerator < DryGenerator
       
       opt.on("--skip-tests", "Model: Skip generation of tests.") do |v|
         options[:skip_tests] = v
+      end
+      
+      opt.on("--skip-controller tests", "Controller: Skip generation of tests for controller.") do |v|
+        options[:skip_controller_tests] = v
       end
       
       opt.separator ' '

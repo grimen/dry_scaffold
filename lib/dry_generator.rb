@@ -40,6 +40,7 @@ class DryGenerator < Rails::Generator::NamedBase
       :formtastic       => CONFIG_OPTIONS['formtastic']   || HAS_FORMTASTIC,
       :pagination       => CONFIG_OPTIONS['pagination']   || HAS_WILL_PAGINATE,
       :skip_tests       => !CONFIG_OPTIONS['tests']       || false,
+      :skip_controller_tests => !CONFIG_OPTIONS['controller_tests']       || false,
       :skip_helpers     => !CONFIG_OPTIONS['helpers']     || false,
       :skip_views       => !CONFIG_OPTIONS['views']       || false,
       :layout           => CONFIG_OPTIONS['layout']       || false,

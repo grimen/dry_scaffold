@@ -11,6 +11,7 @@ dry_scaffold:
     views: true
     helpers: true
     tests: true
+    controller_tests: true
     test_unit: true
     shoulda: false
     rspec: false
