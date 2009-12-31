@@ -1,6 +1,8 @@
 h1. 0.3.6 (2009-12-31)
 
 * Gemcutter as gem source.
+* Bugfix: Use InheritedResources (if loaded) URL helpers.
+* Bugfix: Use specified test framework, test-unit was used all the time.
 
 h1. 0.3.4 (2009-09-16)
 
