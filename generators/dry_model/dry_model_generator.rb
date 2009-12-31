@@ -46,6 +46,7 @@ class DryModelGenerator < DryGenerator
     @args = args_for_model
     @references = attributes.select(&:reference?)
     @options = DEFAULT_OPTIONS.merge(options)
+    set_test_framework
   end
   
   def manifest

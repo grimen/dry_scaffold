@@ -126,9 +126,11 @@ class DryScaffoldGenerator < DryGenerator
     @actions ||= DEFAULT_ARGS[:actions] || DEFAULT_CONTROLLER_ACTIONS
     @formats ||= DEFAULT_ARGS[:formats] || DEFAULT_RESPOND_TO_FORMATS
     @options = DEFAULT_OPTIONS.merge(options)
+    set_test_framework
   end
   
   def manifest
+    puts @test_framework
     record do |m|
       # Check for class naming collisions.
       m.class_collisions "#{controller_class_name}Controller", "#{controller_class_name}ControllerTest"

@@ -88,13 +88,16 @@ class DryGenerator < Rails::Generator::NamedBase
   
   def initialize(runtime_args, runtime_options = {})
     super(runtime_args, runtime_options)
-    
-    @test_framework = ( options[:test_framework] && options[:test_framework].to_sym ) || 
-                      [:rspec,:test_unit,:shoulda].detect{|t|options[t]} || 
-                      DEFAULT_TEST_FRAMEWORK
+    set_test_framework
   end
   
   protected
+    
+    def set_test_framework
+      @test_framework = (options[:test_framework] && options[:test_framework].to_sym) || 
+                        [:rspec, :test_unit, :shoulda].detect{ |t| options[t] } || 
+                        DEFAULT_TEST_FRAMEWORK
+    end
     
     def symbol_array_to_expression(array)
       ":#{array.compact.join(', :')}" if array.present?
