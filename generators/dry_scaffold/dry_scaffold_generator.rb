@@ -78,7 +78,8 @@ class DryScaffoldGenerator < DryGenerator
   alias_method  :controller_table_name, :controller_plural_name
   
   def initialize(runtime_args, runtime_options = {})
-    super(runtime_args, runtime_options)
+    @options = DEFAULT_OPTIONS.merge(options)
+    super(runtime_args, runtime_options.merge(@options))
     
     @controller_name = @name.pluralize
     base_name, @controller_class_path, @controller_file_path, @controller_class_nesting, @controller_class_nesting_depth = extract_modules(@controller_name)
@@ -125,12 +126,9 @@ class DryScaffoldGenerator < DryGenerator
     
     @actions ||= DEFAULT_ARGS[:actions] || DEFAULT_CONTROLLER_ACTIONS
     @formats ||= DEFAULT_ARGS[:formats] || DEFAULT_RESPOND_TO_FORMATS
-    @options = DEFAULT_OPTIONS.merge(options)
-    set_test_framework
   end
   
   def manifest
-    puts @test_framework
     record do |m|
       # Check for class naming collisions.
       m.class_collisions "#{controller_class_name}Controller", "#{controller_class_name}ControllerTest"
@@ -327,6 +325,7 @@ class DryScaffoldGenerator < DryGenerator
       @collection_name = options[:resourceful] ? RESOURCEFUL_COLLECTION_NAME : @model_plural_name
       @singular_name = options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME : @model_singular_name
       @plural_name = options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME.pluralize : @model_plural_name
+      puts options[:resourceful], @collection_name
     end
     
     def add_options!(opt)
