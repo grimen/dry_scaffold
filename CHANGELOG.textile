@@ -1,3 +1,7 @@
+h1. 0.3.6 (2009-12-31)
+
+* Gemcutter as gem source.
+
 h1. 0.3.4 (2009-09-16)
 
 * Fixed bug: Make it possible to require rake tasks (In Rakefile: require 'dry_scaffold/tasks')

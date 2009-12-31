@@ -3,16 +3,12 @@ h1. TODO
 h2. Next
 
 * Bug/Issue: InheritedResources functional testing issue.
-* Feature: RSpec-templates?
-* Optimization: Write even better functional tests for REST-actions. Goal: Killer-tests, i.e. "best practice"-tests. Suggestion: Routing, formats, ...
-* Feature: Auto-detection of testing frameworks in working project.
+* Feature: Check for overridden templates in: RAILS_ROOT/lib/dry_scaffold/templates/
 
 h2. Maybe
 
-* Feature: Check for overridden templates in: RAILS_ROOT/lib/dry_scaffold/templates/
 * Feature: Handle belongs_to, i.e. specify MODEL --belongs-to PARENT_MODEL, which generates proper routes, proper before-filters if inherited_resources-controller, adding belongs_to-association in model, and correct form_for arguments.
 * Feature: Builder for podcast-feed, similar to RSS/Atom-builders. http://wiki.github.com/radiant/radiant/host-a-podcast
-* Tests: Generator tests. =P (Not very straightforward...)
 
 h2. Issues
 

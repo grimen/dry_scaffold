@@ -62,7 +62,8 @@ h4. Standard
 
 HAML + ActionView FormHelpers:
 
-<pre>- form_for(@duck) do |f|
+<pre>
+- form_for(@duck) do |f|
   = f.error_messages
   %ul
     %li
@@ -72,18 +73,21 @@ HAML + ActionView FormHelpers:
       = f.label :about, 'About'
       = f.text_area :about
   %p.buttons
-    = f.submit 'Create'</pre>
+    = f.submit 'Create'
+</pre>
 
 h4. Formtastic
 
 HAML + Formtastic:
 
-<pre>- semantic_form_for(@duck) do |f|
+<pre>
+- semantic_form_for(@duck) do |f|
   - f.inputs do
     = f.input :name
     = f.input :about
   - f.buttons do
-    = f.commit_button 'Create'</pre>
+    = f.commit_button 'Create'
+</pre>
 
 Find out more about *formtastic*: "http://github.com/justinfrench/formtastic":http://github.com/justinfrench/formtastic
 
@@ -95,7 +99,8 @@ h4. Standard
 
 Using ActionController:
 
-<pre>def new
+<pre>
+def new
   @duck = Duck.new
   
   respond_to do |format|
@@ -103,14 +108,17 @@ Using ActionController:
     format.xml  { render :xml => @duck }
     format.json { render :json => @duck }
   end
-end</pre>
+end
+</pre>
 
 h4. Resourceful
 
 Using InheritedResources:
 
-<pre>actions :new
-respond_to :html, :xml, :json</pre>
+<pre>
+actions :new
+respond_to :html, :xml, :json
+</pre>
 
 Find out more about *inherited_resources*: "http://github.com/josevalim/inherited_resources":http://github.com/josevalim/inherited_resources
 
@@ -128,7 +136,8 @@ h4. Standard
 
 ActionController with pagination:
 
-<pre>before_filter :load_resource, :only => [:show, :edit, :update, :destroy]
+<pre>
+before_filter :load_resource, :only => [:show, :edit, :update, :destroy]
 before_filter :load_and_paginate_resources, :only => [:index]
 
 ...
@@ -146,20 +155,23 @@ protected
   def resource
     @resource = @resource = ||= Duck.find(params[:id])
   end
-  alias :load_resource :resource</pre>
+  alias :load_resource :resource
+</pre>
 
 h4. Resourceful
 
 InheritedResources with pagination:
 
-<pre>protected
+<pre>
+protected
   
   def collection
     paginate_options ||= {}
     paginate_options[:page] ||= (params[:page] || 1)
     paginate_options[:per_page] ||= (params[:per_page] || 20)
     @resources ||= end_of_association_chain.paginate(paginate_options)
-  end</pre>
+  end
+</pre>
 
 h3. View Partials
 
@@ -167,13 +179,6 @@ A very common pattern is to break up views in partials, which is also what DrySc
 
 * @new@/@edit@ => @_form@
 * @index@ => @_item@
-
-h3. More To Come... (TODO)
-
-These are things I have in mind:
-
-* Handle belongs_to, i.e. specify MODEL --belongs-to PARENT_MODEL, which generates proper routes, proper before-filters if inherited_resources-controller, adding belongs_to-association in model, and correct form_for arguments.
-* RSpec-support?
 
 h2. Setup
 
@@ -185,11 +190,11 @@ Install DryScaffold...
 
 h4. Gem (Recommended)
 
-<pre>sudo gem install grimen-dry_scaffold --source http://gems.github.com</pre>
+<pre>sudo gem install dry_scaffold</pre>
 
 ...and in config: @config/environments/development.rb@
 
-<pre>config.gem 'grimen-dry_scaffold', :lib => false, :source => 'http://gems.github.com'</pre>
+<pre>config.gem 'dry_scaffold', :lib => false</pre>
 
 h4. Plugin
 
@@ -211,46 +216,58 @@ h4. Manual
 
 Get the gems...you want:
 
-<pre>sudo gem install haml
-sudo gem install mislav-will_paginate
-sudo gem install justinfrench-formtastic
-sudo gem install josevalim-inherited_resources</pre>
+<pre>
+sudo gem install haml
+sudo gem install will_paginate
+sudo gem install formtastic
+sudo gem install inherited_resources
+</pre>
 
 ...and same for the config config: @config/environments/development.rb@
 
-<pre>config.gem 'haml'
+<pre>
+config.gem 'haml'
 config.gem 'will_paginate'
-config.gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
-config.gem 'josevalim-inherited_resources', :lib => 'inherited_resources', :source => 'http://gems.github.com'</pre>
+config.gem 'formtastic'
+config.gem 'inherited_resources'
+</pre>
 
 Also configure @config/environments/test.rb@ with the RSpec library if you want to
 
-<pre>config.gem 'rspec'
-config.gem 'rspec-rails'</pre>
+<pre>
+config.gem 'rspec'
+config.gem 'rspec-rails'
+</pre>
 
 And don't forget to initialize it as well:
 
-<pre>./script/generate rspec</pre>
+<pre>
+./script/generate rspec
+</pre>
 
 To access Rake tasks in Rails from the gem version of DryScaffold you need to do this:
 
 In your project @Rakefile@:
 
 <pre>
-  require 'dry_scaffold/tasks'
+require 'dry_scaffold/tasks'
 </pre>
 
 Don't ask me why me why this is the only way with gems...Ask the Rails core team, because this is not conventions over configuration. Raur...
 
 h2. Usage
 
-<pre>./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [_indexes:attribute,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-migration] [--skip-timestamps] [--skip-tests] [--skip-controller-tests] [--layout] [--tunit] [--shoulda] [--rspec] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
+<pre>
+./script/generate dry_scaffold ModelName [attribute:type attribute:type] [_actions:new,create,...] [_formats:html,json,...] [_indexes:attribute,...] [--skip-pagination] [--skip-resourceful] [--skip-formtastic] [--skip-views] [--skip-helpers] [--skip-migration] [--skip-timestamps] [--skip-tests] [--skip-controller-tests] [--layout] [--tunit] [--shoulda] [--rspec] [--fixtures] [--fgirl] [--machinist] [--odaddy]
+</pre>
 
 ...or use the alias @dscaffold@ instead of @dry_scaffold@.
 
 For generating just a *model*, then use:
 
-<pre>./script/generate dry_model ModelName [attribute:type attribute:type] [_indexes:attribute,...] [--skip-migration] [--skip-timestamps] [--skip-tests] [--tunit] [--shoulda] [--rspec] [--fixtures] [--fgirl] [--machinist] [--odaddy]</pre>
+<pre>
+./script/generate dry_model ModelName [attribute:type attribute:type] [_indexes:attribute,...] [--skip-migration] [--skip-timestamps] [--skip-tests] [--tunit] [--shoulda] [--rspec] [--fixtures] [--fgirl] [--machinist] [--odaddy]
+</pre>
 
 ...or use the alias @dmodel@ instead of @dry_model@.
 
