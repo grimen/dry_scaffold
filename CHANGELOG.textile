@@ -1,3 +1,7 @@
+h1. 0.3.7 (2010-01-02)
+
+* Feature: override DryScaffold templates seamlessly: Auto-detect and use app-specific custom templates with mapping: RAILS_ROOT/lib/scaffold_templates/**/* <=> GEM_ROOT/generators/{dry_scaffold,dry_model}/templates/**/*.
+
 h1. 0.3.6 (2009-12-31)
 
 * Gemcutter as gem source.

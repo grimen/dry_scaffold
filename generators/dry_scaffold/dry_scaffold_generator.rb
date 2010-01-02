@@ -325,7 +325,6 @@ class DryScaffoldGenerator < DryGenerator
       @collection_name = options[:resourceful] ? RESOURCEFUL_COLLECTION_NAME : @model_plural_name
       @singular_name = options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME : @model_singular_name
       @plural_name = options[:resourceful] ? RESOURCEFUL_SINGULAR_NAME.pluralize : @model_plural_name
-      puts options[:resourceful], @collection_name
     end
     
     def add_options!(opt)

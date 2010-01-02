@@ -53,6 +53,7 @@ The most characteristic features:
 * Optionally specify what actions/views to generate (stubs for specified REST-actions will be generated).
 * Optionally specify what respond_to-formats to generate (stubs for the most common respond_to-formats will be generated).
 * Generates default helpers/models/migrations, and REST-routes (if not already defined).
+* Override default templates with app-specific ones without hassle.
 
 h3. Formtastic Forms
 
@@ -446,6 +447,22 @@ h3. Setting Defaults
 You can set defaults for the generator args/options in @config/scaffold.yml@. To generate this file, simply do:
 
 <pre>rake dry_scaffold:config:generate</pre>
+
+h3. Overriding default templates
+
+You can very easily override the default DryScaffold templates (views, controllers, whatever...) by creating custom template files according to the same relative path as the generator templates in @RAILS_ROOT/lib/scaffold_templates@.
+
+Example: Override the index view template
+
+In DryScaffold the index template file is located in: 
+
+@GEM_ROOT/generators/dry_scaffold/templates/views/haml/index.html.haml@
+
+...which means that if you want to override it, you should have your custom template in: 
+
+@RAILS_ROOT/lib/scaffold_templates/views/haml/index.html.haml@
+
+Copying template files to this location for overriding needs to be done manually for now, but maybe there will be a generator for this later on. That would be useful at least. =)
 
 h2. Examples
 
