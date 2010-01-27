@@ -9,7 +9,7 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
       post :create, :<%= singular_name %> => <%= resource_instance %>.attributes
       <%= resource_instance %> = <%= class_name %>.find(:all).last
     end
-    should_redirect_to '<%= show_path %>'
+    should_redirect_to("the <%= resource_instance %>'s show page") { <%= show_path %> }
   end
   
 <% end -%>
@@ -19,7 +19,7 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
       <%= resource_instance %> = <%= build_object %>
       put :update, :id => <%= resource_instance %>.to_param, :<%= singular_name %> => <%= resource_instance %>.attributes
     end
-    should_redirect_to '<%= show_path %>'
+    should_redirect_to("the <%= resource_instance %>'s show page") { <%= show_path %> }
   end
   
 <% end -%>
@@ -29,7 +29,7 @@ class <%= controller_class_name %>ControllerTest < ActionController::TestCase
       <%= resource_instance %> = <%= build_object %>
       delete :destroy, :id => <%= resource_instance %>.to_param
     end
-    should_redirect_to '<%= index_path %>'
+    should_redirect_to("the <%= resource_instance %>'s index page") { <%= index_path %> }
   end
   
 <% end -%>
