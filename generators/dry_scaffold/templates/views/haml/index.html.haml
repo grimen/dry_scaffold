@@ -1,8 +1,8 @@
 %h1.heading
-  = "<%= plural_name.humanize %>"
+  = "<%= model_plural_name.humanize %>"
   
 %p.actions
-  = link_to 'New <%= singular_name.humanize %>', <%= new_path %>
+  = link_to 'New <%= model_singular_name.humanize %>', <%= new_path %>
   
 %table
   %thead.header

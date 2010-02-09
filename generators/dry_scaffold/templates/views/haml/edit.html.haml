@@ -1,5 +1,5 @@
 %h1.heading
-  = "Editing <%= singular_name %> %s" % <%= resource_instance %>.id
+  = "Editing <%= model_singular_name %> %s" % <%= resource_instance %>.id
   
 <% if options[:formtastic] -%>
 - semantic_form_for(<%= resource_instance %>) do |form|

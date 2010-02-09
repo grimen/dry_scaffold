@@ -1,5 +1,5 @@
 %h1.heading
-  = 'New <%= singular_name.humanize %>'
+  = 'New <%= model_singular_name.humanize %>'
   
 <% if options[:formtastic] -%>
 - semantic_form_for(<%= resource_instance %>) do |form|
