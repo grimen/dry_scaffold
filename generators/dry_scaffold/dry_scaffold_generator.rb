@@ -226,11 +226,11 @@ class DryScaffoldGenerator < DryGenerator
   ### Link Helpers.
   
   def collection_instance
-    "@#{collection_name}"
+    options[:resourceful] ? "#{collection_name}" : "@#{collection_name}"
   end
   
   def resource_instance
-    "@#{singular_name}"
+    options[:resourceful] ? "#{singular_name}" : "@#{singular_name}"
   end
   
   def index_path
