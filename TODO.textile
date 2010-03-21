@@ -9,28 +9,3 @@ h2. Maybe
 
 * Feature: Handle belongs_to, i.e. specify MODEL --belongs-to PARENT_MODEL, which generates proper routes, proper before-filters if inherited_resources-controller, adding belongs_to-association in model, and correct form_for arguments.
 * Feature: Builder for podcast-feed, similar to RSS/Atom-builders. http://wiki.github.com/radiant/radiant/host-a-podcast
-
-h2. Issues
-
-* Contact José regarding the InheritedResources-issue:
-
-ActionController::RoutingError: parrot_url failed to generate from {:controller=>"parrots", :id=>#<Parrot id: nil, name: "Hello", created_at: "2009-07-21 18:53:25", updated_at: "2009-07-21 18:53:25">, :action=>"show"}, expected: {:controller=>"parrots", :action=>"show"}, diff: {:id=>#<Parrot id: nil, name: "Hello", created_at: "2009-07-21 18:53:25", updated_at: "2009-07-21 18:53:25">}
-  (eval):16:in `parrot_url'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/url_helpers.rb:194:in `resource_url'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/base_helpers.rb:311:in `send'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/base_helpers.rb:311:in `parse_redirect_url'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/base.rb:79:in `create'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/respond_to.rb:301:in `call'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/respond_to.rb:301:in `respond_any'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/respond_to.rb:233:in `respond_to'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/base_helpers.rb:283:in `respond_to_with_dual_blocks'
-/opt/local/lib/ruby/gems/1.8/gems/josevalim-inherited_resources-0.7.3/lib/inherited_resources/base.rb:78:in `create'
-    haml (2.0.9) rails/./lib/sass/plugin/rails.rb:19:in `process'
-    /test/functional/donkeys_controller_test.rb:8:in `test_create'
-    
-  test 'create' do
-    Donkey.any_instance.expects(:save).returns(true)
-    @donkey = donkeys(:basic)
-    post :create, :donkey => @donkey.attributes   # <<<<<<<<<<<<< donkeys_controller_test.rb:8
-    assert_response :redirect
-  end
